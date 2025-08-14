@@ -3,46 +3,32 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎯 Sistema de Avaliação de Desempenho - G&G v3.3</title>
+    <title>🎯 Sistema de Avaliação de Desempenho G&G v4.0 - Supabase</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
-            --cor-primaria: #1e441e;     
-            --cor-secundaria: #8FD694;   
-            --cor-acento: #77AD78;       
-            --cor-neutra: #6F8F72;       
-            --cor-escura: #504B43;       
+            --cor-primaria: #1e441e;
+            --cor-secundaria: #8FD694;
+            --cor-acento: #77AD78;
+            --cor-neutra: #6F8F72;
+            --cor-escura: #504B43;
             --cor-clara: #F8FAF9;
             --cor-branca: #FFFFFF;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            background: var(--cor-clara); 
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--cor-clara);
             line-height: 1.6;
             color: var(--cor-escura);
-            animation: fadeIn 0.5s ease-out;
         }
 
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes slideInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes slideInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes slideInLeft { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
-        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.02); } }
-        @keyframes bounce { 0%, 20%, 50%, 80%, 100% { transform: translateY(0); } 40% { transform: translateY(-8px); } 60% { transform: translateY(-4px); } }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
-
-        .container { 
-            max-width: 1200px; 
-            margin: 0 auto; 
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
             padding: 20px;
-            animation: slideInUp 0.6s ease-out;
         }
 
         .main-header {
@@ -53,26 +39,6 @@
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             margin-bottom: 30px;
             border-radius: 15px;
-            animation: slideInDown 0.7s ease-out;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .main-header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-            animation: shimmer 3s infinite;
-        }
-
-        .main-header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            animation: bounce 1s ease-out 0.5s both;
         }
 
         .nav-menu {
@@ -82,7 +48,6 @@
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             margin-bottom: 30px;
             text-align: center;
-            animation: slideInUp 0.6s ease-out 0.2s both;
         }
 
         .nav-btn {
@@ -96,8 +61,6 @@
             margin: 10px;
             transition: all 0.3s ease;
             font-weight: 600;
-            position: relative;
-            overflow: hidden;
         }
 
         .nav-btn:hover {
@@ -108,7 +71,6 @@
         .nav-btn.active {
             background: linear-gradient(135deg, var(--cor-secundaria) 0%, var(--cor-secundaria) 100%);
             box-shadow: 0 4px 10px rgba(143, 214, 148, 0.4);
-            animation: pulse 2s infinite;
         }
 
         .section {
@@ -118,14 +80,10 @@
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             margin-bottom: 30px;
             display: none;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.5s ease;
         }
 
         .section.active {
             display: block;
-            animation: slideInUp 0.5s ease-out forwards;
         }
 
         .section h2 {
@@ -134,47 +92,6 @@
             font-size: 1.8em;
             border-bottom: 3px solid var(--cor-primaria);
             padding-bottom: 10px;
-            animation: slideInLeft 0.6s ease-out;
-        }
-
-        .login-card {
-            background: linear-gradient(135deg, #f8faf9 0%, #e9f5ea 100%);
-            border: 2px solid var(--cor-secundaria);
-            border-radius: 20px;
-            padding: 40px;
-            text-align: center;
-            margin: 30px 0;
-            box-shadow: 0 8px 25px rgba(30, 68, 30, 0.1);
-        }
-
-        .login-input {
-            width: 100%;
-            max-width: 400px;
-            padding: 15px 20px;
-            border: 2px solid var(--cor-primaria);
-            border-radius: 50px;
-            font-size: 16px;
-            text-align: center;
-            margin: 20px auto;
-            display: block;
-            transition: all 0.3s ease;
-            background: rgba(255, 255, 255, 0.9);
-        }
-
-        .login-input:focus {
-            outline: none;
-            box-shadow: 0 0 20px rgba(30, 68, 30, 0.3);
-            transform: translateY(-2px);
-        }
-
-        .access-status {
-            background: var(--cor-primaria);
-            color: white;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            text-align: center;
-            font-weight: bold;
         }
 
         .form-row {
@@ -186,7 +103,6 @@
 
         .form-group {
             margin-bottom: 20px;
-            animation: slideInLeft 0.5s ease-out;
         }
 
         .form-group label {
@@ -209,7 +125,6 @@
             border-color: var(--cor-primaria);
             outline: none;
             box-shadow: 0 0 10px rgba(125, 186, 132, 0.2);
-            transform: translateY(-2px);
         }
 
         .btn {
@@ -223,8 +138,6 @@
             font-weight: 600;
             margin: 5px;
             transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
         }
 
         .btn:hover {
@@ -257,7 +170,6 @@
             border-radius: 15px;
             text-align: center;
             transition: all 0.3s ease;
-            animation: slideInUp 0.6s ease-out;
             cursor: pointer;
         }
 
@@ -272,29 +184,11 @@
             margin-bottom: 10px;
         }
 
-        .loading {
-            display: none;
-            text-align: center;
-            padding: 20px;
-            animation: fadeIn 0.5s ease-out;
-        }
-
-        .spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid var(--cor-primaria);
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto;
-        }
-
         .alert {
             padding: 20px;
             border-radius: 10px;
             margin: 20px 0;
             border-left: 5px solid;
-            animation: slideInLeft 0.5s ease-out;
         }
 
         .alert-success {
@@ -328,7 +222,6 @@
             margin: 20px 0;
             overflow: hidden;
             transition: all 0.3s ease;
-            animation: slideInUp 0.6s ease-out;
         }
 
         .competencia-header {
@@ -421,7 +314,6 @@
 
         .resultado-card.show {
             display: block;
-            animation: slideInUp 0.8s ease-out;
         }
 
         .pontuacao-display {
@@ -442,13 +334,34 @@
             color: white;
         }
 
-        .info-card {
-            background: var(--cor-branca);
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            margin: 20px 0;
-            animation: slideInUp 0.6s ease-out;
+        .login-card {
+            background: linear-gradient(135deg, #f8faf9 0%, #e9f5ea 100%);
+            border: 2px solid var(--cor-secundaria);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            margin: 30px 0;
+            box-shadow: 0 8px 25px rgba(30, 68, 30, 0.1);
+        }
+
+        .login-input {
+            width: 100%;
+            max-width: 400px;
+            padding: 15px 20px;
+            border: 2px solid var(--cor-primaria);
+            border-radius: 50px;
+            font-size: 16px;
+            text-align: center;
+            margin: 20px auto;
+            display: block;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .login-input:focus {
+            outline: none;
+            box-shadow: 0 0 20px rgba(30, 68, 30, 0.3);
+            transform: translateY(-2px);
         }
 
         .tabela-historico {
@@ -484,6 +397,27 @@
             transition: all 0.3s ease;
         }
 
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--cor-primaria);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
         .status-conexao {
             padding: 15px;
             border-radius: 10px;
@@ -504,6 +438,24 @@
             color: #721c24;
         }
 
+        .access-status {
+            background: var(--cor-primaria);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .info-card {
+            background: var(--cor-branca);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin: 20px 0;
+        }
+
         .debug-info {
             background: #f8f9fa;
             border: 1px solid #e9ecef;
@@ -516,55 +468,60 @@
             max-height: 300px;
             overflow-y: auto;
         }
+
+        .chart-container {
+            position: relative;
+            height: 400px;
+            margin: 20px 0;
+        }
     </style>
 </head>
 <body>
     <header class="main-header">
         <div class="container">
-            <h1>🎯 SISTEMA DE AVALIAÇÃO DE DESEMPENHO</h1>
-            <p>Sistema G&G v3.3 - TODOS OS PROBLEMAS CORRIGIDOS</p>
+            <h1><i class="fas fa-target"></i> SISTEMA DE AVALIAÇÃO DE DESEMPENHO</h1>
+            <p>Sistema G&G v4.0 - Conectado ao Supabase</p>
         </div>
-
-        <footer style="background: var(--cor-primaria); color: white; text-align: center; padding: 15px; margin-top: 50px;">
-            <div class="container">
-                <p style="margin: 2px 0; font-size: 11px; opacity: 0.7;">
-                    Desenvolvido por Juliano Patrick | julianocorrea@bateforte.com.br | Sistema v3.3 - FINAL © 2025
-                </p>
-            </div>
-        </footer>
     </header>
 
     <div class="container">
         <nav class="nav-menu">
-            <button class="nav-btn active" onclick="GG.showSection('home')">🏠 Home</button>
-            <button class="nav-btn" onclick="GG.showSection('avaliacao')">📝 Nova Avaliação</button>
-            <button class="nav-btn" onclick="GG.acessoHistorico()">📋 Histórico</button>
-            <button class="nav-btn" onclick="GG.acessoConfiguracoes()">⚙️ Configurações</button>
+            <button class="nav-btn active" onclick="GG.showSection('home')">
+                <i class="fas fa-home"></i> Home
+            </button>
+            <button class="nav-btn" onclick="GG.showSection('avaliacao')">
+                <i class="fas fa-edit"></i> Nova Avaliação
+            </button>
+            <button class="nav-btn" onclick="GG.acessoHistorico()">
+                <i class="fas fa-clipboard-list"></i> Histórico
+            </button>
+            <button class="nav-btn" onclick="GG.acessoConfiguracoes()">
+                <i class="fas fa-cog"></i> Configurações
+            </button>
         </nav>
 
         <!-- Seção Home -->
         <section id="home" class="section active">
-            <h2>🏠 Sistema G&G v3.3 - TODOS OS PROBLEMAS CORRIGIDOS</h2>
+            <h2><i class="fas fa-home"></i> Sistema G&G v4.0 - Supabase</h2>
             
             <div id="statusConexaoHome" class="status-conexao">
-                <span id="textoStatus">🔄 Verificando conexão...</span>
+                <span id="textoStatus"><i class="fas fa-sync fa-spin"></i> Verificando conexão...</span>
             </div>
-            
+
             <div class="alert alert-info">
-                <h4>🔧 Sistema v3.3 - Pronto para Uso!</h4>
-                <p><strong>URL já configurada e sistema pronto!</strong></p>
+                <h4><i class="fas fa-database"></i> Sistema v4.0 - Conectado ao Supabase!</h4>
+                <p><strong>Banco de dados moderno e eficiente!</strong></p>
                 <ul style="margin: 10px 0; padding-left: 30px;">
-                    <li>✅ URL da Web App pré-configurada</li>
-                    <li>✅ Carregamento automático de colaboradores/gestores</li>
-                    <li>✅ Busca por matrícula com limpeza automática</li>
-                    <li>✅ Salvamento completo das avaliações</li>
-                    <li>✅ Criação automática de abas com dados de exemplo</li>
-                    <li>✅ Debug avançado para diagnóstico</li>
-                    <li>✅ CORS 100% funcional</li>
+                    <li><i class="fas fa-check"></i> Conexão direta com Supabase</li>
+                    <li><i class="fas fa-check"></i> API REST otimizada</li>
+                    <li><i class="fas fa-check"></i> Busca por matrícula em tempo real</li>
+                    <li><i class="fas fa-check"></i> Salvamento automático</li>
+                    <li><i class="fas fa-check"></i> Interface responsiva</li>
+                    <li><i class="fas fa-check"></i> Gráficos de performance</li>
                 </ul>
-                <p><strong>🚀 Sistema totalmente operacional!</strong></p>
+                <p><strong><i class="fas fa-rocket"></i> Sistema totalmente operacional!</strong></p>
             </div>
-            
+
             <div class="stats-grid">
                 <div class="stat-card">
                     <div class="stat-number" id="totalAvaliacoesHome">0</div>
@@ -583,24 +540,27 @@
                     <div class="stat-label">Gestores</div>
                 </div>
             </div>
+
+            <div class="chart-container">
+                <canvas id="graficoPerformance"></canvas>
+            </div>
         </section>
 
         <!-- Seção Nova Avaliação -->
         <section id="avaliacao" class="section">
-            <h2>📝 Nova Avaliação</h2>
-
+            <h2><i class="fas fa-edit"></i> Nova Avaliação</h2>
+            
             <div id="statusDados" class="alert alert-info">
-                <p>🔄 <strong>Carregando dados das planilhas...</strong></p>
+                <p><i class="fas fa-sync fa-spin"></i> <strong>Carregando dados do Supabase...</strong></p>
             </div>
 
             <div class="info-card">
-                <h3>👤 Dados Pessoais</h3>
+                <h3><i class="fas fa-user"></i> Dados Pessoais</h3>
                 <div class="form-row">
                     <div class="form-group">
                         <label for="matriculaAvaliado">Matrícula do Avaliado *</label>
                         <input type="text" id="matriculaAvaliado" required placeholder="Digite a matrícula..." 
-                               onchange="GG.buscarColaborador(this.value)"
-                               oninput="GG.limparCamposColaborador()">
+                               onchange="GG.buscarColaborador(this.value)" oninput="GG.limparCamposColaborador()">
                     </div>
                     <div class="form-group">
                         <label for="nomeAvaliado">Nome do Avaliado</label>
@@ -623,9 +583,8 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label for="matriculaGestor">Matrícula do Gestor *</label>
-                        <input type="text" id="matriculaGestor" required placeholder="Digite a matrícula do gestor..." 
-                               onchange="GG.buscarGestor(this.value)"
-                               oninput="GG.limparCamposGestor()">
+                        <input type="text" id="matriculaGestor" required placeholder="Digite a matrícula do gestor..."
+                               onchange="GG.buscarGestor(this.value)" oninput="GG.limparCamposGestor()">
                     </div>
                     <div class="form-group">
                         <label for="nomeGestor">Nome do Gestor</label>
@@ -645,7 +604,7 @@
             </div>
 
             <div class="progress-container">
-                <h3>📊 Progresso da Avaliação</h3>
+                <h3><i class="fas fa-chart-line"></i> Progresso da Avaliação</h3>
                 <div class="progress-bar">
                     <div class="progress-fill" id="progressFill"></div>
                 </div>
@@ -655,7 +614,7 @@
             <div id="competenciasContainer"></div>
 
             <div class="info-card">
-                <h3>💬 Feedback e Comentários</h3>
+                <h3><i class="fas fa-comments"></i> Feedback e Comentários</h3>
                 <div class="form-group">
                     <label for="pontosFortes">Pontos Fortes</label>
                     <textarea id="pontosFortes" rows="4" placeholder="Principais pontos fortes identificados..."></textarea>
@@ -671,16 +630,22 @@
             </div>
 
             <div id="resultadoCard" class="resultado-card">
-                <h3>📊 Resultado da Avaliação</h3>
+                <h3><i class="fas fa-chart-bar"></i> Resultado da Avaliação</h3>
                 <div class="pontuacao-display" id="pontuacaoDisplay">0.00/5.00</div>
                 <div class="classificacao-display" id="classificacaoDisplay">-</div>
                 <div id="laudoResumo" style="margin-top: 20px; font-size: 1.1em; line-height: 1.6;"></div>
             </div>
 
             <div style="text-align: center; margin: 30px 0;">
-                <button class="btn btn-info" onclick="GG.calcularResultado()">📊 Calcular Resultado</button>
-                <button class="btn btn-success" onclick="GG.salvarAvaliacao()" id="btnSalvar" disabled>☁️ Salvar no Google Sheets</button>
-                <button class="btn" onclick="GG.limparFormulario()">🗑️ Limpar Formulário</button>
+                <button class="btn btn-info" onclick="GG.calcularResultado()">
+                    <i class="fas fa-calculator"></i> Calcular Resultado
+                </button>
+                <button class="btn btn-success" onclick="GG.salvarAvaliacao()" id="btnSalvar" disabled>
+                    <i class="fas fa-save"></i> Salvar no Supabase
+                </button>
+                <button class="btn" onclick="GG.limparFormulario()">
+                    <i class="fas fa-trash"></i> Limpar Formulário
+                </button>
             </div>
 
             <div class="loading" id="loading">
@@ -691,20 +656,26 @@
 
         <!-- Seção de Login para Histórico -->
         <section id="loginHistorico" class="section">
-            <h2>🔐 Acesso ao Histórico por Filial</h2>
-            
+            <h2><i class="fas fa-lock"></i> Acesso ao Histórico por Filial</h2>
             <div class="login-card">
-                <h3 style="color: var(--cor-primaria); margin-bottom: 30px;">🔒 Digite a Senha da sua Filial</h3>
-                
+                <h3 style="color: var(--cor-primaria); margin-bottom: 30px;">
+                    <i class="fas fa-key"></i> Digite a Senha da sua Filial
+                </h3>
                 <div class="form-group">
-                    <input type="password" id="senhaHistorico" class="login-input" placeholder="Digite a senha da sua filial..." onkeypress="GG.verificarEnter(event, 'historico')">
+                    <input type="password" id="senhaHistorico" class="login-input" 
+                           placeholder="Digite a senha da sua filial..." 
+                           onkeypress="GG.verificarEnter(event, 'historico')">
                 </div>
-                
-                <button class="btn btn-success" onclick="GG.validarSenhaHistorico()">🔓 Acessar Histórico</button>
-                <button class="btn" onclick="GG.showSection('home')">❌ Cancelar</button>
-                
+                <button class="btn btn-success" onclick="GG.validarSenhaHistorico()">
+                    <i class="fas fa-unlock"></i> Acessar Histórico
+                </button>
+                <button class="btn" onclick="GG.showSection('home')">
+                    <i class="fas fa-times"></i> Cancelar
+                </button>
                 <div style="background: rgba(255, 255, 255, 0.7); border-radius: 15px; padding: 25px; margin-top: 30px; text-align: left;">
-                    <h4 style="color: var(--cor-primaria); margin-bottom: 15px; text-align: center;">ℹ️ Senhas por Filial</h4>
+                    <h4 style="color: var(--cor-primaria); margin-bottom: 15px; text-align: center;">
+                        <i class="fas fa-info-circle"></i> Senhas por Filial
+                    </h4>
                     <p><strong>Filiais:</strong> GG74301 (743-MS) | GG26402 (264-SC) | GG75303 (753-MT) | GG36404 (364-DF) | GG71305 (713-SP)</p>
                     <p><strong>Master:</strong> GGMASTER (todas as filiais) | GGMASTERJP (administrativo)</p>
                 </div>
@@ -713,26 +684,30 @@
 
         <!-- Seção de Login para Configurações -->
         <section id="loginConfiguracoes" class="section">
-            <h2>⚙️ Acesso às Configurações</h2>
-            
+            <h2><i class="fas fa-cog"></i> Acesso às Configurações</h2>
             <div class="login-card">
-                <h3 style="color: var(--cor-primaria); margin-bottom: 30px;">🔒 Área Restrita - Administração</h3>
-                
+                <h3 style="color: var(--cor-primaria); margin-bottom: 30px;">
+                    <i class="fas fa-shield-alt"></i> Área Restrita - Administração
+                </h3>
                 <div class="form-group">
-                    <input type="password" id="senhaConfiguracoes" class="login-input" placeholder="Digite GGMASTERJP..." onkeypress="GG.verificarEnter(event, 'configuracoes')">
+                    <input type="password" id="senhaConfiguracoes" class="login-input" 
+                           placeholder="Digite GGMASTERJP..." 
+                           onkeypress="GG.verificarEnter(event, 'configuracoes')">
                 </div>
-                
-                <button class="btn btn-success" onclick="GG.validarSenhaConfiguracoes()">🔓 Acessar Configurações</button>
-                <button class="btn" onclick="GG.showSection('home')">❌ Cancelar</button>
+                <button class="btn btn-success" onclick="GG.validarSenhaConfiguracoes()">
+                    <i class="fas fa-unlock"></i> Acessar Configurações
+                </button>
+                <button class="btn" onclick="GG.showSection('home')">
+                    <i class="fas fa-times"></i> Cancelar
+                </button>
             </div>
         </section>
 
         <!-- Seção Histórico -->
         <section id="historico" class="section">
             <div id="accessStatus" class="access-status" style="display: none;"></div>
-
-            <h2>📋 Histórico de Avaliações</h2>
-
+            <h2><i class="fas fa-clipboard-list"></i> Histórico de Avaliações</h2>
+            
             <div class="stats-grid">
                 <div class="stat-card">
                     <div class="stat-number" id="totalAvaliacoes">0</div>
@@ -753,37 +728,51 @@
             </div>
 
             <div style="text-align: center; margin: 30px 0;">
-                <button class="btn btn-info" onclick="GG.carregarHistorico()">🔄 Sincronizar</button>
-                <button class="btn btn-warning" onclick="GG.exportarDados()">📥 Exportar</button>
-                <button class="btn btn-danger" onclick="GG.logout()">🚪 Sair</button>
+                <button class="btn btn-info" onclick="GG.carregarHistorico()">
+                    <i class="fas fa-sync"></i> Sincronizar
+                </button>
+                <button class="btn btn-warning" onclick="GG.exportarDados()">
+                    <i class="fas fa-download"></i> Exportar
+                </button>
+                <button class="btn btn-danger" onclick="GG.logout()">
+                    <i class="fas fa-sign-out-alt"></i> Sair
+                </button>
+            </div>
+
+            <div class="chart-container">
+                <canvas id="graficoHistorico"></canvas>
             </div>
 
             <div id="tabelaHistorico">
-                <p style="text-align: center; padding: 30px; color: #666;">📊 Carregando dados...</p>
+                <p style="text-align: center; padding: 30px; color: #666;">
+                    <i class="fas fa-chart-bar"></i> Carregando dados...
+                </p>
             </div>
         </section>
 
         <!-- Seção Configurações -->
         <section id="configuracoes" class="section">
             <div id="configStatus" class="access-status" style="display: none;"></div>
-
-            <h2>⚙️ Configurações do Sistema</h2>
-
+            <h2><i class="fas fa-cog"></i> Configurações do Sistema</h2>
+            
             <div class="info-card">
-                <h3>🔗 Configuração da Web App</h3>
+                <h3><i class="fas fa-database"></i> Configuração do Supabase</h3>
                 <div class="alert alert-warning">
-                    <p><strong>URL Atual:</strong> <span id="webappUrl">Verificando...</span></p>
+                    <p><strong>Status:</strong> <span id="supabaseStatus">Verificando...</span></p>
                 </div>
                 <div style="text-align: center; margin: 20px 0;">
-                    <button class="btn btn-info" onclick="GG.configurarWebApp()">🔗 Configurar URL</button>
-                    <button class="btn btn-success" onclick="GG.testarConexao()">🧪 Testar Conexão</button>
-                    <button class="btn btn-warning" onclick="GG.debugCompleto()">🔍 Debug Completo</button>
+                    <button class="btn btn-success" onclick="GG.testarConexao()">
+                        <i class="fas fa-plug"></i> Testar Conexão
+                    </button>
+                    <button class="btn btn-warning" onclick="GG.debugCompleto()">
+                        <i class="fas fa-search"></i> Debug Completo
+                    </button>
                 </div>
             </div>
 
             <div id="debugContainer" style="display: none;">
                 <div class="info-card">
-                    <h3>🔍 Informações de Debug</h3>
+                    <h3><i class="fas fa-bug"></i> Informações de Debug</h3>
                     <div id="debugInfo" class="debug-info"></div>
                 </div>
             </div>
@@ -808,23 +797,36 @@
             </div>
 
             <div style="text-align: center; margin: 30px 0;">
-                <button class="btn btn-info" onclick="GG.sincronizarDados()">🔄 Sincronizar</button>
-                <button class="btn btn-warning" onclick="GG.debugSistema()">🔍 Debug Rápido</button>
-                <button class="btn btn-danger" onclick="GG.logout()">🚪 Sair</button>
+                <button class="btn btn-info" onclick="GG.sincronizarDados()">
+                    <i class="fas fa-sync"></i> Sincronizar
+                </button>
+                <button class="btn btn-warning" onclick="GG.debugSistema()">
+                    <i class="fas fa-bug"></i> Debug Rápido
+                </button>
+                <button class="btn btn-danger" onclick="GG.logout()">
+                    <i class="fas fa-sign-out-alt"></i> Sair
+                </button>
             </div>
         </section>
     </div>
 
-    <script>
-        // =====================================================
-        // SISTEMA G&G v3.3 - TODOS OS PROBLEMAS CORRIGIDOS
-        // =====================================================
+    <footer style="background: var(--cor-primaria); color: white; text-align: center; padding: 15px; margin-top: 50px;">
+        <div class="container">
+            <p style="margin: 2px 0; font-size: 11px; opacity: 0.7;">
+                Desenvolvido por Juliano Patrick | julianocorrea@bateforte.com.br | Sistema v4.0 - Supabase © 2025
+            </p>
+        </div>
+    </footer>
 
-        // Objeto principal do sistema
+    <script>
+        // ===================================================== 
+        // SISTEMA G&G v4.0 - SUPABASE
+        // ===================================================== 
         const GG = {
-            // Configurações
-            WEBAPP_URL: 'https://script.google.com/macros/s/AKfycbx47EreGtCyNJao3L0zYcv1WMU6KMBSGHzTVTuM3cUZhA5F1pylKbA1a9yyFGDHik-Vtg/exec',
-            
+            // Configurações do Supabase
+            SUPABASE_URL: 'https://mtqwqwpqkzrbkxxkaffq.supabase.co',
+            SUPABASE_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im10cXdxd3Bxa3pyYmt4eGthZmZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUyMTIxMjgsImV4cCI6MjA3MDc4ODEyOH0.MKaYUE_wumkdkyuoWt5yIY2GhEDRsqSYMfA0oot2bvY',
+
             // Dados do sistema
             dados: {
                 avaliacoes: [],
@@ -857,15 +859,7 @@
                 'GG26402': { filial: '264', regional: 'SC' },
                 'GG75303': { filial: '753', regional: 'MT' },
                 'GG36404': { filial: '364', regional: 'DF' },
-                'GG71305': { filial: '713', regional: 'SP' },
-                'GG46806': { filial: '468', regional: 'MT' },
-                'GG89207': { filial: '892', regional: 'SP' },
-                'GG72308': { filial: '723', regional: 'SP' },
-                'GG23009': { filial: '230', regional: 'SP' },
-                'GG77310': { filial: '773', regional: 'RS' },
-                'GG47311': { filial: '473', regional: 'MT' },
-                'GG16712': { filial: '167', regional: 'MS' },
-                'GG02013': { filial: '20', regional: 'AGP' }
+                'GG71305': { filial: '713', regional: 'SP' }
             },
 
             SENHAS_ESPECIAIS: {
@@ -938,159 +932,149 @@
                 }
             ],
 
-            // =====================================================
-            // FUNÇÕES DE COMUNICAÇÃO (CORRIGIDAS)
-            // =====================================================
-
-            async buscarDoGoogleSheets(acao) {
-                if (!this.WEBAPP_URL || this.WEBAPP_URL.trim() === '') {
-                    throw new Error('URL da Web App não configurada');
-                }
-
+            // ===================================================== 
+            // FUNÇÕES DE COMUNICAÇÃO COM SUPABASE
+            // ===================================================== 
+            async buscarDoSupabase(tabela, filtros = {}) {
                 try {
-                    console.log(`📡 Buscando ${acao}...`);
+                    console.log(`📡 Buscando dados da tabela: ${tabela}...`);
                     
-                    const url = `${this.WEBAPP_URL}?acao=${encodeURIComponent(acao)}&t=${Date.now()}`;
+                    let url = `${this.SUPABASE_URL}/rest/v1/${tabela}?select=*`;
                     
-                    const response = await fetch(url, { 
+                    // Adicionar filtros se existirem
+                    Object.keys(filtros).forEach(key => {
+                        url += `&${key}=eq.${filtros[key]}`;
+                    });
+
+                    const response = await fetch(url, {
                         method: 'GET',
                         headers: {
+                            'apikey': this.SUPABASE_KEY,
+                            'Authorization': `Bearer ${this.SUPABASE_KEY}`,
                             'Content-Type': 'application/json',
-                            'Accept': 'application/json',
-                            'Cache-Control': 'no-cache'
-                        },
-                        mode: 'cors',
-                        cache: 'no-cache'
+                            'Prefer': 'return=representation'
+                        }
                     });
-                    
+
                     if (!response.ok) {
                         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
                     }
-                    
-                    const resultado = await response.json();
-                    
-                    if (resultado && resultado.sucesso) {
-                        console.log(`✅ ${acao} carregado com sucesso`);
-                        return resultado;
-                    } else {
-                        throw new Error(resultado?.mensagem || 'Resposta inválida do servidor');
-                    }
+
+                    const dados = await response.json();
+                    console.log(`✅ ${tabela} carregado: ${dados.length} registros`);
+                    return dados;
 
                 } catch (error) {
-                    console.error(`❌ Erro ${acao}:`, error);
-                    if (error.message.includes('Failed to fetch')) {
-                        throw new Error('Erro de conexão. Verifique a URL da Web App e as configurações.');
-                    }
+                    console.error(`❌ Erro ao buscar ${tabela}:`, error);
                     throw error;
                 }
             },
 
-            async enviarParaGoogleSheets(acao, dados = {}) {
-                if (!this.WEBAPP_URL || this.WEBAPP_URL.trim() === '') {
-                    throw new Error('URL da Web App não configurada');
-                }
-
+            async inserirNoSupabase(tabela, dados) {
                 try {
-                    console.log(`📤 Enviando ${acao}...`);
+                    console.log(`📤 Inserindo dados na tabela: ${tabela}...`);
                     
-                    const payload = { acao: acao, ...dados };
-                    
-                    const response = await fetch(this.WEBAPP_URL, {
+                    const response = await fetch(`${this.SUPABASE_URL}/rest/v1/${tabela}`, {
                         method: 'POST',
-                        headers: { 
+                        headers: {
+                            'apikey': this.SUPABASE_KEY,
+                            'Authorization': `Bearer ${this.SUPABASE_KEY}`,
                             'Content-Type': 'application/json',
-                            'Accept': 'application/json'
+                            'Prefer': 'return=representation'
                         },
-                        body: JSON.stringify(payload),
-                        mode: 'cors'
+                        body: JSON.stringify(dados)
                     });
-                    
+
                     if (!response.ok) {
-                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                        const errorData = await response.text();
+                        throw new Error(`HTTP ${response.status}: ${errorData}`);
                     }
-                    
+
                     const resultado = await response.json();
-                    
-                    if (resultado && resultado.sucesso) {
-                        console.log('✅ Dados enviados com sucesso');
-                        return resultado;
-                    } else {
-                        throw new Error(resultado?.mensagem || 'Erro desconhecido no servidor');
-                    }
-                    
+                    console.log('✅ Dados inseridos com sucesso');
+                    return resultado;
+
                 } catch (error) {
-                    console.error('❌ Erro no envio:', error);
-                    if (error.message.includes('Failed to fetch')) {
-                        throw new Error('Erro de conexão. Verifique a URL da Web App.');
-                    }
+                    console.error('❌ Erro ao inserir:', error);
                     throw error;
                 }
             },
 
-            // =====================================================
-            // CARREGAMENTO DE DADOS (CORRIGIDO)
-            // =====================================================
-
+            // ===================================================== 
+            // CARREGAMENTO DE DADOS
+            // ===================================================== 
             async carregarDadosSalvos() {
-                console.log('📂 Carregando dados...');
-                
+                console.log('📂 Carregando dados do Supabase...');
                 try {
-                    this.atualizarStatusDados('🔄 Buscando dados das planilhas...', 'info');
-                    
-                    const [resAvaliacoes, resColaboradores, resGestores] = await Promise.all([
-                        this.buscarDoGoogleSheets('buscar_avaliacoes').catch(e => ({ sucesso: false, error: e.message })),
-                        this.buscarDoGoogleSheets('buscar_colaboradores').catch(e => ({ sucesso: false, error: e.message })),
-                        this.buscarDoGoogleSheets('buscar_gestores').catch(e => ({ sucesso: false, error: e.message }))
-                    ]);
-                    
-                    // Processar avaliações
-                    if (resAvaliacoes.sucesso) {
-                        this.dados.avaliacoes = resAvaliacoes.dados || [];
-                        this.cache.avaliacoes = this.dados.avaliacoes;
-                    } else {
-                        console.warn('⚠️ Erro ao carregar avaliações:', resAvaliacoes.error);
-                    }
-                    
-                    // Processar colaboradores
-                    if (resColaboradores.sucesso) {
-                        this.dados.colaboradores = resColaboradores.dados || {};
-                        this.cache.colaboradores = this.dados.colaboradores;
+                    this.atualizarStatusDados('🔄 Buscando dados do Supabase...', 'info');
+
+                    // Carregar colaboradores
+                    try {
+                        const colaboradores = await this.buscarDoSupabase('colaboradores');
+                        this.dados.colaboradores = {};
+                        colaboradores.forEach(colab => {
+                            this.dados.colaboradores[colab.matricula] = {
+                                nome: colab.nome,
+                                funcao: colab.funcao,
+                                filial: colab.filial,
+                                regional: colab.regional
+                            };
+                        });
                         console.log(`👥 ${Object.keys(this.dados.colaboradores).length} colaboradores carregados`);
-                    } else {
-                        console.warn('⚠️ Erro ao carregar colaboradores:', resColaboradores.error);
+                    } catch (error) {
+                        console.warn('⚠️ Erro ao carregar colaboradores:', error);
                     }
-                    
-                    // Processar gestores
-                    if (resGestores.sucesso) {
-                        this.dados.gestores = resGestores.dados || {};
-                        this.cache.gestores = this.dados.gestores;
+
+                    // Carregar gestores
+                    try {
+                        const gestores = await this.buscarDoSupabase('gestores');
+                        this.dados.gestores = {};
+                        gestores.forEach(gestor => {
+                            this.dados.gestores[gestor.matricula] = {
+                                nome: gestor.nome,
+                                funcao: gestor.funcao,
+                                regional: gestor.regional
+                            };
+                        });
                         console.log(`👔 ${Object.keys(this.dados.gestores).length} gestores carregados`);
-                    } else {
-                        console.warn('⚠️ Erro ao carregar gestores:', resGestores.error);
+                    } catch (error) {
+                        console.warn('⚠️ Erro ao carregar gestores:', error);
                     }
-                    
+
+                    // Carregar avaliações
+                    try {
+                        const avaliacoes = await this.buscarDoSupabase('avaliacoes');
+                        this.dados.avaliacoes = avaliacoes || [];
+                        console.log(`📊 ${this.dados.avaliacoes.length} avaliações carregadas`);
+                    } catch (error) {
+                        console.warn('⚠️ Erro ao carregar avaliações:', error);
+                    }
+
                     this.cache.ultimaAtualizacao = Date.now();
                     this.dados.dadosCarregados = true;
-                    
+
                     // Salvar no localStorage
                     try {
-                        localStorage.setItem('gg_cache', JSON.stringify(this.cache));
+                        this.cache.colaboradores = this.dados.colaboradores;
+                        this.cache.gestores = this.dados.gestores;
+                        this.cache.avaliacoes = this.dados.avaliacoes;
+                        localStorage.setItem('gg_cache_supabase', JSON.stringify(this.cache));
                     } catch (storageError) {
                         console.warn('⚠️ Erro ao salvar cache:', storageError);
                     }
-                    
+
                     // Status final
                     const totalColaboradores = Object.keys(this.dados.colaboradores).length;
                     const totalGestores = Object.keys(this.dados.gestores).length;
                     
                     if (totalColaboradores === 0 && totalGestores === 0) {
-                        this.atualizarStatusDados('⚠️ Nenhum colaborador/gestor encontrado. Verifique as abas na planilha.', 'warning');
+                        this.atualizarStatusDados('⚠️ Nenhum colaborador/gestor encontrado. Verifique as tabelas no Supabase.', 'warning');
                     } else {
                         this.atualizarStatusDados(`✅ Dados carregados: ${totalColaboradores} colaboradores, ${totalGestores} gestores`, 'success');
                     }
-                    
+
                     this.atualizarStatusConexaoHome(true);
-                    
+
                 } catch (error) {
                     console.error('❌ Erro ao carregar dados:', error);
                     this.carregarDadosDoCache();
@@ -1101,7 +1085,7 @@
 
             carregarDadosDoCache() {
                 try {
-                    const cacheStorage = localStorage.getItem('gg_cache');
+                    const cacheStorage = localStorage.getItem('gg_cache_supabase');
                     if (cacheStorage) {
                         const dadosCache = JSON.parse(cacheStorage);
                         this.cache = dadosCache;
@@ -1109,11 +1093,10 @@
                         this.dados.colaboradores = dadosCache.colaboradores || {};
                         this.dados.gestores = dadosCache.gestores || {};
                         this.dados.dadosCarregados = true;
-                        
                         this.atualizarStatusDados('⚠️ Usando dados em cache (offline)', 'warning');
                         console.log('💾 Dados carregados do cache');
                     } else {
-                        this.atualizarStatusDados('❌ Configure a URL da Web App nas Configurações', 'danger');
+                        this.atualizarStatusDados('❌ Verifique a conexão com o Supabase', 'danger');
                     }
                 } catch (error) {
                     console.error('❌ Erro no cache:', error);
@@ -1121,28 +1104,25 @@
                 }
             },
 
-            // =====================================================
-            // BUSCA POR MATRÍCULA (CORRIGIDA)
-            // =====================================================
-
+            // ===================================================== 
+            // BUSCA POR MATRÍCULA
+            // ===================================================== 
             buscarColaborador(matricula) {
                 if (!matricula || matricula.trim() === '') {
                     this.limparCamposColaborador();
                     return;
                 }
-                
-                // CORRIGIDO: Limpeza padronizada da matrícula
+
                 const matriculaLimpa = matricula.toString().trim().toUpperCase();
                 const colaborador = this.dados.colaboradores[matriculaLimpa];
                 
                 console.log(`🔍 Buscando colaborador: "${matriculaLimpa}"`);
-                console.log('📋 Colaboradores disponíveis:', Object.keys(this.dados.colaboradores));
-                
+
                 if (colaborador) {
                     document.getElementById('nomeAvaliado').value = colaborador.nome || '';
                     document.getElementById('funcaoAvaliado').value = colaborador.funcao || '';
                     document.getElementById('filial').value = colaborador.filial || '';
-                    
+
                     const campo = document.getElementById('matriculaAvaliado');
                     campo.style.borderColor = 'var(--cor-secundaria)';
                     campo.style.backgroundColor = 'rgba(143, 214, 148, 0.1)';
@@ -1150,19 +1130,15 @@
                     this.mostrarAlerta(`✅ Colaborador encontrado: ${colaborador.nome}`, 'success');
                 } else {
                     this.limparCamposColaborador();
-                    
                     const campo = document.getElementById('matriculaAvaliado');
                     campo.style.borderColor = '#dc3545';
                     campo.style.backgroundColor = 'rgba(220, 53, 69, 0.1)';
-                    
-                    // Sugestões de matrículas similares
+
                     const sugestoes = this.buscarMatriculasSimilares(matriculaLimpa, Object.keys(this.dados.colaboradores));
                     let mensagem = `❌ Colaborador não encontrado: ${matriculaLimpa}`;
-                    
                     if (sugestoes.length > 0) {
                         mensagem += `\n\n💡 Sugestões: ${sugestoes.slice(0, 3).join(', ')}`;
                     }
-                    
                     this.mostrarAlerta(mensagem, 'warning');
                 }
             },
@@ -1172,19 +1148,17 @@
                     this.limparCamposGestor();
                     return;
                 }
-                
-                // CORRIGIDO: Limpeza padronizada da matrícula
+
                 const matriculaLimpa = matricula.toString().trim().toUpperCase();
                 const gestor = this.dados.gestores[matriculaLimpa];
                 
                 console.log(`🔍 Buscando gestor: "${matriculaLimpa}"`);
-                console.log('📋 Gestores disponíveis:', Object.keys(this.dados.gestores));
-                
+
                 if (gestor) {
                     document.getElementById('nomeGestor').value = gestor.nome || '';
                     document.getElementById('funcaoGestor').value = gestor.funcao || '';
                     document.getElementById('regionalGestor').value = gestor.regional || '';
-                    
+
                     const campo = document.getElementById('matriculaGestor');
                     campo.style.borderColor = 'var(--cor-secundaria)';
                     campo.style.backgroundColor = 'rgba(143, 214, 148, 0.1)';
@@ -1192,34 +1166,26 @@
                     this.mostrarAlerta(`✅ Gestor encontrado: ${gestor.nome}`, 'success');
                 } else {
                     this.limparCamposGestor();
-                    
                     const campo = document.getElementById('matriculaGestor');
                     campo.style.borderColor = '#dc3545';
                     campo.style.backgroundColor = 'rgba(220, 53, 69, 0.1)';
-                    
-                    // Sugestões de matrículas similares
+
                     const sugestoes = this.buscarMatriculasSimilares(matriculaLimpa, Object.keys(this.dados.gestores));
                     let mensagem = `❌ Gestor não encontrado: ${matriculaLimpa}`;
-                    
                     if (sugestoes.length > 0) {
                         mensagem += `\n\n💡 Sugestões: ${sugestoes.slice(0, 3).join(', ')}`;
                     }
-                    
                     this.mostrarAlerta(mensagem, 'warning');
                 }
             },
 
-            // NOVA: Função para buscar matrículas similares
             buscarMatriculasSimilares(matricula, lista) {
                 const similares = [];
-                
                 lista.forEach(item => {
-                    // Busca por matrícula que contenha a digitada ou vice-versa
                     if (item.includes(matricula) || matricula.includes(item)) {
                         similares.push(item);
                     }
                 });
-                
                 return similares;
             },
 
@@ -1227,7 +1193,6 @@
                 document.getElementById('nomeAvaliado').value = '';
                 document.getElementById('funcaoAvaliado').value = '';
                 document.getElementById('filial').value = '';
-                
                 const campo = document.getElementById('matriculaAvaliado');
                 campo.style.borderColor = '#e0e0e0';
                 campo.style.backgroundColor = '';
@@ -1237,19 +1202,16 @@
                 document.getElementById('nomeGestor').value = '';
                 document.getElementById('funcaoGestor').value = '';
                 document.getElementById('regionalGestor').value = '';
-                
                 const campo = document.getElementById('matriculaGestor');
                 campo.style.borderColor = '#e0e0e0';
                 campo.style.backgroundColor = '';
             },
 
-            // =====================================================
-            // AVALIAÇÃO (CORRIGIDA)
-            // =====================================================
-
+            // ===================================================== 
+            // AVALIAÇÃO
+            // ===================================================== 
             calcularResultado() {
                 const fatoresAvaliados = this.atualizarProgresso();
-                
                 if (fatoresAvaliados === 0) {
                     this.mostrarAlerta('❌ Avalie pelo menos um fator!', 'danger');
                     return;
@@ -1257,14 +1219,13 @@
 
                 const radios = document.querySelectorAll('input[type="radio"]:checked');
                 let somaNotas = 0;
-                
                 radios.forEach(radio => {
                     somaNotas += parseInt(radio.value);
                 });
 
                 const pontuacao = fatoresAvaliados > 0 ? (somaNotas / fatoresAvaliados) : 0;
-                let classificacao = '';
                 
+                let classificacao = '';
                 if (pontuacao >= 4.5) {
                     classificacao = 'EXCELENTE';
                 } else if (pontuacao >= 3.5) {
@@ -1280,15 +1241,13 @@
 
                 const laudoResumo = this.gerarLaudoResumo(pontuacao, classificacao);
                 document.getElementById('laudoResumo').innerHTML = laudoResumo;
-
                 document.getElementById('resultadoCard').classList.add('show');
-                
-                // CORRIGIDO: Habilitação do botão de salvar
+
                 const nomeAvaliado = document.getElementById('nomeAvaliado').value;
                 const nomeGestor = document.getElementById('nomeGestor').value;
                 const filial = document.getElementById('filial').value;
-                
                 const podeHabilitar = fatoresAvaliados >= 10 && nomeAvaliado && nomeGestor && filial;
+                
                 document.getElementById('btnSalvar').disabled = !podeHabilitar;
 
                 this.dados.avaliacaoAtual = {
@@ -1303,7 +1262,6 @@
                     if (fatoresAvaliados < 10) motivos.push('avalie pelo menos 10 fatores');
                     if (!nomeAvaliado) motivos.push('preencha dados do colaborador');
                     if (!nomeGestor) motivos.push('preencha dados do gestor');
-                    
                     this.mostrarAlerta(`⚠️ Para salvar: ${motivos.join(', ')}.`, 'warning');
                 } else {
                     this.mostrarAlerta('✅ Avaliação pronta para ser salva!', 'success');
@@ -1313,35 +1271,30 @@
             coletarRespostas() {
                 const respostas = {};
                 const radios = document.querySelectorAll('input[type="radio"]:checked');
-                
                 radios.forEach(radio => {
                     respostas[radio.name] = radio.value;
                 });
-
                 return respostas;
             },
 
             gerarLaudoResumo(pontuacao, classificacao) {
                 let resumo = '';
-                
                 if (pontuacao >= 4.5) {
-                    resumo = '<strong style="color: var(--cor-primaria);">🎯 EXCELENTE DESEMPENHO!</strong><br>';
+                    resumo = '<strong style="color: var(--cor-primaria);"><i class="fas fa-star"></i> EXCELENTE DESEMPENHO!</strong><br>';
                     resumo += 'O(a) avaliado(a) demonstra competências excepcionais em liderança.';
                 } else if (pontuacao >= 3.5) {
-                    resumo = '<strong style="color: var(--cor-primaria);">👍 BOM DESEMPENHO!</strong><br>';
+                    resumo = '<strong style="color: var(--cor-primaria);"><i class="fas fa-thumbs-up"></i> BOM DESEMPENHO!</strong><br>';
                     resumo += 'O(a) avaliado(a) apresenta desempenho sólido com oportunidades de desenvolvimento.';
                 } else if (pontuacao >= 2.5) {
-                    resumo = '<strong style="color: #ffc107;">📈 DESEMPENHO REGULAR</strong><br>';
+                    resumo = '<strong style="color: #ffc107;"><i class="fas fa-chart-line"></i> DESEMPENHO REGULAR</strong><br>';
                     resumo += 'É necessário um plano de desenvolvimento estruturado.';
                 } else {
-                    resumo = '<strong style="color: #dc3545;">📚 PRECISA MELHORAR</strong><br>';
+                    resumo = '<strong style="color: #dc3545;"><i class="fas fa-book"></i> PRECISA MELHORAR</strong><br>';
                     resumo += 'Necessária intervenção imediata com programa intensivo de desenvolvimento.';
                 }
-
                 return resumo;
             },
 
-            // CORRIGIDA: Salvamento completo da avaliação
             async salvarAvaliacao() {
                 if (!this.dados.avaliacaoAtual) {
                     this.mostrarAlerta('❌ Calcule o resultado primeiro!', 'danger');
@@ -1357,54 +1310,48 @@
                     return;
                 }
 
-                // CORRIGIDO: Objeto completo da avaliação
                 const avaliacao = {
-                    id: 'AV' + Date.now(),
-                    data: new Date().toISOString(),
-                    nomeAvaliado: nomeAvaliado,
-                    matricula: document.getElementById('matriculaAvaliado').value || '',
-                    funcaoAvaliado: document.getElementById('funcaoAvaliado').value || '',
-                    nomeGestor: nomeGestor,
-                    matriculaGestor: document.getElementById('matriculaGestor').value || '',
-                    funcaoGestor: document.getElementById('funcaoGestor').value || '',
+                    nome_avaliado: nomeAvaliado,
+                    matricula_avaliada: document.getElementById('matriculaAvaliado').value || '',
+                    funcao_avaliado: document.getElementById('funcaoAvaliado').value || '',
+                    nome_gestor: nomeGestor,
+                    matricula_gestor: document.getElementById('matriculaGestor').value || '',
+                    funcao_gestor: document.getElementById('funcaoGestor').value || '',
                     filial: filial,
                     regional: document.getElementById('regionalGestor').value || 'N/A',
                     pontuacao: this.dados.avaliacaoAtual.pontuacao.toFixed(2),
                     classificacao: this.dados.avaliacaoAtual.classificacao,
-                    pontosFortes: document.getElementById('pontosFortes').value || '',
+                    pontos_fortes: document.getElementById('pontosFortes').value || '',
                     oportunidades: document.getElementById('oportunidades').value || '',
                     comentarios: document.getElementById('comentarios').value || '',
-                    // CORRIGIDO: Agora inclui as respostas individuais
-                    respostas: this.dados.avaliacaoAtual.respostas || {},
-                    fatoresAvaliados: this.dados.avaliacaoAtual.fatoresAvaliados
+                    respostas: JSON.stringify(this.dados.avaliacaoAtual.respostas || {}),
+                    fatores_avaliados: this.dados.avaliacaoAtual.fatoresAvaliados,
+                    data_avaliacao: new Date().toISOString(),
+                    created_at: new Date().toISOString()
                 };
 
                 try {
                     this.mostrarLoading(true);
-                    const resultado = await this.enviarParaGoogleSheets('salvar_avaliacao', { avaliacao: avaliacao });
+                    const resultado = await this.inserirNoSupabase('avaliacoes', avaliacao);
                     
-                    if (resultado.sucesso) {
+                    if (resultado) {
                         this.dados.avaliacoes.push(avaliacao);
                         this.cache.avaliacoes = this.dados.avaliacoes;
                         
                         try {
-                            localStorage.setItem('gg_cache', JSON.stringify(this.cache));
+                            localStorage.setItem('gg_cache_supabase', JSON.stringify(this.cache));
                         } catch (storageError) {
                             console.warn('⚠️ Erro ao atualizar cache:', storageError);
                         }
-                        
-                        this.mostrarAlerta(`✅ Avaliação salva! ID: ${avaliacao.id}`, 'success');
-                        
-                        document.getElementById('btnSalvar').textContent = '✅ Salvo!';
+
+                        this.mostrarAlerta(`✅ Avaliação salva no Supabase!`, 'success');
+                        document.getElementById('btnSalvar').innerHTML = '<i class="fas fa-check"></i> Salvo!';
                         document.getElementById('btnSalvar').disabled = true;
                         
                         setTimeout(() => {
-                            document.getElementById('btnSalvar').textContent = '☁️ Salvar no Google Sheets';
+                            document.getElementById('btnSalvar').innerHTML = '<i class="fas fa-save"></i> Salvar no Supabase';
                         }, 3000);
-                    } else {
-                        throw new Error(resultado.mensagem);
                     }
-                    
                 } catch (error) {
                     console.error('❌ Erro ao salvar:', error);
                     this.mostrarAlerta('❌ Erro ao salvar: ' + error.message, 'danger');
@@ -1413,92 +1360,19 @@
                 }
             },
 
-            // =====================================================
-            // DEBUG COMPLETO (NOVO)
-            // =====================================================
-
-            async debugCompleto() {
-                try {
-                    this.mostrarLoading(true);
-                    
-                    const debugInfo = await this.buscarDoGoogleSheets('debug_planilha');
-                    
-                    if (debugInfo.sucesso) {
-                        const container = document.getElementById('debugContainer');
-                        const infoDiv = document.getElementById('debugInfo');
-                        
-                        let debug = `🔍 DEBUG COMPLETO DO SISTEMA\n`;
-                        debug += `=====================================\n\n`;
-                        debug += `📊 PLANILHA: ${debugInfo.dados.planilhaNome}\n`;
-                        debug += `🆔 ID: ${debugInfo.dados.planilhaId}\n`;
-                        debug += `📋 ABAS: ${debugInfo.dados.abas.join(', ')}\n\n`;
-                        
-                        // Debug Colaboradores
-                        debug += `👥 COLABORADORES:\n`;
-                        if (debugInfo.dados.colaboradores.exists) {
-                            debug += `   ✅ Aba existe\n`;
-                            debug += `   📊 ${debugInfo.dados.colaboradores.rows} linhas\n`;
-                            debug += `   📋 Cabeçalhos: ${debugInfo.dados.colaboradores.headers.join(', ')}\n`;
-                            if (debugInfo.dados.colaboradores.sampleData.length > 0) {
-                                debug += `   📝 Amostra: ${debugInfo.dados.colaboradores.sampleData[0].join(' | ')}\n`;
-                            }
-                        } else {
-                            debug += `   ❌ ${debugInfo.dados.colaboradores.message}\n`;
-                        }
-                        
-                        // Debug Gestores
-                        debug += `\n👔 GESTORES:\n`;
-                        if (debugInfo.dados.gestores.exists) {
-                            debug += `   ✅ Aba existe\n`;
-                            debug += `   📊 ${debugInfo.dados.gestores.rows} linhas\n`;
-                            debug += `   📋 Cabeçalhos: ${debugInfo.dados.gestores.headers.join(', ')}\n`;
-                            if (debugInfo.dados.gestores.sampleData.length > 0) {
-                                debug += `   📝 Amostra: ${debugInfo.dados.gestores.sampleData[0].join(' | ')}\n`;
-                            }
-                        } else {
-                            debug += `   ❌ ${debugInfo.dados.gestores.message}\n`;
-                        }
-                        
-                        // Debug Avaliações
-                        debug += `\n📊 AVALIAÇÕES:\n`;
-                        if (debugInfo.dados.avaliacoes.exists) {
-                            debug += `   ✅ Aba existe\n`;
-                            debug += `   📊 ${debugInfo.dados.avaliacoes.rows} linhas\n`;
-                            debug += `   📋 Cabeçalhos: ${debugInfo.dados.avaliacoes.headers.join(', ')}\n`;
-                        } else {
-                            debug += `   ❌ ${debugInfo.dados.avaliacoes.message}\n`;
-                        }
-                        
-                        infoDiv.textContent = debug;
-                        container.style.display = 'block';
-                        
-                        this.mostrarAlerta('✅ Debug completo executado!', 'success');
-                    } else {
-                        throw new Error(debugInfo.mensagem);
-                    }
-                    
-                } catch (error) {
-                    this.mostrarAlerta('❌ Erro no debug: ' + error.message, 'danger');
-                } finally {
-                    this.mostrarLoading(false);
-                }
-            },
-
-            // =====================================================
-            // INTERFACE E OUTRAS FUNÇÕES (MANTIDAS)
-            // =====================================================
-
+            // ===================================================== 
+            // INTERFACE
+            // ===================================================== 
             showSection(sectionId) {
                 document.querySelectorAll('.section').forEach(section => {
                     section.classList.remove('active');
                 });
-
                 document.querySelectorAll('.nav-btn').forEach(btn => {
                     btn.classList.remove('active');
                 });
 
                 document.getElementById(sectionId).classList.add('active');
-
+                
                 const botoes = document.querySelectorAll('.nav-btn');
                 botoes.forEach(btn => {
                     if ((sectionId === 'home' && btn.textContent.includes('Home')) ||
@@ -1512,6 +1386,7 @@
                 switch(sectionId) {
                     case 'home':
                         this.atualizarEstatisticasHome();
+                        this.criarGraficoPerformance();
                         break;
                     case 'avaliacao':
                         this.inicializarFormularioAvaliacao();
@@ -1532,7 +1407,6 @@
             inicializarFormularioAvaliacao() {
                 this.criarFormularioCompetencias();
                 this.atualizarProgresso();
-                
                 if (!this.dados.dadosCarregados) {
                     this.carregarDadosSalvos();
                 }
@@ -1546,7 +1420,7 @@
                 this.COMPETENCIAS.forEach((competencia) => {
                     html += '<div class="competencia-card">';
                     html += '<div class="competencia-header">' + competencia.nome + '</div>';
-
+                    
                     competencia.fatores.forEach((fator) => {
                         html += '<div class="fator-item">';
                         html += '<div class="fator-texto">' + fator + '</div>';
@@ -1565,7 +1439,6 @@
                         html += '</div>';
                         fatorIndex++;
                     });
-
                     html += '</div>';
                 });
 
@@ -1576,7 +1449,7 @@
                 const totalFatores = 31;
                 const fatoresAvaliados = document.querySelectorAll('input[type="radio"]:checked').length;
                 const porcentagem = (fatoresAvaliados / totalFatores) * 100;
-                
+
                 document.getElementById('progressFill').style.width = porcentagem + '%';
                 document.getElementById('progressText').textContent = fatoresAvaliados + ' de ' + totalFatores + ' fatores avaliados';
                 
@@ -1606,18 +1479,16 @@
                     
                     this.limparCamposColaborador();
                     this.limparCamposGestor();
-                    
                     this.atualizarProgresso();
                     this.dados.avaliacaoAtual = null;
-
+                    
                     this.mostrarAlerta('🗑️ Formulário limpo!', 'info');
                 }
             },
 
-            // =====================================================
-            // ACESSO E AUTENTICAÇÃO (MANTIDAS)
-            // =====================================================
-
+            // ===================================================== 
+            // ACESSO E AUTENTICAÇÃO
+            // ===================================================== 
             acessoHistorico() {
                 this.acesso = { tipo: null, senha: null, filial: null, permissoes: [] };
                 this.showSection('loginHistorico');
@@ -1638,24 +1509,20 @@
 
                 if (this.SENHAS_ESPECIAIS[senha]) {
                     const tipoAcesso = this.SENHAS_ESPECIAIS[senha].tipo;
-                    
                     this.acesso = {
                         tipo: tipoAcesso,
                         senha: senha,
                         filial: tipoAcesso === 'master' ? 'TODAS' : null,
                         permissoes: tipoAcesso === 'admin' ? ['historico', 'configuracoes'] : ['historico']
                     };
-
                     this.exibirStatusAcesso('historico');
                     this.showSection('historico');
-                    this.carregarHistorico();
                     this.mostrarAlerta(`✅ Acesso liberado: ${this.SENHAS_ESPECIAIS[senha].descricao}`, 'success');
                     return;
                 }
 
                 if (this.SENHAS_FILIAIS[senha]) {
                     const dadosFilial = this.SENHAS_FILIAIS[senha];
-                    
                     this.acesso = {
                         tipo: 'filial',
                         senha: senha,
@@ -1663,10 +1530,8 @@
                         regional: dadosFilial.regional,
                         permissoes: ['historico']
                     };
-
                     this.exibirStatusAcesso('historico');
                     this.showSection('historico');
-                    this.carregarHistorico();
                     this.mostrarAlerta(`✅ Acesso liberado para Filial ${dadosFilial.filial} - ${dadosFilial.regional}`, 'success');
                     return;
                 }
@@ -1688,20 +1553,17 @@
                     filial: null,
                     permissoes: ['historico', 'configuracoes']
                 };
-
+                
                 this.exibirStatusAcesso('configuracoes');
                 this.showSection('configuracoes');
-                this.atualizarEstatisticasConfig();
                 this.mostrarAlerta('✅ Acesso administrativo liberado!', 'success');
             },
 
             exibirStatusAcesso(secao) {
                 const statusElement = document.getElementById(secao === 'historico' ? 'accessStatus' : 'configStatus');
-                
                 if (!statusElement) return;
 
                 let statusText = '';
-
                 switch(this.acesso.tipo) {
                     case 'admin':
                         statusText = `🔐 ADMINISTRADOR | Acesso Total | ${this.acesso.senha}`;
@@ -1732,13 +1594,10 @@
 
             logout() {
                 this.acesso = { tipo: null, senha: null, filial: null, permissoes: [] };
-                
                 document.getElementById('senhaHistorico').value = '';
                 document.getElementById('senhaConfiguracoes').value = '';
-                
                 document.getElementById('accessStatus').style.display = 'none';
                 document.getElementById('configStatus').style.display = 'none';
-                
                 this.showSection('home');
                 this.mostrarAlerta('🚪 Sessão encerrada!', 'info');
             },
@@ -1747,34 +1606,28 @@
                 if (!this.acesso.tipo || this.acesso.tipo === 'admin' || this.acesso.tipo === 'master') {
                     return dados;
                 }
-
                 if (this.acesso.tipo === 'filial' && this.acesso.filial) {
                     return dados.filter(item => item.filial === this.acesso.filial);
                 }
-
                 return [];
             },
 
-            // =====================================================
-            // HISTÓRICO (MANTIDAS)
-            // =====================================================
-
+            // ===================================================== 
+            // HISTÓRICO
+            // ===================================================== 
             async carregarHistorico() {
                 console.log('📋 Carregando histórico...');
-                
                 try {
                     this.mostrarLoading(true);
-                    
                     await this.carregarDadosSalvos();
-                    
+
                     const avaliacoesFiltradas = this.filtrarDadosPorAcesso(this.dados.avaliacoes);
-                    
                     this.atualizarEstatisticasHistorico(avaliacoesFiltradas);
                     this.atualizarTabelaHistorico(avaliacoesFiltradas);
-                    
+                    this.criarGraficoHistorico(avaliacoesFiltradas);
+
                     const tipoAcesso = this.acesso.tipo === 'filial' ? `da Filial ${this.acesso.filial}` : 'completo';
                     this.mostrarAlerta(`✅ Histórico ${tipoAcesso} carregado!`, 'success');
-                    
                 } catch (error) {
                     console.error('❌ Erro no histórico:', error);
                     this.mostrarAlerta('❌ Erro ao carregar histórico: ' + error.message, 'danger');
@@ -1791,9 +1644,8 @@
                 let precisamMelhorar = 0;
 
                 dados.forEach(av => {
-                    const nota = parseFloat(av.pontuacao);
+                    const nota = parseFloat(av.pontuacao || av.pontuacao);
                     somaNotas += nota;
-                    
                     if (av.classificacao === 'EXCELENTE') excelentes++;
                     if (av.classificacao === 'PRECISA MELHORAR') precisamMelhorar++;
                 });
@@ -1809,11 +1661,11 @@
             atualizarTabelaHistorico(dadosHistorico) {
                 const container = document.getElementById('tabelaHistorico');
                 const dados = dadosHistorico || this.filtrarDadosPorAcesso(this.dados.avaliacoes);
-                
+
                 if (dados.length === 0) {
-                    const mensagem = this.acesso.tipo === 'filial' 
-                        ? `📭 Nenhuma avaliação da Filial ${this.acesso.filial}`
-                        : '📭 Nenhuma avaliação encontrada';
+                    const mensagem = this.acesso.tipo === 'filial' ? 
+                        `📭 Nenhuma avaliação da Filial ${this.acesso.filial}` : 
+                        '📭 Nenhuma avaliação encontrada';
                     container.innerHTML = `<p style="text-align: center; padding: 30px;">${mensagem}</p>`;
                     return;
                 }
@@ -1824,11 +1676,11 @@
                 html += '</tr></thead><tbody>';
 
                 dados.forEach(av => {
-                    const data = new Date(av.data).toLocaleDateString('pt-BR');
+                    const data = new Date(av.data_avaliacao || av.created_at).toLocaleDateString('pt-BR');
                     html += '<tr>';
                     html += '<td>' + data + '</td>';
-                    html += '<td>' + av.nomeAvaliado + '</td>';
-                    html += '<td>' + av.nomeGestor + '</td>';
+                    html += '<td>' + (av.nome_avaliado || av.nomeAvaliado) + '</td>';
+                    html += '<td>' + (av.nome_gestor || av.nomeGestor) + '</td>';
                     html += '<td>' + av.filial + '</td>';
                     html += '<td><strong>' + av.pontuacao + '</strong></td>';
                     html += '<td>' + av.classificacao + '</td>';
@@ -1848,14 +1700,13 @@
                 }
 
                 let csv = 'Data,Avaliado,Matricula,Funcao,Gestor,Filial,Pontuacao,Classificacao\n';
-                
                 dadosFiltrados.forEach(av => {
                     const linha = [
-                        new Date(av.data).toLocaleDateString('pt-BR'),
-                        av.nomeAvaliado,
-                        av.matricula || '',
-                        av.funcaoAvaliado || '',
-                        av.nomeGestor,
+                        new Date(av.data_avaliacao || av.created_at).toLocaleDateString('pt-BR'),
+                        av.nome_avaliado || av.nomeAvaliado,
+                        av.matricula_avaliada || av.matricula || '',
+                        av.funcao_avaliado || av.funcaoAvaliado || '',
+                        av.nome_gestor || av.nomeGestor,
                         av.filial,
                         av.pontuacao,
                         av.classificacao
@@ -1868,91 +1719,70 @@
                 const a = document.createElement('a');
                 a.href = url;
                 
-                const nomeArquivo = this.acesso.tipo === 'filial' 
-                    ? `avaliacoes_filial_${this.acesso.filial}_${new Date().toISOString().split('T')[0]}.csv`
-                    : `avaliacoes_gg_${new Date().toISOString().split('T')[0]}.csv`;
+                const nomeArquivo = this.acesso.tipo === 'filial' ? 
+                    `avaliacoes_filial_${this.acesso.filial}_${new Date().toISOString().split('T')[0]}.csv` :
+                    `avaliacoes_gg_${new Date().toISOString().split('T')[0]}.csv`;
                 
                 a.download = nomeArquivo;
                 a.click();
                 window.URL.revokeObjectURL(url);
-
+                
                 this.mostrarAlerta('📥 Dados exportados!', 'success');
             },
 
-            // =====================================================
-            // CONFIGURAÇÕES (CORRIGIDAS)
-            // =====================================================
-
-            configurarWebApp() {
-                const novaURL = prompt(`🔗 Cole a URL da Web App do Google Apps Script:
-
-📋 INSTRUÇÕES:
-1. Google Apps Script > Implantar > Gerenciar implantações
-2. Editar (lápis) > Nova versão
-3. Execute como: Você
-4. Acesso: Qualquer pessoa
-5. Implantar e copiar URL:`, this.WEBAPP_URL);
-                
-                if (novaURL && novaURL.trim()) {
-                    this.WEBAPP_URL = novaURL.trim();
-                    localStorage.setItem('webapp_url_gg', this.WEBAPP_URL);
-                    
-                    this.dados.dadosCarregados = false;
-                    this.cache.ultimaAtualizacao = null;
-                    
-                    this.atualizarEstatisticasConfig();
-                    this.mostrarAlerta('✅ URL configurada! Testando...', 'info');
-                    
-                    setTimeout(() => {
-                        this.testarConexao();
-                    }, 1000);
-                }
-            },
-
+            // ===================================================== 
+            // CONFIGURAÇÕES
+            // ===================================================== 
             async testarConexao() {
                 try {
                     this.mostrarLoading(true);
                     
-                    const response = await fetch(`${this.WEBAPP_URL}?acao=teste_conexao&t=${Date.now()}`, { 
-                        method: 'GET',
-                        headers: { 'Content-Type': 'application/json' },
-                        mode: 'cors'
+                    const response = await fetch(`${this.SUPABASE_URL}/rest/v1/colaboradores?select=count`, {
+                        method: 'HEAD',
+                        headers: {
+                            'apikey': this.SUPABASE_KEY,
+                            'Authorization': `Bearer ${this.SUPABASE_KEY}`
+                        }
                     });
-                    
-                    if (!response.ok) {
-                        throw new Error(`Servidor não respondeu: ${response.status}`);
-                    }
-                    
-                    const resultado = await response.json();
-                    
-                    if (resultado.sucesso) {
-                        let mensagem = '✅ Conexão funcionando!\n\n';
-                        mensagem += `📊 Versão: ${resultado.dados?.versao || 'N/A'}\n`;
-                        mensagem += `🕐 Timestamp: ${resultado.dados?.timestampBrasil || 'N/A'}\n`;
-                        mensagem += `🔧 CORS: ${resultado.dados?.corsStatus || 'N/A'}\n`;
-                        mensagem += `📋 Status: ${resultado.dados?.status || 'N/A'}`;
+
+                    if (response.ok) {
+                        let mensagem = '✅ Conexão com Supabase funcionando!\n\n';
+                        mensagem += `🔗 URL: ${this.SUPABASE_URL}\n`;
+                        mensagem += `🔑 Token: Válido\n`;
+                        mensagem += `📊 Status: ${response.status}\n`;
+                        mensagem += `🕐 Timestamp: ${new Date().toLocaleString('pt-BR')}`;
                         
                         this.mostrarAlerta(mensagem, 'success');
                         this.atualizarStatusConexaoHome(true);
+                        
+                        const statusEl = document.getElementById('supabaseStatus');
+                        if (statusEl) {
+                            statusEl.textContent = 'Conectado ✅';
+                            statusEl.style.color = 'var(--cor-primaria)';
+                        }
                     } else {
-                        throw new Error(resultado.mensagem || 'Teste falhou');
+                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
                     }
-                    
                 } catch (error) {
                     console.error('❌ Erro no teste:', error);
                     
-                    let mensagemErro = '❌ Erro na conexão:\n\n';
-                    
+                    let mensagemErro = '❌ Erro na conexão com Supabase:\n\n';
                     if (error.message.includes('Failed to fetch')) {
-                        mensagemErro += '• Verifique se a URL está correta\n';
-                        mensagemErro += '• Reimplante a Web App com "Nova versão"\n';
-                        mensagemErro += '• Verifique: Execute como "Você", Acesso "Qualquer pessoa"';
+                        mensagemErro += '• Verifique a URL do Supabase\n';
+                        mensagemErro += '• Verifique o token de acesso\n';
+                        mensagemErro += '• Verifique as configurações de CORS';
                     } else {
                         mensagemErro += error.message;
                     }
                     
                     this.mostrarAlerta(mensagemErro, 'danger');
                     this.atualizarStatusConexaoHome(false);
+                    
+                    const statusEl = document.getElementById('supabaseStatus');
+                    if (statusEl) {
+                        statusEl.textContent = 'Erro de conexão ❌';
+                        statusEl.style.color = '#dc3545';
+                    }
                 } finally {
                     this.mostrarLoading(false);
                 }
@@ -1961,17 +1791,14 @@
             async sincronizarDados() {
                 try {
                     this.mostrarLoading(true);
-                    
                     this.dados.dadosCarregados = false;
                     this.cache.ultimaAtualizacao = null;
                     
                     await this.carregarDadosSalvos();
-                    
                     this.atualizarEstatisticasHome();
                     this.atualizarEstatisticasConfig();
                     
                     this.mostrarAlerta('✅ Sincronização completa!', 'success');
-                    
                 } catch (error) {
                     this.mostrarAlerta('❌ Erro na sincronização: ' + error.message, 'danger');
                 } finally {
@@ -1979,10 +1806,56 @@
                 }
             },
 
+            async debugCompleto() {
+                try {
+                    this.mostrarLoading(true);
+                    
+                    let debug = `🔍 DEBUG COMPLETO DO SISTEMA\n`;
+                    debug += `=====================================\n\n`;
+                    debug += `🔗 SUPABASE URL: ${this.SUPABASE_URL}\n`;
+                    debug += `🔑 TOKEN: ${this.SUPABASE_KEY.substring(0, 50)}...\n\n`;
+
+                    // Testar tabelas
+                    const tabelas = ['colaboradores', 'gestores', 'avaliacoes'];
+                    
+                    for (const tabela of tabelas) {
+                        try {
+                            const dados = await this.buscarDoSupabase(tabela);
+                            debug += `📊 TABELA ${tabela.toUpperCase()}:\n`;
+                            debug += `  ✅ Acessível\n`;
+                            debug += `  📈 ${dados.length} registros\n`;
+                            if (dados.length > 0) {
+                                debug += `  📋 Colunas: ${Object.keys(dados[0]).join(', ')}\n`;
+                            }
+                            debug += `\n`;
+                        } catch (error) {
+                            debug += `📊 TABELA ${tabela.toUpperCase()}:\n`;
+                            debug += `  ❌ Erro: ${error.message}\n\n`;
+                        }
+                    }
+
+                    debug += `💾 CACHE:\n`;
+                    debug += `  🕐 Última sync: ${this.cache.ultimaAtualizacao ? new Date(this.cache.ultimaAtualizacao).toLocaleString() : 'Nunca'}\n`;
+                    debug += `  📊 Dados carregados: ${this.dados.dadosCarregados}\n`;
+
+                    const container = document.getElementById('debugContainer');
+                    const infoDiv = document.getElementById('debugInfo');
+                    
+                    infoDiv.textContent = debug;
+                    container.style.display = 'block';
+                    
+                    this.mostrarAlerta('✅ Debug completo executado!', 'success');
+                } catch (error) {
+                    this.mostrarAlerta('❌ Erro no debug: ' + error.message, 'danger');
+                } finally {
+                    this.mostrarLoading(false);
+                }
+            },
+
             debugSistema() {
-                let debug = '🔍 DEBUG DO SISTEMA G&G v3.3\n';
+                let debug = '🔍 DEBUG DO SISTEMA G&G v4.0\n';
                 debug += '=====================================\n\n';
-                debug += `🔗 URL: ${this.WEBAPP_URL}\n`;
+                debug += `🔗 Supabase URL: ${this.SUPABASE_URL}\n`;
                 debug += `📊 Dados carregados: ${this.dados.dadosCarregados}\n`;
                 debug += `👥 Colaboradores: ${Object.keys(this.dados.colaboradores).length}\n`;
                 debug += `👔 Gestores: ${Object.keys(this.dados.gestores).length}\n`;
@@ -1990,30 +1863,28 @@
                 debug += `💾 Cache válido: ${this.cache.ultimaAtualizacao ? 'Sim' : 'Não'}\n`;
                 debug += `🕐 Última sync: ${this.cache.ultimaAtualizacao ? new Date(this.cache.ultimaAtualizacao).toLocaleString() : 'Nunca'}\n`;
                 debug += `🔐 Acesso atual: ${this.acesso.tipo || 'Nenhum'}\n`;
-                debug += `🌐 Versão: 3.3 - FINAL FIX\n`;
-                
+                debug += `🌐 Versão: 4.0 - SUPABASE\n`;
+
                 if (Object.keys(this.dados.colaboradores).length > 0) {
                     debug += `\n📋 Matrículas Colaboradores: ${Object.keys(this.dados.colaboradores).slice(0, 5).join(', ')}...\n`;
                 }
-                
                 if (Object.keys(this.dados.gestores).length > 0) {
                     debug += `📋 Matrículas Gestores: ${Object.keys(this.dados.gestores).slice(0, 5).join(', ')}...\n`;
                 }
-                
+
                 alert(debug);
                 console.log('🔍 Debug do sistema:', this);
             },
 
-            // =====================================================
-            // ESTATÍSTICAS (MANTIDAS)
-            // =====================================================
-
+            // ===================================================== 
+            // ESTATÍSTICAS E GRÁFICOS
+            // ===================================================== 
             atualizarEstatisticasHome() {
                 const total = this.dados.avaliacoes.length;
                 let somaNotas = 0;
-
+                
                 this.dados.avaliacoes.forEach(av => {
-                    somaNotas += parseFloat(av.pontuacao);
+                    somaNotas += parseFloat(av.pontuacao || av.pontuacao);
                 });
 
                 const media = total > 0 ? (somaNotas / total).toFixed(2) : '0.00';
@@ -2032,7 +1903,7 @@
                 this.animarNumero('totalColaboradoresConfig', totalColabs);
                 this.animarNumero('totalGestoresConfig', totalGests);
                 this.animarNumero('totalAvaliacoesConfig', totalAvs);
-                
+
                 const statusEl = document.getElementById('statusSincronizacao');
                 if (statusEl) {
                     if (this.dados.dadosCarregados) {
@@ -2043,23 +1914,115 @@
                         statusEl.style.color = '#dc3545';
                     }
                 }
-                
-                const urlEl = document.getElementById('webappUrl');
-                if (urlEl) {
-                    if (this.WEBAPP_URL && this.WEBAPP_URL.trim() !== '') {
-                        urlEl.textContent = this.WEBAPP_URL.substring(0, 50) + '...';
-                        urlEl.style.color = 'var(--cor-primaria)';
-                    } else {
-                        urlEl.textContent = 'Não configurada';
-                        urlEl.style.color = '#dc3545';
-                    }
-                }
             },
 
-            // =====================================================
-            // FUNÇÕES AUXILIARES
-            // =====================================================
+            criarGraficoPerformance() {
+                const ctx = document.getElementById('graficoPerformance');
+                if (!ctx || this.dados.avaliacoes.length === 0) return;
 
+                const classificacoes = {
+                    'EXCELENTE': 0,
+                    'BOM': 0,
+                    'REGULAR': 0,
+                    'PRECISA MELHORAR': 0
+                };
+
+                this.dados.avaliacoes.forEach(av => {
+                    classificacoes[av.classificacao]++;
+                });
+
+                if (window.graficoPerformanceChart) {
+                    window.graficoPerformanceChart.destroy();
+                }
+
+                window.graficoPerformanceChart = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: Object.keys(classificacoes),
+                        datasets: [{
+                            data: Object.values(classificacoes),
+                            backgroundColor: [
+                                '#28a745',
+                                '#17a2b8',
+                                '#ffc107',
+                                '#dc3545'
+                            ]
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom'
+                            },
+                            title: {
+                                display: true,
+                                text: 'Distribuição das Avaliações'
+                            }
+                        }
+                    }
+                });
+            },
+
+            criarGraficoHistorico(dados) {
+                const ctx = document.getElementById('graficoHistorico');
+                if (!ctx || dados.length === 0) return;
+
+                // Agrupar por mês
+                const porMes = {};
+                dados.forEach(av => {
+                    const data = new Date(av.data_avaliacao || av.created_at);
+                    const mes = data.toLocaleDateString('pt-BR', { month: 'short', year: 'numeric' });
+                    
+                    if (!porMes[mes]) {
+                        porMes[mes] = { total: 0, soma: 0 };
+                    }
+                    porMes[mes].total++;
+                    porMes[mes].soma += parseFloat(av.pontuacao || av.pontuacao);
+                });
+
+                const meses = Object.keys(porMes).sort();
+                const medias = meses.map(mes => (porMes[mes].soma / porMes[mes].total).toFixed(2));
+
+                if (window.graficoHistoricoChart) {
+                    window.graficoHistoricoChart.destroy();
+                }
+
+                window.graficoHistoricoChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: meses,
+                        datasets: [{
+                            label: 'Média Mensal',
+                            data: medias,
+                            borderColor: '#28a745',
+                            backgroundColor: 'rgba(40, 167, 69, 0.1)',
+                            tension: 0.4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Evolução das Avaliações por Mês'
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 5
+                            }
+                        }
+                    }
+                });
+            },
+
+            // ===================================================== 
+            // FUNÇÕES AUXILIARES
+            // ===================================================== 
             atualizarStatusDados(mensagem, tipo) {
                 const statusEl = document.getElementById('statusDados');
                 if (statusEl) {
@@ -2075,10 +2038,10 @@
                 if (statusEl && textoEl) {
                     if (conectado) {
                         statusEl.className = 'status-conexao status-conectado';
-                        textoEl.textContent = '🟢 Conectado ao Google Sheets - Sistema v3.3';
+                        textoEl.innerHTML = '<i class="fas fa-check-circle"></i> Conectado ao Supabase - Sistema v4.0';
                     } else {
                         statusEl.className = 'status-conexao status-desconectado';
-                        textoEl.textContent = '🔴 Sem conexão - Configure a URL da Web App';
+                        textoEl.innerHTML = '<i class="fas fa-exclamation-circle"></i> Sem conexão - Verifique o Supabase';
                     }
                 }
             },
@@ -2089,13 +2052,13 @@
 
                 const valorInicial = parseFloat(elemento.textContent) || 0;
                 const inicio = performance.now();
-
+                
                 const animar = (tempoAtual) => {
                     const decorrido = tempoAtual - inicio;
                     const progresso = Math.min(decorrido / duracao, 1);
                     const progressoSuave = 1 - Math.pow(1 - progresso, 3);
                     const valorAtual = valorInicial + (valorFinal - valorInicial) * progressoSuave;
-                    
+
                     if (elementId.includes('media') || elementId.includes('Media')) {
                         elemento.textContent = valorAtual.toFixed(2);
                     } else {
@@ -2139,26 +2102,16 @@
                 }
             },
 
-            // =====================================================
+            // ===================================================== 
             // INICIALIZAÇÃO
-            // =====================================================
-
+            // ===================================================== 
             async init() {
-                console.log('🚀 Iniciando Sistema G&G v3.3 - TODOS OS PROBLEMAS CORRIGIDOS...');
+                console.log('🚀 Iniciando Sistema G&G v4.0 - Supabase...');
                 
                 try {
-                    // Carregar URL salva ou usar padrão
-                    const urlSalva = localStorage.getItem('webapp_url_gg');
-                    if (urlSalva) {
-                        this.WEBAPP_URL = urlSalva;
-                        console.log('🔗 URL personalizada carregada:', this.WEBAPP_URL);
-                    } else {
-                        console.log('🔗 Usando URL padrão:', this.WEBAPP_URL);
-                    }
-                    
                     // Tentar carregar cache
                     try {
-                        const cacheStorage = localStorage.getItem('gg_cache');
+                        const cacheStorage = localStorage.getItem('gg_cache_supabase');
                         if (cacheStorage) {
                             const dadosCache = JSON.parse(cacheStorage);
                             this.cache = dadosCache;
@@ -2170,22 +2123,15 @@
                     } catch (error) {
                         console.warn('⚠️ Erro no cache:', error);
                     }
-                    
-                    // Verificar URL e carregar dados
-                    if (this.WEBAPP_URL && this.WEBAPP_URL.trim() !== '') {
-                        console.log('🔗 Carregando dados com URL configurada...');
-                        await this.carregarDadosSalvos();
-                    } else {
-                        console.warn('⚠️ URL não configurada');
-                        this.atualizarStatusDados('❌ Erro: URL da Web App inválida', 'danger');
-                        this.atualizarStatusConexaoHome(false);
-                    }
-                    
+
+                    // Carregar dados do Supabase
+                    console.log('🔗 Carregando dados do Supabase...');
+                    await this.carregarDadosSalvos();
+
                     // Inicializar interface
                     this.atualizarEstatisticasHome();
                     
-                    console.log('✅ Sistema G&G v3.3 inicializado com TODAS as correções!');
-                    
+                    console.log('✅ Sistema G&G v4.0 inicializado com Supabase!');
                 } catch (error) {
                     console.error('❌ Erro na inicialização:', error);
                     this.atualizarStatusConexaoHome(false);
@@ -2198,10 +2144,9 @@
             }
         };
 
-        // =====================================================
+        // ===================================================== 
         // INICIALIZAÇÃO DO SISTEMA
-        // =====================================================
-
+        // ===================================================== 
         document.addEventListener('DOMContentLoaded', function() {
             GG.init();
         });
@@ -2210,37 +2155,29 @@
         window.sistemaGG = GG;
 
         console.log(`
-🎯 SISTEMA G&G v3.3 - PRONTO PARA USO!
+🎯 SISTEMA G&G v4.0 - SUPABASE PRONTO!
 ====================================================
-🔗 URL PRÉ-CONFIGURADA: SISTEMA OPERACIONAL!
-✅ Problema "não puxar nomes" RESOLVIDO
-✅ Problema "não salvar avaliações" RESOLVIDO  
-✅ Busca por matrícula com limpeza automática
-✅ Criação automática de abas com dados de exemplo
-✅ Salvamento completo (inclui respostas individuais)
-✅ Debug avançado para diagnóstico
-✅ CORS 100% funcional
-✅ Interface totalmente responsiva
-
-🔧 URL CONFIGURADA:
-https://script.google.com/macros/s/AKfycbx47EreGtCyNJao3L0zYcv1WMU6KMBSGHzTVTuM3cUZhA5F1pylKbA1a9yyFGDHik-Vtg/exec
+🔗 URL SUPABASE: https://mtqwqwpqkzrbkxxkaffq.supabase.co
+✅ API REST moderna e eficiente
+✅ Busca por matrícula em tempo real
+✅ Salvamento direto no banco
+✅ Gráficos interativos com Chart.js
+✅ Interface responsiva com Tailwind CSS
+✅ Ícones Font Awesome integrados
 
 🏢 FILIAIS CADASTRADAS:
 743-MS | 264-SC | 753-MT | 364-DF | 713-SP
-468-MT | 892-SP | 723-SP | 230-SP | 773-RS
-473-MT | 167-MS | 20-AGP
 
 💻 DESENVOLVIDO POR: Juliano Patrick
 📧 CONTATO: julianocorrea@bateforte.com.br
 ====================================================
-
 🔧 COMANDOS DE DEBUG:
 • sistemaGG.debugSistema() - Debug rápido
-• sistemaGG.debugCompleto() - Debug completo da planilha
-• sistemaGG.testarConexao() - Testar conexão
-• sistemaGG.sincronizarDados() - Sincronizar dados
+• sistemaGG.debugCompleto() - Debug completo
+• sistemaGG.testarConexao() - Testar Supabase
+• sistemaGG.sincronizarDados() - Sincronizar
 
-🚀 SISTEMA PRONTO! Comece digitando uma matrícula na seção "Nova Avaliação"
+🚀 SISTEMA PRONTO! Comece digitando uma matrícula!
         `);
     </script>
 </body>
