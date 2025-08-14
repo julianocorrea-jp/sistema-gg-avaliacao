@@ -1322,35 +1322,66 @@
         }
 
         async function buscarDoGoogleSheets(acao) {
-            if (!WEBAPP_URL || WEBAPP_URL === 'https://script.google.com/a/macros/bateforte.com.br/s/AKfycbyt0V1SCUl0NlIuoj-a5lK7I8mqEc-QeQzim4vXHfCNKZ_52moQyqUWl3iNBRl1n8Hq/exec') {
-                console.log('⚠️ URL não configurada, usando dados locais');
-                return usarCacheLocal(acao);
+    if (!WEBAPP_URL || WEBAPP_URL.includes('SEU_ID')) {
+        console.warn('⚠️ URL não configurada, usando dados locais');
+        return usarCacheLocal(acao);
+    }
+
+    try {
+        const response = await fetch(`${WEBAPP_URL}?acao=${acao}`, { method: 'GET' });
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const resultado = await response.json();
+        
+        if (resultado && resultado.sucesso) {
+            console.log(`📋 ${acao} carregado com sucesso (${Array.isArray(resultado.dados) ? resultado.dados.length : Object.keys(resultado.dados || {}).length} itens)`);
+            
+            // Salvar no cache e localStorage
+            if (acao === 'buscar_avaliacoes') {
+                cacheLocal.avaliacoes = resultado.dados;
+                localStorage.setItem('avaliacoes_gg', JSON.stringify(resultado.dados));
+            } else if (acao === 'buscar_colaboradores') {
+                cacheLocal.colaboradores = resultado.dados;
+                localStorage.setItem('colaboradores_gg', JSON.stringify(resultado.dados));
+            } else if (acao === 'buscar_gestores') {
+                cacheLocal.gestores = resultado.dados;
+                localStorage.setItem('gestores_gg', JSON.stringify(resultado.dados));
             }
 
-            try {
-                const response = await fetch(`${WEBAPP_URL}?acao=${acao}`, { method: 'GET' });
-                
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                
-                const resultado = await response.json();
-                console.log('📋 Dados recebidos:', acao, resultado.dados?.length || Object.keys(resultado.dados || {}).length);
-                
-                return resultado;
-                
-            } catch (error) {
-                console.error('❌ Erro na busca:', error);
-                return usarCacheLocal(acao);
-            }
+            return resultado;
+        } else {
+            console.warn(`⚠️ ${acao} sem sucesso:`, resultado?.mensagem);
+            return usarCacheLocal(acao);
         }
 
-        function usarCacheLocal(acao) {
-            console.log('💾 Usando cache local para:', acao);
-            
-            switch(acao) {
-                case 'buscar_avaliacoes':
-                    return { sucesso: true, dados: cacheLocal.avaliacoes || [], mensagem: 'Cache local' };
+    } catch (error) {
+        console.error(`❌ Erro ao buscar ${acao}:`, error);
+        return usarCacheLocal(acao);
+    }
+}
+
+function usarCacheLocal(acao) {
+    console.log('💾 Usando cache local para:', acao);
+    let dados;
+
+    if (acao === 'buscar_avaliacoes') {
+        dados = cacheLocal.avaliacoes.length ? cacheLocal.avaliacoes : JSON.parse(localStorage.getItem('avaliacoes_gg') || '[]');
+        return { sucesso: true, dados: dados, mensagem: 'Cache local' };
+    }
+    if (acao === 'buscar_colaboradores') {
+        dados = Object.keys(cacheLocal.colaboradores).length ? cacheLocal.colaboradores : JSON.parse(localStorage.getItem('colaboradores_gg') || '{}');
+        return { sucesso: true, dados: dados, mensagem: 'Cache local' };
+    }
+    if (acao === 'buscar_gestores') {
+        dados = Object.keys(cacheLocal.gestores).length ? cacheLocal.gestores : JSON.parse(localStorage.getItem('gestores_gg') || '{}');
+        return { sucesso: true, dados: dados, mensagem: 'Cache local' };
+    }
+
+    return { sucesso: false, mensagem: '❌ Dados não encontrados nem no cache' };
+};
                 case 'buscar_colaboradores':
                     return { sucesso: true, dados: cacheLocal.colaboradores || {}, mensagem: 'Cache local' };
                 case 'buscar_gestores':
