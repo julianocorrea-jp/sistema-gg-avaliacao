@@ -1,0 +1,1980 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎯 Sistema de Avaliação de Desempenho - Integrado com Google Sheets</title>
+    <style>
+        :root {
+            --cor-primaria: #1e441e;     /* Emerald */
+            --cor-secundaria: #8FD694;   /* Celadon */
+            --cor-acento: #77AD78;       /* Asparagus */
+            --cor-neutra: #6F8F72;       /* Reseda green */
+            --cor-escura: #504B43;       /* Walnut brown */
+            --cor-clara: #F8FAF9;
+            --cor-branca: #FFFFFF;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background: var(--cor-clara); 
+            line-height: 1.6;
+            color: var(--cor-escura);
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-8px); }
+            60% { transform: translateY(-4px); }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        .container { 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            padding: 20px;
+            animation: slideInUp 0.6s ease-out;
+        }
+
+        /* Header */
+        .main-header {
+            background: linear-gradient(135deg, var(--cor-primaria) 0%, var(--cor-primaria) 100%);
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            border-radius: 15px;
+            animation: slideInDown 0.7s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .main-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        .main-header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            animation: bounce 1s ease-out 0.5s both;
+        }
+
+        .main-header p {
+            animation: slideInUp 0.5s ease-out 0.8s both;
+        }
+
+        /* Navegação */
+        .nav-menu {
+            background: var(--cor-branca);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            text-align: center;
+            animation: slideInUp 0.6s ease-out 0.2s both;
+        }
+
+        .nav-btn {
+            background: linear-gradient(135deg, var(--cor-primaria) 0%, var(--cor-primaria) 100%);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(125, 186, 132, 0.3);
+        }
+
+        .nav-btn:hover::before {
+            left: 100%;
+        }
+
+        .nav-btn.active {
+            background: linear-gradient(135deg, var(--cor-secundaria) 0%, var(--cor-secundaria) 100%);
+            box-shadow: 0 4px 10px rgba(143, 214, 148, 0.4);
+            animation: pulse 2s infinite;
+        }
+
+        /* Seções */
+        .section {
+            background: var(--cor-branca);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            display: none;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+
+        .section.active {
+            display: block;
+            animation: slideInUp 0.5s ease-out forwards;
+        }
+
+        .section h2 {
+            color: var(--cor-secundaria);
+            margin-bottom: 25px;
+            font-size: 1.8em;
+            border-bottom: 3px solid var(--cor-primaria);
+            padding-bottom: 10px;
+            animation: slideInLeft 0.6s ease-out;
+        }
+
+        /* Forms */
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            animation: slideInLeft 0.5s ease-out;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--cor-escura);
+            transition: all 0.3s ease;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--cor-primaria);
+            outline: none;
+            box-shadow: 0 0 10px rgba(125, 186, 132, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Botões */
+        .btn {
+            background: linear-gradient(135deg, var(--cor-primaria) 0%, var(--cor-primaria) 100%);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            margin: 5px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.4s, height 0.4s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(125, 186, 132, 0.3);
+        }
+
+        .btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--cor-primaria) 0%, var(--cor-primaria) 100%);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #ffc107 0%, #e0a800 100%);
+        }
+
+        .btn-info {
+            background: linear-gradient(135deg, var(--cor-primaria) 0%, var(--cor-primaria) 100%);
+        }
+
+        .btn-sm {
+            padding: 8px 15px;
+            font-size: 12px;
+        }
+
+        /* Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--cor-primaria) 0%, var(--cor-primaria) 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+            animation: slideInUp 0.6s ease-out;
+            cursor: pointer;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 8px 20px rgba(30, 68, 30, 0.3);
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 1em;
+            opacity: 0.9;
+        }
+
+        /* Loading */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--cor-primaria);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        /* Alert */
+        .alert {
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 5px solid;
+            animation: slideInLeft 0.5s ease-out;
+        }
+
+        .alert-success {
+            background: rgba(143, 214, 148, 0.1);
+            border-color: var(--cor-secundaria);
+            color: var(--cor-acento);
+        }
+
+        .alert-danger {
+            background: #f8d7da;
+            border-color: #dc3545;
+            color: #721c24;
+        }
+
+        .alert-warning {
+            background: #fff3cd;
+            border-color: #ffc107;
+            color: #856404;
+        }
+
+        .alert-info {
+            background: rgba(111, 143, 114, 0.1);
+            border-color: var(--cor-neutra);
+            color: var(--cor-escura);
+        }
+
+        /* Competências */
+        .competencia-card {
+            background: #f8faf9;
+            border: 1px solid #e0e0e0;
+            border-radius: 15px;
+            margin: 20px 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            animation: slideInUp 0.6s ease-out;
+        }
+
+        .competencia-header {
+            background: linear-gradient(135deg, var(--cor-primaria) 0%, var(--cor-acento) 100%);
+            color: white;
+            padding: 20px;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        .fator-item {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .fator-texto {
+            margin-bottom: 15px;
+            font-weight: 500;
+            color: var(--cor-escura);
+        }
+
+        .rating-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .rating-label {
+            font-size: 12px;
+            color: var(--cor-neutra);
+            font-weight: 600;
+        }
+
+        .rating-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .rating-option:hover {
+            background: rgba(125, 186, 132, 0.1);
+            transform: scale(1.05);
+        }
+
+        .rating-option input[type="radio"] {
+            margin-bottom: 5px;
+            transform: scale(1.2);
+            accent-color: var(--cor-primaria);
+        }
+
+        /* Progress */
+        .progress-container {
+            background: var(--cor-branca);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin: 20px 0;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 25px;
+            background: #e0e0e0;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, var(--cor-secundaria) 0%, var(--cor-primaria) 100%);
+            width: 0%;
+            transition: width 0.8s ease;
+            border-radius: 15px;
+        }
+
+        /* Resultado */
+        .resultado-card {
+            background: linear-gradient(135deg, #f8faf9 0%, #e9f5ea 100%);
+            border: 2px solid var(--cor-secundaria);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            margin: 30px 0;
+            display: none;
+        }
+
+        .resultado-card.show {
+            display: block;
+            animation: slideInUp 0.8s ease-out;
+        }
+
+        .pontuacao-display {
+            font-size: 3em;
+            font-weight: bold;
+            margin: 20px 0;
+            color: var(--cor-primaria);
+        }
+
+        .classificacao-display {
+            font-size: 1.5em;
+            font-weight: bold;
+            padding: 15px 30px;
+            border-radius: 50px;
+            margin: 20px 0;
+            display: inline-block;
+            background: var(--cor-primaria);
+            color: white;
+        }
+
+        /* Info Cards */
+        .info-card {
+            background: var(--cor-branca);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin: 20px 0;
+            animation: slideInUp 0.6s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Principal -->
+    <header class="main-header">
+        <div class="container">
+            <h1>🎯 SISTEMA DE AVALIAÇÃO DE DESEMPENHO</h1>
+            <p>Integrado com Google Sheets - Dados Compartilhados</p>
+        </div>
+
+    <!-- Créditos do Desenvolvedor -->
+    <footer style="background: var(--cor-primaria); color: white; text-align: center; padding: 15px; margin-top: 50px;">
+        <div class="container">
+            <p style="margin: 2px 0; font-size: 11px; opacity: 0.7;">
+                Desenvolvido por Juliano Patrick | julianocorrea@bateforte.com.br | Sistema v2.1 - Google Sheets © 2025
+            </p>
+        </div>
+    </footer>
+    </header>
+
+    <div class="container">
+        <!-- Menu de Navegação -->
+        <nav class="nav-menu">
+            <button class="nav-btn active" onclick="showSection('home')">🏠 Home</button>
+            <button class="nav-btn" onclick="showSection('avaliacao')">📝 Nova Avaliação</button>
+            <button class="nav-btn" onclick="showSection('historico')">📋 Histórico</button>
+            <button class="nav-btn" onclick="showSection('configuracoes')">⚙️ Configurações</button>
+        </nav>
+
+        <!-- Seção Home -->
+        <section id="home" class="section active">
+            <h2>🏠 Sistema Integrado com Google Sheets</h2>
+            
+            <div class="alert alert-info">
+                <h4>🔗 Sistema Conectado ao Google Sheets</h4>
+                <p><strong>Todos os usuários agora compartilham os mesmos dados!</strong></p>
+                <ul style="margin: 10px 0; padding-left: 30px;">
+                    <li>✅ Avaliações sincronizadas em tempo real</li>
+                    <li>✅ Colaboradores e gestores compartilhados</li>
+                    <li>✅ Histórico centralizado na nuvem</li>
+                    <li>✅ Backup automático no Google Sheets</li>
+                    <li>✅ Acesso de qualquer lugar</li>
+                </ul>
+                <p><strong>Status:</strong> <span id="statusConexaoHome">Verificando...</span></p>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalAvaliacoesHome">0</div>
+                    <div class="stat-label">Avaliações Realizadas</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="mediaGeralHome">0.00</div>
+                    <div class="stat-label">Média Geral</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="excelentesHome">0</div>
+                    <div class="stat-label">Avaliações Excelentes</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="usuariosOnline">1</div>
+                    <div class="stat-label">Usuários Conectados</div>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <h3>📋 Sobre o Sistema Integrado</h3>
+                <p>Esta versão está integrada ao Google Sheets, permitindo que todos os usuários compartilhem os mesmos dados em tempo real.</p>
+                
+                <h4 style="margin-top: 20px;">🎯 Competências Avaliadas:</h4>
+                <ul style="margin: 15px 0; padding-left: 30px;">
+                    <li><strong>Comunicação e Influência</strong> - 5 fatores</li>
+                    <li><strong>Disciplina de Execução</strong> - 5 fatores</li>
+                    <li><strong>Foco em Resultados</strong> - 5 fatores</li>
+                    <li><strong>Foco no Cliente/Tutor</strong> - 5 fatores</li>
+                    <li><strong>Liderança e Gestão de Pessoas</strong> - 6 fatores</li>
+                    <li><strong>Postura de Dono</strong> - 5 fatores</li>
+                </ul>
+
+                <h4>🔧 Comandos Úteis (Console):</h4>
+                <ul style="margin: 15px 0; padding-left: 30px;">
+                    <li><code>sistemaGG.sincronizar()</code> - Forçar sincronização</li>
+                    <li><code>sistemaGG.testarConexao()</code> - Testar conexão</li>
+                    <li><code>sistemaGG.backup()</code> - Fazer backup</li>
+                    <li><code>sistemaGG.info()</code> - Ver informações</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Seção Nova Avaliação -->
+        <section id="avaliacao" class="section">
+            <h2>📝 Nova Avaliação</h2>
+
+            <!-- Dados Pessoais -->
+            <div class="info-card">
+                <h3>👤 Dados Pessoais</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="matriculaAvaliado">Matrícula do Avaliado *</label>
+                        <input type="text" id="matriculaAvaliado" required placeholder="Digite a matrícula...">
+                    </div>
+                    <div class="form-group">
+                        <label for="nomeAvaliado">Nome do Avaliado</label>
+                        <input type="text" id="nomeAvaliado" readonly style="background: #f0f0f0;">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="funcaoAvaliado">Função do Avaliado</label>
+                        <input type="text" id="funcaoAvaliado" readonly style="background: #f0f0f0;">
+                    </div>
+                    <div class="form-group">
+                        <label for="filial">Filial</label>
+                        <input type="text" id="filial" readonly style="background: #f0f0f0;">
+                    </div>
+                </div>
+                
+                <hr style="margin: 30px 0; border: 1px solid #e0e0e0;">
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="matriculaGestor">Matrícula do Gestor *</label>
+                        <input type="text" id="matriculaGestor" required placeholder="Digite a matrícula do gestor...">
+                    </div>
+                    <div class="form-group">
+                        <label for="nomeGestor">Nome do Gestor</label>
+                        <input type="text" id="nomeGestor" readonly style="background: #f0f0f0;">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Progresso -->
+            <div class="progress-container">
+                <h3>📊 Progresso da Avaliação</h3>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="progress-text" id="progressText">0 de 31 fatores avaliados</div>
+            </div>
+
+            <!-- Competências -->
+            <div id="competenciasContainer">
+                <!-- Será preenchido dinamicamente -->
+            </div>
+
+            <!-- Feedback -->
+            <div class="info-card">
+                <h3>💬 Feedback e Comentários</h3>
+                <div class="form-group">
+                    <label for="pontosFortes">Pontos Fortes</label>
+                    <textarea id="pontosFortes" rows="4" placeholder="Principais pontos fortes identificados..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="oportunidades">Oportunidades de Desenvolvimento</label>
+                    <textarea id="oportunidades" rows="4" placeholder="Áreas que precisam de desenvolvimento..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="comentarios">Comentários Gerais</label>
+                    <textarea id="comentarios" rows="4" placeholder="Comentários adicionais sobre a avaliação..."></textarea>
+                </div>
+            </div>
+
+            <!-- Resultado -->
+            <div id="resultadoCard" class="resultado-card">
+                <h3>📊 Resultado da Avaliação</h3>
+                <div class="pontuacao-display" id="pontuacaoDisplay">0.00/5.00</div>
+                <div class="classificacao-display" id="classificacaoDisplay">-</div>
+                <div id="laudoResumo" style="margin-top: 20px; font-size: 1.1em; line-height: 1.6;"></div>
+            </div>
+
+            <!-- Ações -->
+            <div style="text-align: center; margin: 30px 0;">
+                <button class="btn btn-info" onclick="calcularResultado()">📊 Calcular Resultado</button>
+                <button class="btn btn-success" onclick="salvarAvaliacao()" id="btnSalvar" disabled>☁️ Salvar no Google Sheets</button>
+                <button class="btn" onclick="limparFormulario()">🗑️ Limpar Formulário</button>
+            </div>
+
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Salvando no Google Sheets...</p>
+            </div>
+        </section>
+
+        <!-- Seção Histórico -->
+        <section id="historico" class="section">
+            <h2>📋 Histórico de Avaliações (Google Sheets)</h2>
+
+            <div class="alert alert-success">
+                <p>🔗 <strong>Dados sincronizados com Google Sheets</strong> - Todas as avaliações estão sendo carregadas da nuvem em tempo real.</p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalAvaliacoes">0</div>
+                    <div class="stat-label">Total de Avaliações</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="mediaGeral">0.00</div>
+                    <div class="stat-label">Média Geral</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="excelentes">0</div>
+                    <div class="stat-label">Excelentes</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="precisamMelhorar">0</div>
+                    <div class="stat-label">Precisam Melhorar</div>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin: 30px 0;">
+                <button class="btn btn-info" onclick="carregarHistorico()">🔄 Sincronizar com Google Sheets</button>
+                <button class="btn btn-warning" onclick="exportarDados()">📥 Exportar Dados</button>
+            </div>
+
+            <div id="tabelaHistorico">
+                <p style="text-align: center; padding: 30px; color: #666;">
+                    📊 Carregando dados do Google Sheets...
+                </p>
+            </div>
+        </section>
+
+        <!-- Seção Configurações -->
+        <section id="configuracoes" class="section">
+            <h2>⚙️ Configurações - Google Sheets</h2>
+
+            <div class="alert alert-warning">
+                <h4>🔧 Configuração da Integração</h4>
+                <p><strong>URL da Web App:</strong> <span id="webappUrl">Não configurada</span></p>
+                <button class="btn btn-sm" onclick="configurarWebApp()">🔗 Configurar URL</button>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalColaboradores">0</div>
+                    <div class="stat-label">Colaboradores</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="totalGestoresConfig">0</div>
+                    <div class="stat-label">Gestores</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="statusSincronizacao">OK</div>
+                    <div class="stat-label">Status Sync</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="ultimaSync">Agora</div>
+                    <div class="stat-label">Última Sync</div>
+                </div>
+            </div>
+
+            <!-- Importação de Colaboradores -->
+            <div class="info-card">
+                <h3>👥 Importar Colaboradores (Sincroniza com Google Sheets)</h3>
+                <p>Arquivo será salvo no Google Sheets e ficará disponível para todos os usuários.</p>
+                
+                <div class="form-group">
+                    <label for="arquivoColaboradores">Arquivo de Colaboradores (CSV)</label>
+                    <input type="file" id="arquivoColaboradores" accept=".csv" style="width: 100%; padding: 12px; border: 2px dashed var(--cor-primaria); border-radius: 8px;">
+                </div>
+                
+                <div style="text-align: center; margin: 20px 0;">
+                    <button class="btn btn-info" onclick="importarColaboradores()">☁️ Importar para Google Sheets</button>
+                    <button class="btn btn-warning" onclick="baixarModeloColaboradores()">📥 Baixar Modelo</button>
+                </div>
+            </div>
+
+            <!-- Importação de Gestores -->
+            <div class="info-card">
+                <h3>👔 Importar Gestores (Sincroniza com Google Sheets)</h3>
+                <p>Arquivo será salvo no Google Sheets e ficará disponível para todos os usuários.</p>
+                
+                <div class="form-group">
+                    <label for="arquivoGestores">Arquivo de Gestores (CSV)</label>
+                    <input type="file" id="arquivoGestores" accept=".csv" style="width: 100%; padding: 12px; border: 2px dashed var(--cor-primaria); border-radius: 8px;">
+                </div>
+                
+                <div style="text-align: center; margin: 20px 0;">
+                    <button class="btn btn-info" onclick="importarGestores()">☁️ Importar para Google Sheets</button>
+                    <button class="btn btn-warning" onclick="baixarModeloGestores()">📥 Baixar Modelo</button>
+                </div>
+            </div>
+
+            <!-- Ações Avançadas -->
+            <div class="info-card">
+                <h3>🔧 Ações Avançadas</h3>
+                <div style="text-align: center; margin: 20px 0;">
+                    <button class="btn btn-success" onclick="testarConexaoSheets()">🧪 Testar Conexão</button>
+                    <button class="btn btn-info" onclick="sincronizarDados()">🔄 Sincronizar Dados</button>
+                    <button class="btn btn-warning" onclick="backupGoogleSheets()">💾 Backup Google Sheets</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // =====================================================
+        // CONFIGURAÇÃO DA INTEGRAÇÃO GOOGLE SHEETS
+        // =====================================================
+
+        // URL da Web App do Google Apps Script (SUBSTITUA PELA SUA URL)
+        let WEBAPP_URL = 'SUA_URL_DO_GOOGLE_APPS_SCRIPT_AQUI';
+
+        // Cache local para performance
+        let cacheLocal = {
+            avaliacoes: [],
+            colaboradores: {},
+            gestores: {},
+            ultimaAtualizacao: null
+        };
+
+        // Variáveis globais
+        let avaliacoes = [];
+        let colaboradores = {};
+        let gestores = {};
+        let avaliacaoAtual = null;
+
+        // Competências do sistema
+        const COMPETENCIAS = [
+            {
+                nome: 'COMUNICAÇÃO E INFLUÊNCIA',
+                fatores: [
+                    'Tem clareza, é empático(a) e inclusivo(a) na sua comunicação.',
+                    'Possui habilidades em comunicar temas críticos, transmitindo confiança ao time.',
+                    'É influenciador(a) e inspira seu time e a rede de relacionamento pelo exemplo.',
+                    'Respeita as opiniões divergentes, escuta de maneira aberta.',
+                    'Cria um ambiente de segurança e confiança mútua.'
+                ]
+            },
+            {
+                nome: 'DISCIPLINA DE EXECUÇÃO',
+                fatores: [
+                    'Garante planejamento e execução com eficiência dentro dos prazos.',
+                    'Constrói regras e processos e busca eliminar burocracias desnecessárias.',
+                    'Assume responsabilidade, cumpre normas e procedimentos.',
+                    'Estimula o time para que esteja comprometido com prazos e entregas.',
+                    'Garante níveis excelentes de qualidade nas entregas.'
+                ]
+            },
+            {
+                nome: 'FOCO EM RESULTADOS',
+                fatores: [
+                    'Possui consistência nas entregas.',
+                    'Tem flexibilidade para liderar diferentes frentes.',
+                    'Elabora e cumpre planos de ações para o atingimento das metas.',
+                    'Conhece o negócio e acompanha resultados através de dados.',
+                    'Estimula o time para possuírem visão crítica e trazerem soluções.'
+                ]
+            },
+            {
+                nome: 'FOCO NO CLIENTE/TUTOR',
+                fatores: [
+                    'Entende, prioriza e antecipa as necessidades dos clientes.',
+                    'Constrói alianças com clientes, pares, áreas parceiras.',
+                    'Implementa novas soluções para atingir expectativas do cliente.',
+                    'Direciona o time para conhecer as necessidades dos clientes.',
+                    'Desenvolve ações efetivas e de sucesso para os clientes.'
+                ]
+            },
+            {
+                nome: 'LIDERANÇA E GESTÃO DE PESSOAS',
+                fatores: [
+                    'Age com clareza na distribuição dos papéis e responsabilidades.',
+                    'Sabe identificar desafios compatíveis com a capacidade de cada um.',
+                    'Estimula e conduz o time para que alcance/supere as metas.',
+                    'Direciona o time com clareza para as atividades.',
+                    'Orienta, dá feedbacks efetivos e acompanha evoluções.',
+                    'Possui preocupação genuína com as pessoas e desenvolve liderados.'
+                ]
+            },
+            {
+                nome: 'POSTURA DE DONO',
+                fatores: [
+                    'Possui senso de urgência e sabe direcionar o time.',
+                    'Assume responsabilidade e não terceiriza para outras áreas.',
+                    'É exemplo e estimula o time a ser inconformado com entregas.',
+                    'É atento às tendências de mercado e busca aplicá-las.',
+                    'É atento e gerencia os desperdícios e custos.'
+                ]
+            }
+        ];
+
+        // =====================================================
+        // FUNÇÕES DE COMUNICAÇÃO COM GOOGLE SHEETS
+        // =====================================================
+
+        async function enviarParaGoogleSheets(acao, dados = {}) {
+            if (!WEBAPP_URL || WEBAPP_URL === 'SUA_URL_DO_GOOGLE_APPS_SCRIPT_AQUI') {
+                throw new Error('URL da Web App não configurada. Configure em Configurações.');
+            }
+
+            try {
+                mostrarLoading(true);
+                console.log('📤 Enviando para Google Sheets:', acao);
+                
+                const payload = { acao: acao, ...dados };
+                
+                const response = await fetch(WEBAPP_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const resultado = await response.json();
+                console.log('📥 Resposta do Google Sheets:', resultado);
+                
+                return resultado;
+                
+            } catch (error) {
+                console.error('❌ Erro na comunicação:', error);
+                throw error;
+            } finally {
+                mostrarLoading(false);
+            }
+        }
+
+        async function buscarDoGoogleSheets(acao) {
+            if (!WEBAPP_URL || WEBAPP_URL === 'SUA_URL_DO_GOOGLE_APPS_SCRIPT_AQUI') {
+                console.log('⚠️ URL não configurada, usando dados locais');
+                return usarCacheLocal(acao);
+            }
+
+            try {
+                const response = await fetch(`${WEBAPP_URL}?acao=${acao}`, { method: 'GET' });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const resultado = await response.json();
+                console.log('📋 Dados recebidos:', acao, resultado.dados?.length || Object.keys(resultado.dados || {}).length);
+                
+                return resultado;
+                
+            } catch (error) {
+                console.error('❌ Erro na busca:', error);
+                return usarCacheLocal(acao);
+            }
+        }
+
+        function usarCacheLocal(acao) {
+            console.log('💾 Usando cache local para:', acao);
+            
+            switch(acao) {
+                case 'buscar_avaliacoes':
+                    return { sucesso: true, dados: cacheLocal.avaliacoes || [], mensagem: 'Cache local' };
+                case 'buscar_colaboradores':
+                    return { sucesso: true, dados: cacheLocal.colaboradores || {}, mensagem: 'Cache local' };
+                case 'buscar_gestores':
+                    return { sucesso: true, dados: cacheLocal.gestores || {}, mensagem: 'Cache local' };
+                default:
+                    return { sucesso: false, mensagem: 'Não disponível no cache' };
+            }
+        }
+
+        // =====================================================
+        // FUNÇÕES PRINCIPAIS DO SISTEMA
+        // =====================================================
+
+        async function carregarDadosSalvos() {
+            console.log('📂 Carregando dados...');
+            
+            try {
+                // Tentar carregar do Google Sheets
+                const [resAvaliacoes, resColaboradores, resGestores] = await Promise.all([
+                    buscarDoGoogleSheets('buscar_avaliacoes'),
+                    buscarDoGoogleSheets('buscar_colaboradores'),
+                    buscarDoGoogleSheets('buscar_gestores')
+                ]);
+                
+                if (resAvaliacoes.sucesso) {
+                    avaliacoes = resAvaliacoes.dados || [];
+                    cacheLocal.avaliacoes = avaliacoes;
+                }
+                
+                if (resColaboradores.sucesso) {
+                    colaboradores = resColaboradores.dados || {};
+                    cacheLocal.colaboradores = colaboradores;
+                }
+                
+                if (resGestores.sucesso) {
+                    gestores = resGestores.dados || {};
+                    cacheLocal.gestores = gestores;
+                }
+                
+                cacheLocal.ultimaAtualizacao = new Date();
+                
+                console.log('✅ Dados carregados:', {
+                    avaliacoes: avaliacoes.length,
+                    colaboradores: Object.keys(colaboradores).length,
+                    gestores: Object.keys(gestores).length
+                });
+                
+                // Se não há dados, criar exemplos
+                if (avaliacoes.length === 0 && Object.keys(colaboradores).length === 0) {
+                    await criarDadosExemplo();
+                }
+                
+            } catch (error) {
+                console.error('❌ Erro ao carregar:', error);
+                carregarDadosDoLocalStorage();
+            }
+        }
+
+        function carregarDadosDoLocalStorage() {
+            console.log('💾 Usando localStorage como fallback...');
+            
+            try {
+                avaliacoes = JSON.parse(localStorage.getItem('avaliacoes_gg') || '[]');
+                colaboradores = JSON.parse(localStorage.getItem('colaboradores_gg') || '{}');
+                gestores = JSON.parse(localStorage.getItem('gestores_gg') || '{}');
+                
+                cacheLocal = { avaliacoes, colaboradores, gestores, ultimaAtualizacao: new Date() };
+                
+            } catch (error) {
+                console.error('❌ Erro no localStorage:', error);
+                avaliacoes = [];
+                colaboradores = {};
+                gestores = {};
+            }
+        }
+
+        async function salvarAvaliacao() {
+            if (!avaliacaoAtual) {
+                mostrarAlerta('❌ Calcule o resultado primeiro!', 'danger');
+                return;
+            }
+
+            const nomeAvaliado = document.getElementById('nomeAvaliado').value;
+            const nomeGestor = document.getElementById('nomeGestor').value;
+            const filial = document.getElementById('filial').value;
+
+            if (!nomeAvaliado || !nomeGestor || !filial) {
+                mostrarAlerta('❌ Preencha os campos obrigatórios!', 'danger');
+                return;
+            }
+
+            const avaliacao = {
+                id: 'AV' + Date.now(),
+                data: new Date(),
+                nomeAvaliado: nomeAvaliado,
+                matricula: document.getElementById('matriculaAvaliado').value,
+                funcaoAvaliado: document.getElementById('funcaoAvaliado').value,
+                nomeGestor: nomeGestor,
+                matriculaGestor: document.getElementById('matriculaGestor').value,
+                filial: filial,
+                regional: document.getElementById('regional').value || 'N/A',
+                pontuacao: avaliacaoAtual.pontuacao.toFixed(2),
+                classificacao: avaliacaoAtual.classificacao,
+                pontosFortes: document.getElementById('pontosFortes').value,
+                oportunidades: document.getElementById('oportunidades').value,
+                comentarios: document.getElementById('comentarios').value,
+                respostas: avaliacaoAtual.respostas || {}
+            };
+
+            try {
+                const resultado = await enviarParaGoogleSheets('salvar_avaliacao', { avaliacao: avaliacao });
+                
+                if (resultado.sucesso) {
+                    avaliacoes.push(avaliacao);
+                    cacheLocal.avaliacoes = avaliacoes;
+                    localStorage.setItem('avaliacoes_gg', JSON.stringify(avaliacoes));
+                    
+                    mostrarAlerta('✅ Avaliação salva no Google Sheets! ID: ' + avaliacao.id, 'success');
+                    
+                    document.getElementById('btnSalvar').textContent = '✅ Salvo na Cloud!';
+                    setTimeout(() => {
+                        document.getElementById('btnSalvar').textContent = '☁️ Salvar no Google Sheets';
+                    }, 3000);
+                    
+                } else {
+                    throw new Error(resultado.mensagem);
+                }
+                
+            } catch (error) {
+                console.error('❌ Erro ao salvar na cloud:', error);
+                
+                // Fallback para localStorage
+                avaliacoes.push(avaliacao);
+                localStorage.setItem('avaliacoes_gg', JSON.stringify(avaliacoes));
+                mostrarAlerta('⚠️ Avaliação salva localmente. Será sincronizada quando possível.', 'warning');
+            }
+        }
+
+        async function importarColaboradores() {
+            const arquivo = document.getElementById('arquivoColaboradores').files[0];
+            if (!arquivo) {
+                mostrarAlerta('❌ Selecione um arquivo primeiro!', 'danger');
+                return;
+            }
+
+            mostrarLoading(true);
+            
+            const reader = new FileReader();
+            reader.onload = async function(e) {
+                try {
+                    const dados = processarCSV(e.target.result);
+                    
+                    if (!dados || dados.length === 0) {
+                        mostrarAlerta('❌ Arquivo vazio ou formato inválido!', 'danger');
+                        mostrarLoading(false);
+                        return;
+                    }
+
+                    const novosColaboradores = {};
+                    let processados = 0;
+
+                    dados.forEach((linha) => {
+                        if (linha.length >= 2) {
+                            const matricula = linha[0]?.toString().trim();
+                            const nome = linha[1]?.toString().trim();
+                            const funcao = linha[2]?.toString().trim() || '';
+                            const filial = linha[3]?.toString().trim() || '';
+                            const regional = linha[4]?.toString().trim() || '';
+
+                            if (matricula && nome) {
+                                novosColaboradores[matricula] = { nome, funcao, filial, regional };
+                                processados++;
+                            }
+                        }
+                    });
+
+                    if (processados === 0) {
+                        mostrarAlerta('❌ Nenhum colaborador foi processado!', 'danger');
+                        mostrarLoading(false);
+                        return;
+                    }
+
+                    try {
+                        const resultado = await enviarParaGoogleSheets('salvar_colaboradores', { 
+                            colaboradores: novosColaboradores 
+                        });
+                        
+                        if (resultado.sucesso) {
+                            colaboradores = { ...colaboradores, ...novosColaboradores };
+                            cacheLocal.colaboradores = colaboradores;
+                            localStorage.setItem('colaboradores_gg', JSON.stringify(colaboradores));
+                            
+                            atualizarEstatisticasConfig();
+                            mostrarAlerta(`✅ ${processados} colaboradores salvos no Google Sheets!`, 'success');
+                            
+                        } else {
+                            throw new Error(resultado.mensagem);
+                        }
+                        
+                    } catch (error) {
+                        console.error('❌ Erro ao salvar na cloud:', error);
+                        colaboradores = { ...colaboradores, ...novosColaboradores };
+                        localStorage.setItem('colaboradores_gg', JSON.stringify(colaboradores));
+                        mostrarAlerta(`⚠️ ${processados} colaboradores salvos localmente.`, 'warning');
+                    }
+
+                } catch (error) {
+                    console.error('❌ Erro na importação:', error);
+                    mostrarAlerta('❌ Erro ao processar arquivo: ' + error.message, 'danger');
+                } finally {
+                    mostrarLoading(false);
+                }
+            };
+
+            reader.readAsText(arquivo, 'UTF-8');
+        }
+
+        async function importarGestores() {
+            const arquivo = document.getElementById('arquivoGestores').files[0];
+            if (!arquivo) {
+                mostrarAlerta('❌ Selecione um arquivo primeiro!', 'danger');
+                return;
+            }
+
+            mostrarLoading(true);
+            
+            const reader = new FileReader();
+            reader.onload = async function(e) {
+                try {
+                    const dados = processarCSV(e.target.result);
+                    
+                    if (!dados || dados.length === 0) {
+                        mostrarAlerta('❌ Arquivo vazio ou formato inválido!', 'danger');
+                        mostrarLoading(false);
+                        return;
+                    }
+
+                    const novosGestores = {};
+                    let processados = 0;
+
+                    dados.forEach((linha) => {
+                        if (linha.length >= 2) {
+                            const matricula = linha[0]?.toString().trim();
+                            const nome = linha[1]?.toString().trim();
+                            const funcao = linha[2]?.toString().trim() || '';
+                            const filial = linha[3]?.toString().trim() || '';
+                            const regional = linha[4]?.toString().trim() || '';
+
+                            if (matricula && nome) {
+                                novosGestores[matricula] = { nome, funcao, filial, regional };
+                                processados++;
+                            }
+                        }
+                    });
+
+                    if (processados === 0) {
+                        mostrarAlerta('❌ Nenhum gestor foi processado!', 'danger');
+                        mostrarLoading(false);
+                        return;
+                    }
+
+                    try {
+                        const resultado = await enviarParaGoogleSheets('salvar_gestores', { 
+                            gestores: novosGestores 
+                        });
+                        
+                        if (resultado.sucesso) {
+                            gestores = { ...gestores, ...novosGestores };
+                            cacheLocal.gestores = gestores;
+                            localStorage.setItem('gestores_gg', JSON.stringify(gestores));
+                            
+                            atualizarEstatisticasConfig();
+                            mostrarAlerta(`✅ ${processados} gestores salvos no Google Sheets!`, 'success');
+                            
+                        } else {
+                            throw new Error(resultado.mensagem);
+                        }
+                        
+                    } catch (error) {
+                        console.error('❌ Erro ao salvar na cloud:', error);
+                        gestores = { ...gestores, ...novosGestores };
+                        localStorage.setItem('gestores_gg', JSON.stringify(gestores));
+                        mostrarAlerta(`⚠️ ${processados} gestores salvos localmente.`, 'warning');
+                    }
+
+                } catch (error) {
+                    console.error('❌ Erro na importação:', error);
+                    mostrarAlerta('❌ Erro ao processar arquivo: ' + error.message, 'danger');
+                } finally {
+                    mostrarLoading(false);
+                }
+            };
+
+            reader.readAsText(arquivo, 'UTF-8');
+        }
+
+        // =====================================================
+        // FUNÇÕES DE INTERFACE
+        // =====================================================
+
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            document.getElementById(sectionId).classList.add('active');
+
+            // Adicionar classe ativa ao botão correto
+            const botoes = document.querySelectorAll('.nav-btn');
+            botoes.forEach(btn => {
+                if (btn.onclick && btn.onclick.toString().includes(sectionId)) {
+                    btn.classList.add('active');
+                }
+            });
+
+            // Atualizar dados específicos da seção
+            switch(sectionId) {
+                case 'home':
+                    atualizarEstatisticasHome();
+                    break;
+                case 'avaliacao':
+                    inicializarFormularioAvaliacao();
+                    break;
+                case 'historico':
+                    carregarHistorico();
+                    break;
+                case 'configuracoes':
+                    atualizarEstatisticasConfig();
+                    break;
+            }
+        }
+
+        function inicializarFormularioAvaliacao() {
+            criarFormularioCompetencias();
+            atualizarProgresso();
+            configurarBuscaAutomatica();
+        }
+
+        function criarFormularioCompetencias() {
+            const container = document.getElementById('competenciasContainer');
+            let html = '';
+            let fatorIndex = 0;
+
+            COMPETENCIAS.forEach((competencia) => {
+                html += '<div class="competencia-card">';
+                html += '<div class="competencia-header">' + competencia.nome + '</div>';
+
+                competencia.fatores.forEach((fator) => {
+                    html += '<div class="fator-item">';
+                    html += '<div class="fator-texto">' + fator + '</div>';
+                    html += '<div class="rating-container">';
+                    html += '<span class="rating-label">Inadequado</span>';
+                    
+                    for(let i = 1; i <= 5; i++) {
+                        html += '<label class="rating-option">';
+                        html += '<input type="radio" name="fator_' + fatorIndex + '" value="' + i + '" onchange="atualizarProgresso()">';
+                        html += '<span>' + i + '</span>';
+                        html += '</label>';
+                    }
+                    
+                    html += '<span class="rating-label">Excelente</span>';
+                    html += '</div>';
+                    html += '</div>';
+                    fatorIndex++;
+                });
+
+                html += '</div>';
+            });
+
+            container.innerHTML = html;
+        }
+
+        function configurarBuscaAutomatica() {
+            const campoMatriculaAvaliado = document.getElementById('matriculaAvaliado');
+            if (campoMatriculaAvaliado) {
+                campoMatriculaAvaliado.addEventListener('input', function() {
+                    const matricula = this.value.trim();
+                    if (matricula.length >= 3) {
+                        const colaborador = colaboradores[matricula];
+                        if (colaborador) {
+                            document.getElementById('nomeAvaliado').value = colaborador.nome || '';
+                            document.getElementById('funcaoAvaliado').value = colaborador.funcao || '';
+                            document.getElementById('filial').value = colaborador.filial || '';
+                            document.getElementById('regional').value = colaborador.regional || '';
+                            
+                            this.style.borderColor = 'var(--cor-secundaria)';
+                            this.style.backgroundColor = 'rgba(143, 214, 148, 0.1)';
+                        } else {
+                            document.getElementById('nomeAvaliado').value = '';
+                            document.getElementById('funcaoAvaliado').value = '';
+                            document.getElementById('filial').value = '';
+                            document.getElementById('regional').value = '';
+                            
+                            this.style.borderColor = '#e0e0e0';
+                            this.style.backgroundColor = '';
+                        }
+                    }
+                });
+            }
+
+            const campoMatriculaGestor = document.getElementById('matriculaGestor');
+            if (campoMatriculaGestor) {
+                campoMatriculaGestor.addEventListener('input', function() {
+                    const matricula = this.value.trim();
+                    if (matricula.length >= 3) {
+                        const gestor = gestores[matricula];
+                        if (gestor) {
+                            document.getElementById('nomeGestor').value = gestor.nome || '';
+                            
+                            this.style.borderColor = 'var(--cor-secundaria)';
+                            this.style.backgroundColor = 'rgba(143, 214, 148, 0.1)';
+                        } else {
+                            document.getElementById('nomeGestor').value = '';
+                            
+                            this.style.borderColor = '#e0e0e0';
+                            this.style.backgroundColor = '';
+                        }
+                    }
+                });
+            }
+        }
+
+        function atualizarProgresso() {
+            const totalFatores = 31;
+            const fatoresAvaliados = document.querySelectorAll('input[type="radio"]:checked').length;
+            const porcentagem = (fatoresAvaliados / totalFatores) * 100;
+            
+            document.getElementById('progressFill').style.width = porcentagem + '%';
+            document.getElementById('progressText').textContent = fatoresAvaliados + ' de ' + totalFatores + ' fatores avaliados';
+            
+            return fatoresAvaliados;
+        }
+
+        function calcularResultado() {
+            const fatoresAvaliados = atualizarProgresso();
+            
+            if (fatoresAvaliados === 0) {
+                mostrarAlerta('❌ Avalie pelo menos um fator antes de calcular!', 'danger');
+                return;
+            }
+
+            const radios = document.querySelectorAll('input[type="radio"]:checked');
+            let somaNotas = 0;
+            
+            radios.forEach(radio => {
+                somaNotas += parseInt(radio.value);
+            });
+
+            const pontuacao = fatoresAvaliados > 0 ? (somaNotas / fatoresAvaliados) : 0;
+            let classificacao = '';
+            
+            if (pontuacao >= 4.5) {
+                classificacao = 'EXCELENTE';
+            } else if (pontuacao >= 3.5) {
+                classificacao = 'BOM';
+            } else if (pontuacao >= 2.5) {
+                classificacao = 'REGULAR';
+            } else {
+                classificacao = 'PRECISA MELHORAR';
+            }
+
+            document.getElementById('pontuacaoDisplay').textContent = pontuacao.toFixed(2) + '/5.00';
+            document.getElementById('classificacaoDisplay').textContent = classificacao;
+
+            const laudoResumo = gerarLaudoResumo(pontuacao, classificacao);
+            document.getElementById('laudoResumo').innerHTML = laudoResumo;
+
+            document.getElementById('resultadoCard').classList.add('show');
+
+            document.getElementById('btnSalvar').disabled = fatoresAvaliados < 15;
+
+            avaliacaoAtual = {
+                pontuacao: pontuacao,
+                classificacao: classificacao,
+                fatoresAvaliados: fatoresAvaliados,
+                respostas: coletarRespostas()
+            };
+
+            if (fatoresAvaliados < 15) {
+                mostrarAlerta('⚠️ Avalie pelo menos 15 fatores para poder salvar a avaliação completa.', 'warning');
+            }
+        }
+
+        function coletarRespostas() {
+            const respostas = {};
+            const radios = document.querySelectorAll('input[type="radio"]:checked');
+            
+            radios.forEach(radio => {
+                respostas[radio.name] = radio.value;
+            });
+
+            return respostas;
+        }
+
+        function gerarLaudoResumo(pontuacao, classificacao) {
+            let resumo = '';
+            
+            if (pontuacao >= 4.5) {
+                resumo = '<strong style="color: var(--cor-primaria);">🎯 EXCELENTE DESEMPENHO!</strong><br>';
+                resumo += 'O(a) avaliado(a) demonstra competências excepcionais em liderança. ';
+                resumo += 'Recomenda-se aproveitar seu potencial em projetos estratégicos e como mentor(a) de outros líderes.';
+            } else if (pontuacao >= 3.5) {
+                resumo = '<strong style="color: var(--cor-primaria);">👍 BOM DESEMPENHO!</strong><br>';
+                resumo += 'O(a) avaliado(a) apresenta desempenho sólido com oportunidades específicas de desenvolvimento. ';
+                resumo += 'Com investimento direcionado, pode alcançar nível de excelência.';
+            } else if (pontuacao >= 2.5) {
+                resumo = '<strong style="color: #ffc107;">📈 DESEMPENHO REGULAR</strong><br>';
+                resumo += 'É necessário um plano de desenvolvimento estruturado. ';
+                resumo += 'Recomenda-se coaching individual e acompanhamento próximo para evolução das competências.';
+            } else {
+                resumo = '<strong style="color: #dc3545;">📚 PRECISA MELHORAR</strong><br>';
+                resumo += 'Necessária intervenção imediata com programa intensivo de desenvolvimento. ';
+                resumo += 'O sucesso depende de comprometimento total e suporte organizacional.';
+            }
+
+            return resumo;
+        }
+
+        function limparFormulario() {
+            if (confirm('🗑️ Deseja realmente limpar todos os dados do formulário?')) {
+                document.getElementById('nomeAvaliado').value = '';
+                document.getElementById('matriculaAvaliado').value = '';
+                document.getElementById('funcaoAvaliado').value = '';
+                document.getElementById('nomeGestor').value = '';
+                document.getElementById('matriculaGestor').value = '';
+                document.getElementById('filial').value = '';
+                document.getElementById('regional').value = '';
+                document.getElementById('pontosFortes').value = '';
+                document.getElementById('oportunidades').value = '';
+                document.getElementById('comentarios').value = '';
+
+                document.querySelectorAll('input[type="radio"]').forEach(radio => {
+                    radio.checked = false;
+                });
+
+                document.getElementById('resultadoCard').classList.remove('show');
+                document.getElementById('btnSalvar').disabled = true;
+                
+                atualizarProgresso();
+                avaliacaoAtual = null;
+
+                mostrarAlerta('🗑️ Formulário limpo com sucesso!', 'info');
+            }
+        }
+
+        async function carregarHistorico() {
+            console.log('📋 Carregando histórico...');
+            
+            try {
+                mostrarLoading(true);
+                await carregarDadosSalvos();
+                atualizarEstatisticasHistorico();
+                atualizarTabelaHistorico();
+                mostrarAlerta('✅ Histórico sincronizado com Google Sheets!', 'success');
+                
+            } catch (error) {
+                console.error('❌ Erro ao carregar histórico:', error);
+                mostrarAlerta('❌ Erro ao carregar histórico do Google Sheets.', 'danger');
+            } finally {
+                mostrarLoading(false);
+            }
+        }
+
+        function atualizarEstatisticasHistorico() {
+            const total = avaliacoes.length;
+            let somaNotas = 0;
+            let excelentes = 0;
+            let precisamMelhorar = 0;
+
+            avaliacoes.forEach(av => {
+                const nota = parseFloat(av.pontuacao);
+                somaNotas += nota;
+                
+                if (av.classificacao === 'EXCELENTE') excelentes++;
+                if (av.classificacao === 'PRECISA MELHORAR') precisamMelhorar++;
+            });
+
+            const media = total > 0 ? (somaNotas / total).toFixed(2) : '0.00';
+
+            animarNumero('totalAvaliacoes', total);
+            animarNumero('mediaGeral', parseFloat(media));
+            animarNumero('excelentes', excelentes);
+            animarNumero('precisamMelhorar', precisamMelhorar);
+        }
+
+        function atualizarTabelaHistorico() {
+            const container = document.getElementById('tabelaHistorico');
+            
+            if (avaliacoes.length === 0) {
+                container.innerHTML = '<p style="text-align: center; padding: 30px; color: #666;">📭 Nenhuma avaliação encontrada</p>';
+                return;
+            }
+
+            let html = '<table style="width: 100%; border-collapse: collapse; margin: 20px 0;">';
+            html += '<thead><tr style="background: var(--cor-primaria); color: white;">';
+            html += '<th style="padding: 15px; border: 1px solid #ddd;">Data</th>';
+            html += '<th style="padding: 15px; border: 1px solid #ddd;">Avaliado</th>';
+            html += '<th style="padding: 15px; border: 1px solid #ddd;">Gestor</th>';
+            html += '<th style="padding: 15px; border: 1px solid #ddd;">Filial</th>';
+            html += '<th style="padding: 15px; border: 1px solid #ddd;">Pontuação</th>';
+            html += '<th style="padding: 15px; border: 1px solid #ddd;">Classificação</th>';
+            html += '</tr></thead>';
+            html += '<tbody>';
+
+            avaliacoes.forEach(av => {
+                const data = new Date(av.data).toLocaleDateString('pt-BR');
+                html += '<tr style="transition: all 0.3s ease;">';
+                html += '<td style="padding: 15px; border: 1px solid #ddd;">' + data + '</td>';
+                html += '<td style="padding: 15px; border: 1px solid #ddd;">' + av.nomeAvaliado + '</td>';
+                html += '<td style="padding: 15px; border: 1px solid #ddd;">' + av.nomeGestor + '</td>';
+                html += '<td style="padding: 15px; border: 1px solid #ddd;">' + av.filial + '</td>';
+                html += '<td style="padding: 15px; border: 1px solid #ddd;"><strong>' + av.pontuacao + '</strong></td>';
+                html += '<td style="padding: 15px; border: 1px solid #ddd;">' + av.classificacao + '</td>';
+                html += '</tr>';
+            });
+
+            html += '</tbody></table>';
+            container.innerHTML = html;
+        }
+
+        function atualizarEstatisticasHome() {
+            const total = avaliacoes.length;
+            let somaNotas = 0;
+            let excelentes = 0;
+
+            avaliacoes.forEach(av => {
+                somaNotas += parseFloat(av.pontuacao);
+                if (av.classificacao === 'EXCELENTE') excelentes++;
+            });
+
+            const media = total > 0 ? (somaNotas / total).toFixed(2) : '0.00';
+
+            animarNumero('totalAvaliacoesHome', total);
+            animarNumero('mediaGeralHome', parseFloat(media));
+            animarNumero('excelentesHome', excelentes);
+            animarNumero('usuariosOnline', 1);
+            
+            // Atualizar status de conexão
+            const statusEl = document.getElementById('statusConexaoHome');
+            if (statusEl) {
+                if (WEBAPP_URL && WEBAPP_URL !== 'SUA_URL_DO_GOOGLE_APPS_SCRIPT_AQUI') {
+                    statusEl.innerHTML = '🟢 <strong>Conectado ao Google Sheets</strong>';
+                    statusEl.style.color = 'var(--cor-primaria)';
+                } else {
+                    statusEl.innerHTML = '🔴 <strong>URL não configurada</strong>';
+                    statusEl.style.color = '#dc3545';
+                }
+            }
+        }
+
+        function atualizarEstatisticasConfig() {
+            const totalColabs = Object.keys(colaboradores).length;
+            const totalGests = Object.keys(gestores).length;
+
+            animarNumero('totalColaboradores', totalColabs);
+            animarNumero('totalGestoresConfig', totalGests);
+            
+            document.getElementById('statusSincronizacao').textContent = 'OK';
+            document.getElementById('ultimaSync').textContent = 'Agora';
+            
+            // Atualizar URL exibida
+            const urlEl = document.getElementById('webappUrl');
+            if (urlEl) {
+                if (WEBAPP_URL && WEBAPP_URL !== 'https://script.google.com/a/macros/bateforte.com.br/s/AKfycbxTJA_y5yQzz13qN41exsKbGmvIGcOgXk1bdObdx9EMUCr2iS-d4c9jtD_5E9TcKewp/exec') {
+                    urlEl.textContent = WEBAPP_URL.substring(0, 50) + '...';
+                    urlEl.style.color = 'var(--cor-primaria)';
+                } else {
+                    urlEl.textContent = 'Não configurada';
+                    urlEl.style.color = '#dc3545';
+                }
+            }
+        }
+
+        // =====================================================
+        // FUNÇÕES DE CONFIGURAÇÃO
+        // =====================================================
+
+        function configurarWebApp() {
+            const novaURL = prompt('🔗 Digite a URL da sua Web App do Google Apps Script:\n\n(Exemplo: https://script.google.com/macros/s/SEU_ID/exec)', WEBAPP_URL);
+            
+            if (novaURL && novaURL.trim()) {
+                WEBAPP_URL = novaURL.trim();
+                localStorage.setItem('webapp_url_gg', WEBAPP_URL);
+                
+                atualizarEstatisticasConfig();
+                atualizarEstatisticasHome();
+                
+                mostrarAlerta('✅ URL da Web App configurada com sucesso!', 'success');
+                console.log('🔗 URL configurada:', WEBAPP_URL);
+            }
+        }
+
+        async function testarConexaoSheets() {
+            try {
+                mostrarLoading(true);
+                const resultado = await buscarDoGoogleSheets('status');
+                
+                if (resultado.sucesso) {
+                    mostrarAlerta('✅ Conexão com Google Sheets funcionando perfeitamente!', 'success');
+                } else {
+                    mostrarAlerta('⚠️ Conectado, mas com problemas: ' + resultado.mensagem, 'warning');
+                }
+                
+            } catch (error) {
+                mostrarAlerta('❌ Erro na conexão: ' + error.message, 'danger');
+            } finally {
+                mostrarLoading(false);
+            }
+        }
+
+        async function sincronizarDados() {
+            try {
+                mostrarLoading(true);
+                await carregarDadosSalvos();
+                
+                atualizarEstatisticasHome();
+                atualizarEstatisticasConfig();
+                
+                mostrarAlerta('✅ Sincronização completa realizada!', 'success');
+                
+            } catch (error) {
+                mostrarAlerta('❌ Erro na sincronização: ' + error.message, 'danger');
+            } finally {
+                mostrarLoading(false);
+            }
+        }
+
+        async function backupGoogleSheets() {
+            try {
+                const resultado = await enviarParaGoogleSheets('backup_completo');
+                
+                if (resultado.sucesso) {
+                    const blob = new Blob([JSON.stringify(resultado.dados, null, 2)], { type: 'application/json' });
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'backup_sheets_' + new Date().toISOString().split('T')[0] + '.json';
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                    
+                    mostrarAlerta('💾 Backup do Google Sheets exportado!', 'success');
+                } else {
+                    throw new Error(resultado.mensagem);
+                }
+                
+            } catch (error) {
+                mostrarAlerta('❌ Erro no backup: ' + error.message, 'danger');
+            }
+        }
+
+        // =====================================================
+        // FUNÇÕES AUXILIARES
+        // =====================================================
+
+        function processarCSV(conteudo) {
+            const linhas = conteudo.split('\n');
+            const dados = [];
+            
+            linhas.forEach((linha) => {
+                if (linha.trim()) {
+                    let campos;
+                    
+                    if (linha.includes(';')) {
+                        campos = linha.split(';').map(campo => campo.trim().replace(/"/g, ''));
+                    } else if (linha.includes(',')) {
+                        campos = linha.split(',').map(campo => campo.trim().replace(/"/g, ''));
+                    } else {
+                        campos = [linha.trim()];
+                    }
+                    
+                    dados.push(campos);
+                }
+            });
+
+            // Remover cabeçalho se existir
+            if (dados.length > 0) {
+                const textoLinha = dados[0].join(' ').toLowerCase();
+                if (textoLinha.includes('matricula') || textoLinha.includes('nome')) {
+                    dados.shift();
+                }
+            }
+
+            return dados;
+        }
+
+        function baixarModeloColaboradores() {
+            const modelo = 'Matricula;Nome;Funcao;Filial;Regional\n12345;João Silva;Analista;713;SP\n67890;Maria Santos;Coordenadora;743;MS';
+            
+            const blob = new Blob([modelo], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'modelo_colaboradores.csv';
+            a.click();
+            window.URL.revokeObjectURL(url);
+
+            mostrarAlerta('📥 Modelo de colaboradores baixado!', 'info');
+        }
+
+        function baixarModeloGestores() {
+            const modelo = 'Matricula;Nome;Funcao;Filial;Regional\nG001;Pedro Oliveira;Gerente;713;SP\nG002;Ana Costa;Supervisora;743;MS';
+            
+            const blob = new Blob([modelo], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'modelo_gestores.csv';
+            a.click();
+            window.URL.revokeObjectURL(url);
+
+            mostrarAlerta('📥 Modelo de gestores baixado!', 'info');
+        }
+
+        function exportarDados() {
+            if (avaliacoes.length === 0) {
+                mostrarAlerta('❌ Nenhuma avaliação para exportar!', 'danger');
+                return;
+            }
+
+            let csv = 'Data,Avaliado,Matricula,Funcao,Gestor,Filial,Pontuacao,Classificacao\n';
+            
+            avaliacoes.forEach(av => {
+                const linha = [
+                    new Date(av.data).toLocaleDateString('pt-BR'),
+                    av.nomeAvaliado,
+                    av.matricula || '',
+                    av.funcaoAvaliado || '',
+                    av.nomeGestor,
+                    av.filial,
+                    av.pontuacao,
+                    av.classificacao
+                ].join(',');
+                csv += linha + '\n';
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'avaliacoes_gg_' + new Date().toISOString().split('T')[0] + '.csv';
+            a.click();
+            window.URL.revokeObjectURL(url);
+
+            mostrarAlerta('📥 Dados exportados com sucesso!', 'success');
+        }
+
+        function animarNumero(elementId, valorFinal, duracao = 1000) {
+            const elemento = document.getElementById(elementId);
+            if (!elemento) return;
+
+            const valorInicial = parseFloat(elemento.textContent) || 0;
+            const inicio = performance.now();
+
+            function animar(tempoAtual) {
+                const decorrido = tempoAtual - inicio;
+                const progresso = Math.min(decorrido / duracao, 1);
+                const progressoSuave = 1 - Math.pow(1 - progresso, 3);
+                const valorAtual = valorInicial + (valorFinal - valorInicial) * progressoSuave;
+                
+                if (elementId.includes('media') || elementId.includes('Media')) {
+                    elemento.textContent = valorAtual.toFixed(2);
+                } else {
+                    elemento.textContent = Math.round(valorAtual);
+                }
+
+                if (progresso < 1) {
+                    requestAnimationFrame(animar);
+                }
+            }
+
+            requestAnimationFrame(animar);
+        }
+
+        function mostrarAlerta(mensagem, tipo) {
+            const alertasExistentes = document.querySelectorAll('.alert');
+            alertasExistentes.forEach(alerta => alerta.remove());
+
+            const alerta = document.createElement('div');
+            alerta.className = 'alert alert-' + tipo;
+            alerta.innerHTML = mensagem;
+
+            const secaoAtiva = document.querySelector('.section.active');
+            secaoAtiva.insertBefore(alerta, secaoAtiva.firstChild);
+
+            setTimeout(() => {
+                if (alerta.parentNode) {
+                    alerta.remove();
+                }
+            }, 5000);
+        }
+
+        function mostrarLoading(mostrar) {
+            const loading = document.getElementById('loading');
+            if (loading) {
+                loading.style.display = mostrar ? 'block' : 'none';
+            }
+        }
+
+        async function criarDadosExemplo() {
+            console.log('🆕 Criando dados de exemplo...');
+            
+            // Dados de exemplo
+            const colaboradoresExemplo = {
+                '12345': { nome: 'João Silva', funcao: 'COORD. DE LOGISTICA', filial: '713', regional: 'SP' },
+                '67890': { nome: 'Ana Costa', funcao: 'GERENTE DE OPERACOES', filial: '264', regional: 'SC' },
+                '11111': { nome: 'Carlos Mendes', funcao: 'ANALISTA DE LOGISTICA', filial: '743', regional: 'MS' }
+            };
+
+            const gestoresExemplo = {
+                'G001': { nome: 'Maria Santos', funcao: 'GERENTE GERAL', filial: '713', regional: 'SP' },
+                'G002': { nome: 'Pedro Oliveira', funcao: 'GERENTE REGIONAL', filial: '264', regional: 'SC' },
+                'G003': { nome: 'Fernanda Lima', funcao: 'SUPERVISORA GERAL', filial: '743', regional: 'MS' }
+            };
+
+            // Atualizar dados locais
+            colaboradores = colaboradoresExemplo;
+            gestores = gestoresExemplo;
+            cacheLocal.colaboradores = colaboradores;
+            cacheLocal.gestores = gestores;
+
+            // Salvar localmente
+            localStorage.setItem('colaboradores_gg', JSON.stringify(colaboradores));
+            localStorage.setItem('gestores_gg', JSON.stringify(gestores));
+
+            // Tentar salvar no Google Sheets se configurado
+            if (WEBAPP_URL && WEBAPP_URL !== 'SUA_URL_DO_GOOGLE_APPS_SCRIPT_AQUI') {
+                try {
+                    await Promise.all([
+                        enviarParaGoogleSheets('salvar_colaboradores', { colaboradores: colaboradoresExemplo }),
+                        enviarParaGoogleSheets('salvar_gestores', { gestores: gestoresExemplo })
+                    ]);
+                    console.log('✅ Dados de exemplo salvos no Google Sheets');
+                } catch (error) {
+                    console.log('⚠️ Dados de exemplo criados localmente apenas');
+                }
+            }
+
+            console.log('✅ Dados de exemplo criados');
+        }
+
+        // =====================================================
+        // INICIALIZAÇÃO
+        // =====================================================
+
+        document.addEventListener('DOMContentLoaded', async function() {
+            console.log('🔄 Iniciando sistema integrado com Google Sheets...');
+            
+            // Carregar URL salva
+            const urlSalva = localStorage.getItem('webapp_url_gg');
+            if (urlSalva) {
+                WEBAPP_URL = urlSalva;
+            }
+            
+            // Carregar dados
+            await carregarDadosSalvos();
+            
+            // Inicializar interface
+            atualizarEstatisticasHome();
+            
+            console.log('🎯 Sistema integrado inicializado!');
+        });
+
+        // =====================================================
+        // COMANDOS DE CONSOLE
+        // =====================================================
+
+        window.sistemaGG = {
+            info: () => ({
+                versao: '2.1.0 - Google Sheets Integration',
+                totalAvaliacoes: avaliacoes.length,
+                totalColaboradores: Object.keys(colaboradores).length,
+                totalGestores: Object.keys(gestores).length,
+                webappURL: WEBAPP_URL,
+                cache: cacheLocal
+            }),
+            sincronizar: sincronizarDados,
+            testarConexao: testarConexaoSheets,
+            configurarURL: configurarWebApp,
+            backup: backupGoogleSheets,
+            cache: () => cacheLocal,
+            avaliacoes: () => avaliacoes,
+            colaboradores: () => colaboradores,
+            gestores: () => gestores
+        };
+
+        console.log(`
+🎯 SISTEMA G&G - VERSÃO GOOGLE SHEETS INTEGRATION
+================================================
+✅ Sistema integrado com Google Sheets
+✅ Dados compartilhados entre usuários
+✅ Sincronização em tempo real
+✅ Fallback para localStorage
+✅ Interface otimizada
+✅ Comandos de console disponíveis
+
+🔗 CONFIGURAÇÃO:
+1. Configure a URL da Web App em Configurações
+2. Importe colaboradores e gestores
+3. Comece a usar o sistema
+
+💻 DESENVOLVIDO POR: Juliano Patrick
+📧 CONTATO: julianocorrea@bateforte.com.br
+================================================
+        `);
+    </script>
+</body>
+</html>
