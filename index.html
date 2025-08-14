@@ -904,7 +904,7 @@
         // =====================================================
 
         async function enviarParaGoogleSheets(acao, dados = {}) {
-            if (!WEBAPP_URL || WEBAPP_URL === 'SUA_URL_DO_GOOGLE_APPS_SCRIPT_AQUI') {
+            if (!_URL || WEBAPP_URL === 'https://script.google.com/a/macros/bateforte.com.br/s/AKfycbxTJA_y5yQzz13qN41exsKbGmvIGcOgXk1bdObdx9EMUCr2iS-d4c9jtD_5E9TcKewp/exec') {
                 throw new Error('URL da Web App não configurada. Configure em Configurações.');
             }
 
@@ -914,7 +914,7 @@
                 
                 const payload = { acao: acao, ...dados };
                 
-                const response = await fetch(WEBAPP_URL, {
+                const response = await fetch(_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
@@ -938,7 +938,7 @@
         }
 
         async function buscarDoGoogleSheets(acao) {
-            if (!WEBAPP_URL || WEBAPP_URL === 'SUA_URL_DO_GOOGLE_APPS_SCRIPT_AQUI') {
+            if (!WEBAPP_URL || _URL === 'https://script.google.com/a/macros/bateforte.com.br/s/AKfycbxTJA_y5yQzz13qN41exsKbGmvIGcOgXk1bdObdx9EMUCr2iS-d4c9jtD_5E9TcKewp/exec') {
                 console.log('⚠️ URL não configurada, usando dados locais');
                 return usarCacheLocal(acao);
             }
@@ -1611,7 +1611,7 @@
             // Atualizar status de conexão
             const statusEl = document.getElementById('statusConexaoHome');
             if (statusEl) {
-                if (WEBAPP_URL && WEBAPP_URL !== 'SUA_URL_DO_GOOGLE_APPS_SCRIPT_AQUI') {
+                if (WEBAPP_URL && WEBAPP_URL !== 'https://script.google.com/a/macros/bateforte.com.br/s/AKfycbxTJA_y5yQzz13qN41exsKbGmvIGcOgXk1bdObdx9EMUCr2iS-d4c9jtD_5E9TcKewp/exec') {
                     statusEl.innerHTML = '🟢 <strong>Conectado ao Google Sheets</strong>';
                     statusEl.style.color = 'var(--cor-primaria)';
                 } else {
@@ -1896,7 +1896,7 @@
             localStorage.setItem('gestores_gg', JSON.stringify(gestores));
 
             // Tentar salvar no Google Sheets se configurado
-            if (WEBAPP_URL && WEBAPP_URL !== 'SUA_URL_DO_GOOGLE_APPS_SCRIPT_AQUI') {
+            if (WEBAPP_URL && WEBAPP_URL !== 'https://script.google.com/a/macros/bateforte.com.br/s/AKfycbxTJA_y5yQzz13qN41exsKbGmvIGcOgXk1bdObdx9EMUCr2iS-d4c9jtD_5E9TcKewp/exec') {
                 try {
                     await Promise.all([
                         enviarParaGoogleSheets('salvar_colaboradores', { colaboradores: colaboradoresExemplo }),
