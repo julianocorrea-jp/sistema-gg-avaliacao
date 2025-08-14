@@ -2044,6 +2044,106 @@
 📧 CONTATO: julianocorrea@bateforte.com.br
 ================================================
         `);
+        /* Info Cards */
+        .info-card {
+            background: var(--cor-branca);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin: 20px 0;
+            animation: slideInUp 0.6s ease-out;
+        }
+
+        /* Login Cards */
+        .login-card {
+            background: var(--cor-branca);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            margin: 20px auto;
+            max-width: 500px;
+            text-align: center;
+            animation: slideInUp 0.6s ease-out;
+        }
+
+        .login-title {
+            color: var(--cor-primaria);
+            margin-bottom: 30px;
+            font-size: 1.5em;
+            border-bottom: 3px solid var(--cor-secundaria);
+            padding-bottom: 15px;
+        }
+
+        .login-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            margin: 15px 0;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .login-input:focus {
+            border-color: var(--cor-primaria);
+            outline: none;
+            box-shadow: 0 0 15px rgba(125, 186, 132, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .access-info {
+            background: rgba(143, 214, 148, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 30px;
+            text-align: left;
+        }
+
+        .access-info h4 {
+            color: var(--cor-primaria);
+            margin-bottom: 15px;
+        }
+
+        .access-levels {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .access-level {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .level-master {
+            background: var(--cor-primaria);
+            color: white;
+        }
+
+        .level-filial {
+            background: var(--cor-secundaria);
+            color: var(--cor-escura);
+        }
+
+        .access-status {
+            background: linear-gradient(135deg, var(--cor-primaria) 0%, var(--cor-acento) 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+            animation: slideInDown 0.5s ease-out;
+        }
+
+        .access-status h4 {
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
     </script>
 </body>
 </html>
