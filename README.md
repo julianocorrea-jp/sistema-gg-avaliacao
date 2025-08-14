@@ -3,7 +3,7 @@
 Sistema completo de avaliação de desempenho integrado com Google Sheets.
 
 ## 🚀 Acesso Online
-[**Clique aqui para acessar o sistema**](https://SEU_USUARIO.github.io/sistema-gg-avaliacao/)
+[**Clique aqui para acessar o sistema**](https://julianocorrea-jp.github.io/sistema-gg-avaliacao/)
 
 ## ✨ Funcionalidades
 - ✅ Avaliação de 6 competências (31 fatores)
