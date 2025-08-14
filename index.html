@@ -1029,7 +1029,32 @@
                     <button class="btn btn-info" onclick="sincronizarDados()">🔄 Sincronizar Todos os Dados</button>
                     <button class="btn btn-warning" onclick="verificarIntegridadeDados()">🔍 Verificar Integridade</button>
                     <button class="btn btn-success" onclick="gerarRelatorioCompleto()">📊 Relatório Completo</button>
+                    <button class="btn btn-danger" onclick="diagnosticarProblemas()">🚨 Diagnosticar Problemas</button>
                     <button class="btn btn-danger" onclick="logout()">🚪 Sair das Configurações</button>
+                </div>
+            </div>
+
+            <!-- Guia de Solução de Problemas -->
+            <div class="info-card">
+                <h3>🆘 Solução de Problemas Comuns</h3>
+                <div class="alert alert-warning">
+                    <h4>❌ "Failed to fetch" ou "Erro de conexão":</h4>
+                    <ol style="margin: 15px 0; padding-left: 30px; text-align: left;">
+                        <li><strong>Reimplante a Web App:</strong>
+                            <ul style="margin: 10px 0; padding-left: 20px;">
+                                <li>Vá no Google Apps Script</li>
+                                <li>Clique em "Implantar" > "Gerenciar implantações"</li>
+                                <li>Clique no ícone de editar (lápis)</li>
+                                <li>Mude para "Nova versão"</li>
+                                <li>Execute como: <strong>Você</strong></li>
+                                <li>Quem tem acesso: <strong>Qualquer pessoa</strong></li>
+                                <li>Clique em "Implantar"</li>
+                                <li>Copie a nova URL e configure aqui</li>
+                            </ul>
+                        </li>
+                        <li><strong>Verifique as permissões:</strong> Certifique-se que a Web App tem acesso às planilhas</li>
+                        <li><strong>Teste a conexão:</strong> Use o botão "Testar Conexão" acima</li>
+                    </ol>
                 </div>
             </div>
 
@@ -1187,15 +1212,20 @@
                 const response = await fetch(`${WEBAPP_URL}?acao=${acao}`, { 
                     method: 'GET',
                     headers: {
-                        'Content-Type': 'application/json'
-                    }
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    mode: 'cors'
                 });
                 
                 if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
                 }
                 
-                const resultado = await response.json();
+                const texto = await response.text();
+                console.log('📥 Resposta recebida:', texto.substring(0, 200) + '...');
+                
+                const resultado = JSON.parse(texto);
                 
                 if (resultado && resultado.sucesso) {
                     console.log(`✅ ${acao} carregado com sucesso (${Array.isArray(resultado.dados) ? resultado.dados.length : Object.keys(resultado.dados || {}).length} itens)`);
@@ -1206,7 +1236,14 @@
 
             } catch (error) {
                 console.error(`❌ Erro ao buscar ${acao}:`, error);
-                throw error;
+                
+                if (error.message.includes('Failed to fetch')) {
+                    throw new Error('Erro de conexão: Verifique se a URL da Web App está correta e se a implantação está ativa');
+                } else if (error.message.includes('CORS')) {
+                    throw new Error('Erro de CORS: A Web App precisa ser reimplantada com permissões corretas');
+                } else {
+                    throw error;
+                }
             }
         }
 
@@ -2014,7 +2051,17 @@
         // =====================================================
 
         function configurarWebApp() {
-            const novaURL = prompt('🔗 Digite a URL da sua Web App do Google Apps Script:\n\n(Exemplo: https://script.google.com/macros/s/SEU_ID/exec)', WEBAPP_URL);
+            const novaURL = prompt(`🔗 Cole a URL da sua Web App do Google Apps Script:
+
+📋 INSTRUÇÕES:
+1. Vá no Google Apps Script
+2. Clique em "Implantar" > "Gerenciar implantações"  
+3. Clique no ícone de editar (lápis)
+4. Mude para "Nova versão"
+5. Execute como: Você
+6. Quem tem acesso: Qualquer pessoa
+7. Clique em "Implantar"
+8. Copie a URL e cole aqui:`, WEBAPP_URL);
             
             if (novaURL && novaURL.trim()) {
                 WEBAPP_URL = novaURL.trim();
@@ -2026,27 +2073,86 @@
                 
                 atualizarEstatisticasConfig();
                 
-                mostrarAlerta('✅ URL da Web App configurada com sucesso!', 'success');
+                mostrarAlerta('✅ URL da Web App configurada! Testando conexão...', 'info');
                 console.log('🔗 URL configurada:', WEBAPP_URL);
                 
-                // Tentar carregar dados automaticamente
-                carregarDadosSalvos();
+                // Testar automaticamente
+                setTimeout(() => {
+                    testarConexaoSheets();
+                }, 1000);
             }
         }
 
         async function testarConexaoSheets() {
             try {
                 mostrarLoading(true);
-                const resultado = await buscarDoGoogleSheets('status');
+                console.log('🧪 Testando conexão...');
+                
+                // Primeiro, teste básico de ping
+                const testeBasico = await fetch(`${WEBAPP_URL}?acao=status`, { 
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    mode: 'cors'
+                });
+                
+                if (!testeBasico.ok) {
+                    throw new Error(`Servidor não respondeu: ${testeBasico.status} - ${testeBasico.statusText}`);
+                }
+                
+                const textoResposta = await testeBasico.text();
+                console.log('📡 Resposta do servidor:', textoResposta);
+                
+                const resultado = JSON.parse(textoResposta);
                 
                 if (resultado.sucesso) {
-                    mostrarAlerta('✅ Conexão com Google Sheets funcionando perfeitamente!', 'success');
+                    // Teste mais detalhado
+                    const testeDetalhado = await fetch(`${WEBAPP_URL}?acao=teste_conexao`, { 
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        mode: 'cors'
+                    });
+                    
+                    const resultadoDetalhado = await testeDetalhado.json();
+                    
+                    let mensagem = '✅ Conexão com Google Sheets funcionando perfeitamente!\n\n';
+                    mensagem += `📊 Planilha: ${resultadoDetalhado.dados?.planilhaNome || 'N/A'}\n`;
+                    mensagem += `🕐 Timestamp: ${resultadoDetalhado.dados?.timestampBrasil || 'N/A'}\n`;
+                    mensagem += `📋 Abas: ${resultadoDetalhado.dados?.abas?.join(', ') || 'N/A'}\n`;
+                    mensagem += `🔧 Versão: ${resultadoDetalhado.dados?.versao || 'N/A'}`;
+                    
+                    mostrarAlerta(mensagem, 'success');
+                    atualizarStatusConexaoHome(true);
                 } else {
-                    mostrarAlerta('⚠️ Conectado, mas com problemas: ' + resultado.mensagem, 'warning');
+                    throw new Error(resultado.mensagem || 'Teste falhou');
                 }
                 
             } catch (error) {
-                mostrarAlerta('❌ Erro na conexão: ' + error.message, 'danger');
+                console.error('❌ Erro no teste:', error);
+                
+                let mensagemErro = '❌ Erro na conexão:\n\n';
+                
+                if (error.message.includes('Failed to fetch')) {
+                    mensagemErro += '🔗 Problema de conectividade\n';
+                    mensagemErro += '• Verifique se a URL está correta\n';
+                    mensagemErro += '• Verifique se a Web App está implantada\n';
+                    mensagemErro += '• Reimplante a Web App se necessário';
+                } else if (error.message.includes('CORS')) {
+                    mensagemErro += '🚫 Problema de CORS\n';
+                    mensagemErro += '• Reimplante a Web App com permissões corretas\n';
+                    mensagemErro += '• Execute como: Você\n';
+                    mensagemErro += '• Acesso: Qualquer pessoa';
+                } else {
+                    mensagemErro += `📋 Detalhes: ${error.message}`;
+                }
+                
+                mostrarAlerta(mensagemErro, 'danger');
+                atualizarStatusConexaoHome(false);
             } finally {
                 mostrarLoading(false);
             }
@@ -2102,7 +2208,62 @@
             }
         }
 
-        async function gerarRelatorioCompleto() {
+        async function diagnosticarProblemas() {
+            try {
+                mostrarLoading(true);
+                
+                let diagnostico = '🔍 DIAGNÓSTICO DO SISTEMA\n';
+                diagnostico += '================================\n\n';
+                
+                // Teste 1: URL configurada
+                diagnostico += '🔗 URL da Web App:\n';
+                if (WEBAPP_URL && !WEBAPP_URL.includes('SEU_ID')) {
+                    diagnostico += `✅ Configurada: ${WEBAPP_URL.substring(0, 50)}...\n\n`;
+                } else {
+                    diagnostico += '❌ Não configurada ou inválida\n\n';
+                }
+                
+                // Teste 2: Cache local
+                diagnostico += '💾 Cache Local:\n';
+                diagnostico += `✅ Colaboradores: ${Object.keys(colaboradores).length}\n`;
+                diagnostico += `✅ Gestores: ${Object.keys(gestores).length}\n`;
+                diagnostico += `✅ Avaliações: ${avaliacoes.length}\n`;
+                diagnostico += `📅 Última atualização: ${cacheLocal.ultimaAtualizacao ? new Date(cacheLocal.ultimaAtualizacao).toLocaleString() : 'Nunca'}\n\n`;
+                
+                // Teste 3: Conectividade
+                diagnostico += '🌐 Teste de Conectividade:\n';
+                try {
+                    const response = await fetch(`${WEBAPP_URL}?acao=status`, { 
+                        method: 'GET',
+                        headers: { 'Content-Type': 'application/json' },
+                        mode: 'cors'
+                    });
+                    
+                    if (response.ok) {
+                        const resultado = await response.json();
+                        diagnostico += `✅ Servidor respondeu: ${resultado.mensagem}\n`;
+                        diagnostico += `📊 Versão: ${resultado.dados?.versao || 'N/A'}\n`;
+                    } else {
+                        diagnostico += `❌ Erro HTTP: ${response.status} - ${response.statusText}\n`;
+                    }
+                } catch (error) {
+                    diagnostico += `❌ Erro de conexão: ${error.message}\n`;
+                }
+                
+                diagnostico += '\n🔧 SOLUÇÕES RECOMENDADAS:\n';
+                diagnostico += '1. Se há erro de conexão: Reimplante a Web App\n';
+                diagnostico += '2. Se dados estão vazios: Verifique as planilhas\n';
+                diagnostico += '3. Se cache está antigo: Force sincronização\n';
+                
+                alert(diagnostico);
+                mostrarAlerta('🔍 Diagnóstico concluído! Verifique o popup com os resultados.', 'info');
+                
+            } catch (error) {
+                mostrarAlerta('❌ Erro no diagnóstico: ' + error.message, 'danger');
+            } finally {
+                mostrarLoading(false);
+            }
+        }
             try {
                 const dadosCompletos = {
                     sistema: {
