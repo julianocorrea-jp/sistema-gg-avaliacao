@@ -542,8 +542,8 @@
         <nav class="nav-menu">
             <button class="nav-btn active" onclick="showSection('home')">🏠 Home</button>
             <button class="nav-btn" onclick="showSection('avaliacao')">📝 Nova Avaliação</button>
-            <button class="nav-btn" onclick="showSection('historico')">📋 Histórico</button>
-            <button class="nav-btn" onclick="showSection('configuracoes')">⚙️ Configurações</button>
+            <button class="nav-btn" id="btnHistorico" onclick="verificarAcessoHistorico()">📋 Histórico</button>
+            <button class="nav-btn" id="btnConfiguracoes" onclick="verificarAcessoConfiguracoes()">⚙️ Configurações</button>
         </nav>
 
         <!-- Seção Home -->
@@ -700,9 +700,74 @@
             </div>
         </section>
 
+        <!-- Seção de Login para Histórico -->
+        <section id="loginHistorico" class="section">
+            <h2>🔐 Acesso ao Histórico</h2>
+            
+            <div class="login-card">
+                <h3 class="login-title">🔒 Digite a Senha de Acesso</h3>
+                
+                <div class="form-group">
+                    <input type="password" id="senhaHistorico" class="login-input" placeholder="Digite a senha..." onkeypress="verificarEnterHistorico(event)">
+                </div>
+                
+                <button class="btn btn-success" onclick="validarSenhaHistorico()">🔓 Acessar Histórico</button>
+                <button class="btn" onclick="showSection('home')">❌ Cancelar</button>
+                
+                <div class="access-info">
+                    <h4>ℹ️ Informações de Acesso</h4>
+                    <p><strong>Controle de Acesso por Filial:</strong></p>
+                    <ul style="text-align: left; margin: 15px 0;">
+                        <li>🔑 Cada filial possui sua senha específica</li>
+                        <li>🔒 GGMASTER: Acesso a todas as filiais</li>
+                        <li>🔒 GGMASTERJP: Acesso total administrativo</li>
+                        <li>📞 Entre em contato para obter sua senha</li>
+                    </ul>
+                    <div class="access-levels">
+                        <span class="access-level level-master">MASTER</span>
+                        <span class="access-level level-filial">FILIAL</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção de Login para Configurações -->
+        <section id="loginConfiguracoes" class="section">
+            <h2>⚙️ Acesso às Configurações</h2>
+            
+            <div class="login-card">
+                <h3 class="login-title">🔒 Área Restrita - Configurações</h3>
+                
+                <div class="form-group">
+                    <input type="password" id="senhaConfiguracoes" class="login-input" placeholder="Digite a senha de administrador..." onkeypress="verificarEnterConfig(event)">
+                </div>
+                
+                <button class="btn btn-success" onclick="validarSenhaConfiguracoes()">🔓 Acessar Configurações</button>
+                <button class="btn" onclick="showSection('home')">❌ Cancelar</button>
+                
+                <div class="access-info">
+                    <h4>ℹ️ Área Administrativa</h4>
+                    <p><strong>Acesso Restrito:</strong></p>
+                    <ul style="text-align: left; margin: 15px 0;">
+                        <li>🔒 Apenas administradores autorizados</li>
+                        <li>⚙️ Configuração de colaboradores e gestores</li>
+                        <li>📋 Importação de dados via planilha</li>
+                        <li>🔧 Configurações do sistema</li>
+                    </ul>
+                    <p style="margin-top: 15px; font-size: 0.9em; color: #666;">
+                        <strong>Senha requerida:</strong> GGMASTERJP
+                    </p>
+                </div>
+            </div>
+        </section>
+
         <!-- Seção Histórico -->
         <section id="historico" class="section">
-            <h2>📋 Histórico de Avaliações (Google Sheets)</h2>
+            <div id="accessStatus" class="access-status" style="display: none;">
+                <!-- Status será preenchido dinamicamente -->
+            </div>
+
+            <h2>📋 Histórico de Avaliações</h2>
 
             <div class="alert alert-success">
                 <p>🔗 <strong>Dados sincronizados com Google Sheets</strong> - Todas as avaliações estão sendo carregadas da nuvem em tempo real.</p>
@@ -741,7 +806,11 @@
 
         <!-- Seção Configurações -->
         <section id="configuracoes" class="section">
-            <h2>⚙️ Configurações - Google Sheets</h2>
+            <div id="configStatus" class="access-status" style="display: none;">
+                <!-- Status será preenchido dinamicamente -->
+            </div>
+
+            <h2>⚙️ Configurações do Sistema</h2>
 
             <div class="alert alert-warning">
                 <h4>🔧 Configuração da Integração</h4>
@@ -818,7 +887,7 @@
         // =====================================================
 
         // URL da Web App do Google Apps Script (SUBSTITUA PELA SUA URL)
-        let WEBAPP_URL = 'https://script.google.com/a/macros/bateforte.com.br/s/AKfycbxTJA_y5yQzz13qN41exsKbGmvIGcOgXk1bdObdx9EMUCr2iS-d4c9jtD_5E9TcKewp/exec';
+        let WEBAPP_URL = 'SUA_URL_DO_GOOGLE_APPS_SCRIPT_AQUI';
 
         // Cache local para performance
         let cacheLocal = {
@@ -904,7 +973,7 @@
         // =====================================================
 
         async function enviarParaGoogleSheets(acao, dados = {}) {
-            if (!_URL || WEBAPP_URL === 'https://script.google.com/a/macros/bateforte.com.br/s/AKfycbxTJA_y5yQzz13qN41exsKbGmvIGcOgXk1bdObdx9EMUCr2iS-d4c9jtD_5E9TcKewp/exec') {
+            if (!WEBAPP_URL || WEBAPP_URL === 'SUA_URL_DO_GOOGLE_APPS_SCRIPT_AQUI') {
                 throw new Error('URL da Web App não configurada. Configure em Configurações.');
             }
 
@@ -914,7 +983,7 @@
                 
                 const payload = { acao: acao, ...dados };
                 
-                const response = await fetch(_URL, {
+                const response = await fetch(WEBAPP_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
@@ -938,7 +1007,7 @@
         }
 
         async function buscarDoGoogleSheets(acao) {
-            if (!WEBAPP_URL || _URL === 'https://script.google.com/a/macros/bateforte.com.br/s/AKfycbxTJA_y5yQzz13qN41exsKbGmvIGcOgXk1bdObdx9EMUCr2iS-d4c9jtD_5E9TcKewp/exec') {
+            if (!WEBAPP_URL || WEBAPP_URL === 'SUA_URL_DO_GOOGLE_APPS_SCRIPT_AQUI') {
                 console.log('⚠️ URL não configurada, usando dados locais');
                 return usarCacheLocal(acao);
             }
@@ -1611,7 +1680,7 @@
             // Atualizar status de conexão
             const statusEl = document.getElementById('statusConexaoHome');
             if (statusEl) {
-                if (WEBAPP_URL && WEBAPP_URL !== 'https://script.google.com/a/macros/bateforte.com.br/s/AKfycbxTJA_y5yQzz13qN41exsKbGmvIGcOgXk1bdObdx9EMUCr2iS-d4c9jtD_5E9TcKewp/exec') {
+                if (WEBAPP_URL && WEBAPP_URL !== 'SUA_URL_DO_GOOGLE_APPS_SCRIPT_AQUI') {
                     statusEl.innerHTML = '🟢 <strong>Conectado ao Google Sheets</strong>';
                     statusEl.style.color = 'var(--cor-primaria)';
                 } else {
@@ -1634,7 +1703,7 @@
             // Atualizar URL exibida
             const urlEl = document.getElementById('webappUrl');
             if (urlEl) {
-                if (WEBAPP_URL && WEBAPP_URL !== 'https://script.google.com/a/macros/bateforte.com.br/s/AKfycbxTJA_y5yQzz13qN41exsKbGmvIGcOgXk1bdObdx9EMUCr2iS-d4c9jtD_5E9TcKewp/exec') {
+                if (WEBAPP_URL && WEBAPP_URL !== 'SUA_URL_DO_GOOGLE_APPS_SCRIPT_AQUI') {
                     urlEl.textContent = WEBAPP_URL.substring(0, 50) + '...';
                     urlEl.style.color = 'var(--cor-primaria)';
                 } else {
@@ -1896,7 +1965,7 @@
             localStorage.setItem('gestores_gg', JSON.stringify(gestores));
 
             // Tentar salvar no Google Sheets se configurado
-            if (WEBAPP_URL && WEBAPP_URL !== 'https://script.google.com/a/macros/bateforte.com.br/s/AKfycbxTJA_y5yQzz13qN41exsKbGmvIGcOgXk1bdObdx9EMUCr2iS-d4c9jtD_5E9TcKewp/exec') {
+            if (WEBAPP_URL && WEBAPP_URL !== 'SUA_URL_DO_GOOGLE_APPS_SCRIPT_AQUI') {
                 try {
                     await Promise.all([
                         enviarParaGoogleSheets('salvar_colaboradores', { colaboradores: colaboradoresExemplo }),
