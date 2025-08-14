@@ -191,6 +191,91 @@
             animation: slideInLeft 0.6s ease-out;
         }
 
+        /* Login Cards */
+        .login-card {
+            background: linear-gradient(135deg, #f8faf9 0%, #e9f5ea 100%);
+            border: 2px solid var(--cor-secundaria);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            margin: 30px 0;
+            box-shadow: 0 8px 25px rgba(30, 68, 30, 0.1);
+        }
+
+        .login-title {
+            color: var(--cor-primaria);
+            margin-bottom: 30px;
+            font-size: 1.5em;
+        }
+
+        .login-input {
+            width: 100%;
+            max-width: 400px;
+            padding: 15px 20px;
+            border: 2px solid var(--cor-primaria);
+            border-radius: 50px;
+            font-size: 16px;
+            text-align: center;
+            margin: 20px auto;
+            display: block;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .login-input:focus {
+            outline: none;
+            box-shadow: 0 0 20px rgba(30, 68, 30, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .access-info {
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 30px;
+            text-align: left;
+        }
+
+        .access-info h4 {
+            color: var(--cor-primaria);
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .access-levels {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .access-level {
+            display: inline-block;
+            padding: 8px 15px;
+            border-radius: 20px;
+            margin: 5px;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .level-master {
+            background: linear-gradient(135deg, var(--cor-primaria) 0%, var(--cor-acento) 100%);
+            color: white;
+        }
+
+        .level-filial {
+            background: linear-gradient(135deg, var(--cor-secundaria) 0%, var(--cor-neutra) 100%);
+            color: white;
+        }
+
+        .access-status {
+            background: var(--cor-primaria);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+
         /* Forms */
         .form-row {
             display: grid;
@@ -517,6 +602,40 @@
             margin: 20px 0;
             animation: slideInUp 0.6s ease-out;
         }
+
+        /* Tabela Histórico */
+        .tabela-historico {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .tabela-historico th {
+            background: var(--cor-primaria);
+            color: white;
+            padding: 15px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .tabela-historico td {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            text-align: center;
+        }
+
+        .tabela-historico tr:nth-child(even) {
+            background: rgba(248, 250, 249, 0.5);
+        }
+
+        .tabela-historico tr:hover {
+            background: rgba(143, 214, 148, 0.1);
+            transform: scale(1.01);
+            transition: all 0.3s ease;
+        }
     </style>
 </head>
 <body>
@@ -524,17 +643,17 @@
     <header class="main-header">
         <div class="container">
             <h1>🎯 SISTEMA DE AVALIAÇÃO DE DESEMPENHO</h1>
-            <p>Integrado com Google Sheets - Dados Compartilhados</p>
+            <p>Integrado com Google Sheets - Dados Compartilhados com Controle de Acesso</p>
         </div>
 
-    <!-- Créditos do Desenvolvedor -->
-    <footer style="background: var(--cor-primaria); color: white; text-align: center; padding: 15px; margin-top: 50px;">
-        <div class="container">
-            <p style="margin: 2px 0; font-size: 11px; opacity: 0.7;">
-                Desenvolvido por Juliano Patrick | julianocorrea@bateforte.com.br | Sistema v2.1 - Google Sheets © 2025
-            </p>
-        </div>
-    </footer>
+        <!-- Créditos do Desenvolvedor -->
+        <footer style="background: var(--cor-primaria); color: white; text-align: center; padding: 15px; margin-top: 50px;">
+            <div class="container">
+                <p style="margin: 2px 0; font-size: 11px; opacity: 0.7;">
+                    Desenvolvido por Juliano Patrick | julianocorrea@bateforte.com.br | Sistema v2.2 - Google Sheets com Autenticação © 2025
+                </p>
+            </div>
+        </footer>
     </header>
 
     <div class="container">
@@ -551,14 +670,15 @@
             <h2>🏠 Sistema Integrado com Google Sheets</h2>
             
             <div class="alert alert-info">
-                <h4>🔗 Sistema Conectado ao Google Sheets</h4>
-                <p><strong>Todos os usuários agora compartilham os mesmos dados!</strong></p>
+                <h4>🔗 Sistema Conectado ao Google Sheets com Controle de Acesso</h4>
+                <p><strong>Todos os usuários agora compartilham os mesmos dados com segurança!</strong></p>
                 <ul style="margin: 10px 0; padding-left: 30px;">
                     <li>✅ Avaliações sincronizadas em tempo real</li>
                     <li>✅ Colaboradores e gestores compartilhados</li>
                     <li>✅ Histórico centralizado na nuvem</li>
                     <li>✅ Backup automático no Google Sheets</li>
-                    <li>✅ Acesso de qualquer lugar</li>
+                    <li>🔐 Controle de acesso por filial</li>
+                    <li>🛡️ Segurança avançada de dados</li>
                 </ul>
                 <p><strong>Status:</strong> <span id="statusConexaoHome">Verificando...</span></p>
             </div>
@@ -583,9 +703,15 @@
             </div>
 
             <div class="info-card">
-                <h3>📋 Sobre o Sistema Integrado</h3>
-                <p>Esta versão está integrada ao Google Sheets, permitindo que todos os usuários compartilhem os mesmos dados em tempo real.</p>
-                
+                <h3>🔐 Controle de Acesso por Filial</h3>
+                <p><strong>Sistema de Segurança Implementado:</strong></p>
+                <ul style="margin: 15px 0; padding-left: 30px;">
+                    <li>📋 <strong>Histórico:</strong> Acesso restrito por filial com senha específica</li>
+                    <li>⚙️ <strong>Configurações:</strong> Acesso exclusivo para administradores (GGMASTERJP)</li>
+                    <li>🔑 <strong>Senhas Master:</strong> GGMASTER e GGMASTERJP para acesso total</li>
+                    <li>🛡️ <strong>Filtros Automáticos:</strong> Dados filtrados conforme nível de acesso</li>
+                </ul>
+
                 <h4 style="margin-top: 20px;">🎯 Competências Avaliadas:</h4>
                 <ul style="margin: 15px 0; padding-left: 30px;">
                     <li><strong>Comunicação e Influência</strong> - 5 fatores</li>
@@ -594,14 +720,6 @@
                     <li><strong>Foco no Cliente/Tutor</strong> - 5 fatores</li>
                     <li><strong>Liderança e Gestão de Pessoas</strong> - 6 fatores</li>
                     <li><strong>Postura de Dono</strong> - 5 fatores</li>
-                </ul>
-
-                <h4>🔧 Comandos Úteis (Console):</h4>
-                <ul style="margin: 15px 0; padding-left: 30px;">
-                    <li><code>sistemaGG.sincronizar()</code> - Forçar sincronização</li>
-                    <li><code>sistemaGG.testarConexao()</code> - Testar conexão</li>
-                    <li><code>sistemaGG.backup()</code> - Fazer backup</li>
-                    <li><code>sistemaGG.info()</code> - Ver informações</li>
                 </ul>
             </div>
         </section>
@@ -702,27 +820,38 @@
 
         <!-- Seção de Login para Histórico -->
         <section id="loginHistorico" class="section">
-            <h2>🔐 Acesso ao Histórico</h2>
+            <h2>🔐 Acesso ao Histórico por Filial</h2>
             
             <div class="login-card">
-                <h3 class="login-title">🔒 Digite a Senha de Acesso</h3>
+                <h3 class="login-title">🔒 Digite a Senha da sua Filial</h3>
                 
                 <div class="form-group">
-                    <input type="password" id="senhaHistorico" class="login-input" placeholder="Digite a senha..." onkeypress="verificarEnterHistorico(event)">
+                    <input type="password" id="senhaHistorico" class="login-input" placeholder="Digite a senha da sua filial..." onkeypress="verificarEnterHistorico(event)">
                 </div>
                 
                 <button class="btn btn-success" onclick="validarSenhaHistorico()">🔓 Acessar Histórico</button>
                 <button class="btn" onclick="showSection('home')">❌ Cancelar</button>
                 
                 <div class="access-info">
-                    <h4>ℹ️ Informações de Acesso</h4>
-                    <p><strong>Controle de Acesso por Filial:</strong></p>
+                    <h4>ℹ️ Sistema de Controle por Filial</h4>
+                    <p><strong>Acesso Seguro e Personalizado:</strong></p>
                     <ul style="text-align: left; margin: 15px 0;">
-                        <li>🔑 Cada filial possui sua senha específica</li>
+                        <li>🔑 Cada filial possui senha específica (GGxxxxx)</li>
+                        <li>🔍 Histórico filtrado automaticamente por filial</li>
                         <li>🔒 GGMASTER: Acesso a todas as filiais</li>
-                        <li>🔒 GGMASTERJP: Acesso total administrativo</li>
+                        <li>🛡️ GGMASTERJP: Acesso administrativo completo</li>
                         <li>📞 Entre em contato para obter sua senha</li>
                     </ul>
+                    
+                    <div style="background: rgba(30, 68, 30, 0.1); padding: 15px; border-radius: 10px; margin-top: 15px;">
+                        <p style="margin: 0; font-size: 0.9em; color: var(--cor-primaria); font-weight: 600;">
+                            🏢 <strong>Filiais Cadastradas:</strong><br>
+                            743-MS | 264-SC | 753-MT | 364-DF | 713-SP<br>
+                            468-MT | 892-SP | 723-SP | 230-SP | 773-RS<br>
+                            473-MT | 167-MS | 20-AGP
+                        </p>
+                    </div>
+                    
                     <div class="access-levels">
                         <span class="access-level level-master">MASTER</span>
                         <span class="access-level level-filial">FILIAL</span>
@@ -736,7 +865,7 @@
             <h2>⚙️ Acesso às Configurações</h2>
             
             <div class="login-card">
-                <h3 class="login-title">🔒 Área Restrita - Configurações</h3>
+                <h3 class="login-title">🔒 Área Restrita - Administração</h3>
                 
                 <div class="form-group">
                     <input type="password" id="senhaConfiguracoes" class="login-input" placeholder="Digite a senha de administrador..." onkeypress="verificarEnterConfig(event)">
@@ -746,17 +875,22 @@
                 <button class="btn" onclick="showSection('home')">❌ Cancelar</button>
                 
                 <div class="access-info">
-                    <h4>ℹ️ Área Administrativa</h4>
-                    <p><strong>Acesso Restrito:</strong></p>
+                    <h4>ℹ️ Área Administrativa Restrita</h4>
+                    <p><strong>Acesso Exclusivo para Administradores:</strong></p>
                     <ul style="text-align: left; margin: 15px 0;">
                         <li>🔒 Apenas administradores autorizados</li>
                         <li>⚙️ Configuração de colaboradores e gestores</li>
                         <li>📋 Importação de dados via planilha</li>
-                        <li>🔧 Configurações do sistema</li>
+                        <li>🔧 Configurações do sistema Google Sheets</li>
+                        <li>🛠️ Ferramentas de manutenção e backup</li>
                     </ul>
-                    <p style="margin-top: 15px; font-size: 0.9em; color: #666;">
-                        <strong>Senha requerida:</strong> GGMASTERJP
-                    </p>
+                    
+                    <div style="background: rgba(220, 53, 69, 0.1); padding: 15px; border-radius: 10px; margin-top: 15px; border-left: 4px solid #dc3545;">
+                        <p style="margin: 0; font-size: 0.9em; color: #721c24; font-weight: 600;">
+                            🔐 <strong>Senha Necessária:</strong> GGMASTERJP<br>
+                            ⚠️ <strong>Acesso Restrito:</strong> Somente desenvolvedores autorizados
+                        </p>
+                    </div>
                 </div>
             </div>
         </section>
@@ -770,7 +904,7 @@
             <h2>📋 Histórico de Avaliações</h2>
 
             <div class="alert alert-success">
-                <p>🔗 <strong>Dados sincronizados com Google Sheets</strong> - Todas as avaliações estão sendo carregadas da nuvem em tempo real.</p>
+                <p>🔗 <strong>Dados sincronizados com Google Sheets</strong> - Histórico filtrado conforme seu nível de acesso.</p>
             </div>
 
             <div class="stats-grid">
@@ -795,6 +929,7 @@
             <div style="text-align: center; margin: 30px 0;">
                 <button class="btn btn-info" onclick="carregarHistorico()">🔄 Sincronizar com Google Sheets</button>
                 <button class="btn btn-warning" onclick="exportarDados()">📥 Exportar Dados</button>
+                <button class="btn btn-danger" onclick="logout()">🚪 Sair do Histórico</button>
             </div>
 
             <div id="tabelaHistorico">
@@ -876,6 +1011,7 @@
                     <button class="btn btn-success" onclick="testarConexaoSheets()">🧪 Testar Conexão</button>
                     <button class="btn btn-info" onclick="sincronizarDados()">🔄 Sincronizar Dados</button>
                     <button class="btn btn-warning" onclick="backupGoogleSheets()">💾 Backup Google Sheets</button>
+                    <button class="btn btn-danger" onclick="logout()">🚪 Sair das Configurações</button>
                 </div>
             </div>
         </section>
@@ -888,6 +1024,37 @@
 
         // URL da Web App do Google Apps Script (SUBSTITUA PELA SUA URL)
         let WEBAPP_URL = 'SUA_URL_DO_GOOGLE_APPS_SCRIPT_AQUI';
+
+        // Sistema de controle de acesso
+        let acessoAtual = {
+            tipo: null,           // 'filial', 'master', 'admin'
+            senha: null,          // senha utilizada
+            filial: null,         // filial específica (se aplicável)
+            permissoes: []        // array de permissões
+        };
+
+        // Mapeamento de senhas por filial
+        const SENHAS_FILIAIS = {
+            'GG74301': { filial: '743', regional: 'MS' },
+            'GG26402': { filial: '264', regional: 'SC' },
+            'GG75303': { filial: '753', regional: 'MT' },
+            'GG36404': { filial: '364', regional: 'DF' },
+            'GG71305': { filial: '713', regional: 'SP' },
+            'GG46806': { filial: '468', regional: 'MT' },
+            'GG89207': { filial: '892', regional: 'SP' },
+            'GG72308': { filial: '723', regional: 'SP' },
+            'GG23009': { filial: '230', regional: 'SP' },
+            'GG77310': { filial: '773', regional: 'RS' },
+            'GG47311': { filial: '473', regional: 'MT' },
+            'GG16712': { filial: '167', regional: 'MS' },
+            'GG02013': { filial: '20', regional: 'AGP' }
+        };
+
+        // Senhas especiais
+        const SENHAS_ESPECIAIS = {
+            'GGMASTER': { tipo: 'master', descricao: 'Acesso a todas as filiais' },
+            'GGMASTERJP': { tipo: 'admin', descricao: 'Acesso administrativo completo' }
+        };
 
         // Cache local para performance
         let cacheLocal = {
@@ -967,6 +1134,154 @@
                 ]
             }
         ];
+
+        // =====================================================
+        // FUNÇÕES DE AUTENTICAÇÃO E CONTROLE DE ACESSO
+        // =====================================================
+
+        function verificarAcessoHistorico() {
+            acessoAtual = { tipo: null, senha: null, filial: null, permissoes: [] };
+            showSection('loginHistorico');
+        }
+
+        function verificarAcessoConfiguracoes() {
+            acessoAtual = { tipo: null, senha: null, filial: null, permissoes: [] };
+            showSection('loginConfiguracoes');
+        }
+
+        function validarSenhaHistorico() {
+            const senha = document.getElementById('senhaHistorico').value.trim().toUpperCase();
+            
+            if (!senha) {
+                mostrarAlerta('❌ Digite uma senha!', 'danger');
+                return;
+            }
+
+            // Verificar senhas especiais
+            if (SENHAS_ESPECIAIS[senha]) {
+                const tipoAcesso = SENHAS_ESPECIAIS[senha].tipo;
+                
+                acessoAtual = {
+                    tipo: tipoAcesso,
+                    senha: senha,
+                    filial: tipoAcesso === 'master' ? 'TODAS' : null,
+                    permissoes: tipoAcesso === 'admin' ? ['historico', 'configuracoes'] : ['historico']
+                };
+
+                exibirStatusAcesso('historico');
+                showSection('historico');
+                carregarHistorico();
+                mostrarAlerta(`✅ Acesso liberado: ${SENHAS_ESPECIAIS[senha].descricao}`, 'success');
+                return;
+            }
+
+            // Verificar senhas de filiais
+            if (SENHAS_FILIAIS[senha]) {
+                const dadosFilial = SENHAS_FILIAIS[senha];
+                
+                acessoAtual = {
+                    tipo: 'filial',
+                    senha: senha,
+                    filial: dadosFilial.filial,
+                    regional: dadosFilial.regional,
+                    permissoes: ['historico']
+                };
+
+                exibirStatusAcesso('historico');
+                showSection('historico');
+                carregarHistorico();
+                mostrarAlerta(`✅ Acesso liberado para Filial ${dadosFilial.filial} - ${dadosFilial.regional}`, 'success');
+                return;
+            }
+
+            mostrarAlerta('❌ Senha inválida! Verifique a senha da sua filial.', 'danger');
+        }
+
+        function validarSenhaConfiguracoes() {
+            const senha = document.getElementById('senhaConfiguracoes').value.trim().toUpperCase();
+            
+            if (senha !== 'GGMASTERJP') {
+                mostrarAlerta('❌ Senha incorreta! Acesso restrito a administradores.', 'danger');
+                return;
+            }
+
+            acessoAtual = {
+                tipo: 'admin',
+                senha: senha,
+                filial: null,
+                permissoes: ['historico', 'configuracoes']
+            };
+
+            exibirStatusAcesso('configuracoes');
+            showSection('configuracoes');
+            atualizarEstatisticasConfig();
+            mostrarAlerta('✅ Acesso administrativo liberado!', 'success');
+        }
+
+        function exibirStatusAcesso(secao) {
+            const statusElement = document.getElementById(secao === 'historico' ? 'accessStatus' : 'configStatus');
+            
+            if (!statusElement) return;
+
+            let statusText = '';
+            let statusClass = 'access-status';
+
+            switch(acessoAtual.tipo) {
+                case 'admin':
+                    statusText = `🔐 ADMINISTRADOR | Acesso Total | Usuário: ${acessoAtual.senha}`;
+                    break;
+                case 'master':
+                    statusText = `🔑 MASTER | Todas as Filiais | Usuário: ${acessoAtual.senha}`;
+                    break;
+                case 'filial':
+                    statusText = `🏢 FILIAL ${acessoAtual.filial} - ${acessoAtual.regional} | Acesso Restrito | Usuário: ${acessoAtual.senha}`;
+                    break;
+                default:
+                    statusText = '❌ Acesso não autorizado';
+            }
+
+            statusElement.innerHTML = statusText;
+            statusElement.style.display = 'block';
+        }
+
+        function verificarEnterHistorico(event) {
+            if (event.key === 'Enter') {
+                validarSenhaHistorico();
+            }
+        }
+
+        function verificarEnterConfig(event) {
+            if (event.key === 'Enter') {
+                validarSenhaConfiguracoes();
+            }
+        }
+
+        function logout() {
+            acessoAtual = { tipo: null, senha: null, filial: null, permissoes: [] };
+            
+            // Limpar campos de senha
+            document.getElementById('senhaHistorico').value = '';
+            document.getElementById('senhaConfiguracoes').value = '';
+            
+            // Ocultar status de acesso
+            document.getElementById('accessStatus').style.display = 'none';
+            document.getElementById('configStatus').style.display = 'none';
+            
+            showSection('home');
+            mostrarAlerta('🚪 Sessão encerrada com sucesso!', 'info');
+        }
+
+        function filtrarDadosPorAcesso(dados) {
+            if (!acessoAtual.tipo || acessoAtual.tipo === 'admin' || acessoAtual.tipo === 'master') {
+                return dados; // Admin e Master têm acesso total
+            }
+
+            if (acessoAtual.tipo === 'filial' && acessoAtual.filial) {
+                return dados.filter(item => item.filial === acessoAtual.filial);
+            }
+
+            return []; // Sem acesso
+        }
 
         // =====================================================
         // FUNÇÕES DE COMUNICAÇÃO COM GOOGLE SHEETS
@@ -1174,6 +1489,479 @@
             }
         }
 
+        async function carregarHistorico() {
+            console.log('📋 Carregando histórico...');
+            
+            try {
+                mostrarLoading(true);
+                await carregarDadosSalvos();
+                
+                // Filtrar dados conforme acesso
+                const avaliacoesFiltradas = filtrarDadosPorAcesso(avaliacoes);
+                
+                atualizarEstatisticasHistorico(avaliacoesFiltradas);
+                atualizarTabelaHistorico(avaliacoesFiltradas);
+                
+                const tipoAcesso = acessoAtual.tipo === 'filial' ? `da Filial ${acessoAtual.filial}` : 'completo';
+                mostrarAlerta(`✅ Histórico ${tipoAcesso} sincronizado com Google Sheets!`, 'success');
+                
+            } catch (error) {
+                console.error('❌ Erro ao carregar histórico:', error);
+                mostrarAlerta('❌ Erro ao carregar histórico do Google Sheets.', 'danger');
+            } finally {
+                mostrarLoading(false);
+            }
+        }
+
+        function atualizarEstatisticasHistorico(dadosHistorico = null) {
+            const dados = dadosHistorico || filtrarDadosPorAcesso(avaliacoes);
+            const total = dados.length;
+            let somaNotas = 0;
+            let excelentes = 0;
+            let precisamMelhorar = 0;
+
+            dados.forEach(av => {
+                const nota = parseFloat(av.pontuacao);
+                somaNotas += nota;
+                
+                if (av.classificacao === 'EXCELENTE') excelentes++;
+                if (av.classificacao === 'PRECISA MELHORAR') precisamMelhorar++;
+            });
+
+            const media = total > 0 ? (somaNotas / total).toFixed(2) : '0.00';
+
+            animarNumero('totalAvaliacoes', total);
+            animarNumero('mediaGeral', parseFloat(media));
+            animarNumero('excelentes', excelentes);
+            animarNumero('precisamMelhorar', precisamMelhorar);
+        }
+
+        function atualizarTabelaHistorico(dadosHistorico = null) {
+            const container = document.getElementById('tabelaHistorico');
+            const dados = dadosHistorico || filtrarDadosPorAcesso(avaliacoes);
+            
+            if (dados.length === 0) {
+                const mensagem = acessoAtual.tipo === 'filial' 
+                    ? `📭 Nenhuma avaliação encontrada para a Filial ${acessoAtual.filial}`
+                    : '📭 Nenhuma avaliação encontrada';
+                container.innerHTML = `<p style="text-align: center; padding: 30px; color: #666;">${mensagem}</p>`;
+                return;
+            }
+
+            let html = '<table class="tabela-historico">';
+            html += '<thead><tr>';
+            html += '<th>Data</th>';
+            html += '<th>Avaliado</th>';
+            html += '<th>Gestor</th>';
+            html += '<th>Filial</th>';
+            html += '<th>Pontuação</th>';
+            html += '<th>Classificação</th>';
+            html += '</tr></thead>';
+            html += '<tbody>';
+
+            dados.forEach(av => {
+                const data = new Date(av.data).toLocaleDateString('pt-BR');
+                html += '<tr>';
+                html += '<td>' + data + '</td>';
+                html += '<td>' + av.nomeAvaliado + '</td>';
+                html += '<td>' + av.nomeGestor + '</td>';
+                html += '<td>' + av.filial + '</td>';
+                html += '<td><strong>' + av.pontuacao + '</strong></td>';
+                html += '<td>' + av.classificacao + '</td>';
+                html += '</tr>';
+            });
+
+            html += '</tbody></table>';
+            container.innerHTML = html;
+        }
+
+        // =====================================================
+        // FUNÇÕES DE INTERFACE
+        // =====================================================
+
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            document.getElementById(sectionId).classList.add('active');
+
+            // Adicionar classe ativa ao botão correto
+            const botoes = document.querySelectorAll('.nav-btn');
+            botoes.forEach(btn => {
+                if ((sectionId === 'home' && btn.textContent.includes('Home')) ||
+                    (sectionId === 'avaliacao' && btn.textContent.includes('Nova')) ||
+                    (sectionId === 'historico' && btn.textContent.includes('Histórico')) ||
+                    (sectionId === 'configuracoes' && btn.textContent.includes('Configurações'))) {
+                    btn.classList.add('active');
+                }
+            });
+
+            // Atualizar dados específicos da seção
+            switch(sectionId) {
+                case 'home':
+                    atualizarEstatisticasHome();
+                    break;
+                case 'avaliacao':
+                    inicializarFormularioAvaliacao();
+                    break;
+                case 'historico':
+                    if (acessoAtual.tipo) {
+                        carregarHistorico();
+                    }
+                    break;
+                case 'configuracoes':
+                    if (acessoAtual.tipo === 'admin') {
+                        atualizarEstatisticasConfig();
+                    }
+                    break;
+            }
+        }
+
+        function inicializarFormularioAvaliacao() {
+            criarFormularioCompetencias();
+            atualizarProgresso();
+            configurarBuscaAutomatica();
+        }
+
+        function criarFormularioCompetencias() {
+            const container = document.getElementById('competenciasContainer');
+            let html = '';
+            let fatorIndex = 0;
+
+            COMPETENCIAS.forEach((competencia) => {
+                html += '<div class="competencia-card">';
+                html += '<div class="competencia-header">' + competencia.nome + '</div>';
+
+                competencia.fatores.forEach((fator) => {
+                    html += '<div class="fator-item">';
+                    html += '<div class="fator-texto">' + fator + '</div>';
+                    html += '<div class="rating-container">';
+                    html += '<span class="rating-label">Inadequado</span>';
+                    
+                    for(let i = 1; i <= 5; i++) {
+                        html += '<label class="rating-option">';
+                        html += '<input type="radio" name="fator_' + fatorIndex + '" value="' + i + '" onchange="atualizarProgresso()">';
+                        html += '<span>' + i + '</span>';
+                        html += '</label>';
+                    }
+                    
+                    html += '<span class="rating-label">Excelente</span>';
+                    html += '</div>';
+                    html += '</div>';
+                    fatorIndex++;
+                });
+
+                html += '</div>';
+            });
+
+            container.innerHTML = html;
+        }
+
+        function configurarBuscaAutomatica() {
+            const campoMatriculaAvaliado = document.getElementById('matriculaAvaliado');
+            if (campoMatriculaAvaliado) {
+                campoMatriculaAvaliado.addEventListener('input', function() {
+                    const matricula = this.value.trim();
+                    if (matricula.length >= 3) {
+                        const colaborador = colaboradores[matricula];
+                        if (colaborador) {
+                            document.getElementById('nomeAvaliado').value = colaborador.nome || '';
+                            document.getElementById('funcaoAvaliado').value = colaborador.funcao || '';
+                            document.getElementById('filial').value = colaborador.filial || '';
+                            
+                            this.style.borderColor = 'var(--cor-secundaria)';
+                            this.style.backgroundColor = 'rgba(143, 214, 148, 0.1)';
+                        } else {
+                            document.getElementById('nomeAvaliado').value = '';
+                            document.getElementById('funcaoAvaliado').value = '';
+                            document.getElementById('filial').value = '';
+                            
+                            this.style.borderColor = '#e0e0e0';
+                            this.style.backgroundColor = '';
+                        }
+                    }
+                });
+            }
+
+            const campoMatriculaGestor = document.getElementById('matriculaGestor');
+            if (campoMatriculaGestor) {
+                campoMatriculaGestor.addEventListener('input', function() {
+                    const matricula = this.value.trim();
+                    if (matricula.length >= 3) {
+                        const gestor = gestores[matricula];
+                        if (gestor) {
+                            document.getElementById('nomeGestor').value = gestor.nome || '';
+                            
+                            this.style.borderColor = 'var(--cor-secundaria)';
+                            this.style.backgroundColor = 'rgba(143, 214, 148, 0.1)';
+                        } else {
+                            document.getElementById('nomeGestor').value = '';
+                            
+                            this.style.borderColor = '#e0e0e0';
+                            this.style.backgroundColor = '';
+                        }
+                    }
+                });
+            }
+        }
+
+        function atualizarProgresso() {
+            const totalFatores = 31;
+            const fatoresAvaliados = document.querySelectorAll('input[type="radio"]:checked').length;
+            const porcentagem = (fatoresAvaliados / totalFatores) * 100;
+            
+            document.getElementById('progressFill').style.width = porcentagem + '%';
+            document.getElementById('progressText').textContent = fatoresAvaliados + ' de ' + totalFatores + ' fatores avaliados';
+            
+            return fatoresAvaliados;
+        }
+
+        function calcularResultado() {
+            const fatoresAvaliados = atualizarProgresso();
+            
+            if (fatoresAvaliados === 0) {
+                mostrarAlerta('❌ Avalie pelo menos um fator antes de calcular!', 'danger');
+                return;
+            }
+
+            const radios = document.querySelectorAll('input[type="radio"]:checked');
+            let somaNotas = 0;
+            
+            radios.forEach(radio => {
+                somaNotas += parseInt(radio.value);
+            });
+
+            const pontuacao = fatoresAvaliados > 0 ? (somaNotas / fatoresAvaliados) : 0;
+            let classificacao = '';
+            
+            if (pontuacao >= 4.5) {
+                classificacao = 'EXCELENTE';
+            } else if (pontuacao >= 3.5) {
+                classificacao = 'BOM';
+            } else if (pontuacao >= 2.5) {
+                classificacao = 'REGULAR';
+            } else {
+                classificacao = 'PRECISA MELHORAR';
+            }
+
+            document.getElementById('pontuacaoDisplay').textContent = pontuacao.toFixed(2) + '/5.00';
+            document.getElementById('classificacaoDisplay').textContent = classificacao;
+
+            const laudoResumo = gerarLaudoResumo(pontuacao, classificacao);
+            document.getElementById('laudoResumo').innerHTML = laudoResumo;
+
+            document.getElementById('resultadoCard').classList.add('show');
+
+            document.getElementById('btnSalvar').disabled = fatoresAvaliados < 15;
+
+            avaliacaoAtual = {
+                pontuacao: pontuacao,
+                classificacao: classificacao,
+                fatoresAvaliados: fatoresAvaliados,
+                respostas: coletarRespostas()
+            };
+
+            if (fatoresAvaliados < 15) {
+                mostrarAlerta('⚠️ Avalie pelo menos 15 fatores para poder salvar a avaliação completa.', 'warning');
+            }
+        }
+
+        function coletarRespostas() {
+            const respostas = {};
+            const radios = document.querySelectorAll('input[type="radio"]:checked');
+            
+            radios.forEach(radio => {
+                respostas[radio.name] = radio.value;
+            });
+
+            return respostas;
+        }
+
+        function gerarLaudoResumo(pontuacao, classificacao) {
+            let resumo = '';
+            
+            if (pontuacao >= 4.5) {
+                resumo = '<strong style="color: var(--cor-primaria);">🎯 EXCELENTE DESEMPENHO!</strong><br>';
+                resumo += 'O(a) avaliado(a) demonstra competências excepcionais em liderança. ';
+                resumo += 'Recomenda-se aproveitar seu potencial em projetos estratégicos e como mentor(a) de outros líderes.';
+            } else if (pontuacao >= 3.5) {
+                resumo = '<strong style="color: var(--cor-primaria);">👍 BOM DESEMPENHO!</strong><br>';
+                resumo += 'O(a) avaliado(a) apresenta desempenho sólido com oportunidades específicas de desenvolvimento. ';
+                resumo += 'Com investimento direcionado, pode alcançar nível de excelência.';
+            } else if (pontuacao >= 2.5) {
+                resumo = '<strong style="color: #ffc107;">📈 DESEMPENHO REGULAR</strong><br>';
+                resumo += 'É necessário um plano de desenvolvimento estruturado. ';
+                resumo += 'Recomenda-se coaching individual e acompanhamento próximo para evolução das competências.';
+            } else {
+                resumo = '<strong style="color: #dc3545;">📚 PRECISA MELHORAR</strong><br>';
+                resumo += 'Necessária intervenção imediata com programa intensivo de desenvolvimento. ';
+                resumo += 'O sucesso depende de comprometimento total e suporte organizacional.';
+            }
+
+            return resumo;
+        }
+
+        function limparFormulario() {
+            if (confirm('🗑️ Deseja realmente limpar todos os dados do formulário?')) {
+                document.getElementById('nomeAvaliado').value = '';
+                document.getElementById('matriculaAvaliado').value = '';
+                document.getElementById('funcaoAvaliado').value = '';
+                document.getElementById('nomeGestor').value = '';
+                document.getElementById('matriculaGestor').value = '';
+                document.getElementById('filial').value = '';
+                document.getElementById('pontosFortes').value = '';
+                document.getElementById('oportunidades').value = '';
+                document.getElementById('comentarios').value = '';
+
+                document.querySelectorAll('input[type="radio"]').forEach(radio => {
+                    radio.checked = false;
+                });
+
+                document.getElementById('resultadoCard').classList.remove('show');
+                document.getElementById('btnSalvar').disabled = true;
+                
+                atualizarProgresso();
+                avaliacaoAtual = null;
+
+                mostrarAlerta('🗑️ Formulário limpo com sucesso!', 'info');
+            }
+        }
+
+        function atualizarEstatisticasHome() {
+            const total = avaliacoes.length;
+            let somaNotas = 0;
+            let excelentes = 0;
+
+            avaliacoes.forEach(av => {
+                somaNotas += parseFloat(av.pontuacao);
+                if (av.classificacao === 'EXCELENTE') excelentes++;
+            });
+
+            const media = total > 0 ? (somaNotas / total).toFixed(2) : '0.00';
+
+            animarNumero('totalAvaliacoesHome', total);
+            animarNumero('mediaGeralHome', parseFloat(media));
+            animarNumero('excelentesHome', excelentes);
+            animarNumero('usuariosOnline', 1);
+            
+            // Atualizar status de conexão
+            const statusEl = document.getElementById('statusConexaoHome');
+            if (statusEl) {
+                if (WEBAPP_URL && WEBAPP_URL !== 'SUA_URL_DO_GOOGLE_APPS_SCRIPT_AQUI') {
+                    statusEl.innerHTML = '🟢 <strong>Conectado ao Google Sheets</strong>';
+                    statusEl.style.color = 'var(--cor-primaria)';
+                } else {
+                    statusEl.innerHTML = '🔴 <strong>URL não configurada</strong>';
+                    statusEl.style.color = '#dc3545';
+                }
+            }
+        }
+
+        function atualizarEstatisticasConfig() {
+            const totalColabs = Object.keys(colaboradores).length;
+            const totalGests = Object.keys(gestores).length;
+
+            animarNumero('totalColaboradores', totalColabs);
+            animarNumero('totalGestoresConfig', totalGests);
+            
+            document.getElementById('statusSincronizacao').textContent = 'OK';
+            document.getElementById('ultimaSync').textContent = 'Agora';
+            
+            // Atualizar URL exibida
+            const urlEl = document.getElementById('webappUrl');
+            if (urlEl) {
+                if (WEBAPP_URL && WEBAPP_URL !== 'SUA_URL_DO_GOOGLE_APPS_SCRIPT_AQUI') {
+                    urlEl.textContent = WEBAPP_URL.substring(0, 50) + '...';
+                    urlEl.style.color = 'var(--cor-primaria)';
+                } else {
+                    urlEl.textContent = 'Não configurada';
+                    urlEl.style.color = '#dc3545';
+                }
+            }
+        }
+
+        // =====================================================
+        // FUNÇÕES DE CONFIGURAÇÃO
+        // =====================================================
+
+        function configurarWebApp() {
+            const novaURL = prompt('🔗 Digite a URL da sua Web App do Google Apps Script:\n\n(Exemplo: https://script.google.com/macros/s/SEU_ID/exec)', WEBAPP_URL);
+            
+            if (novaURL && novaURL.trim()) {
+                WEBAPP_URL = novaURL.trim();
+                localStorage.setItem('webapp_url_gg', WEBAPP_URL);
+                
+                atualizarEstatisticasConfig();
+                atualizarEstatisticasHome();
+                
+                mostrarAlerta('✅ URL da Web App configurada com sucesso!', 'success');
+                console.log('🔗 URL configurada:', WEBAPP_URL);
+            }
+        }
+
+        async function testarConexaoSheets() {
+            try {
+                mostrarLoading(true);
+                const resultado = await buscarDoGoogleSheets('status');
+                
+                if (resultado.sucesso) {
+                    mostrarAlerta('✅ Conexão com Google Sheets funcionando perfeitamente!', 'success');
+                } else {
+                    mostrarAlerta('⚠️ Conectado, mas com problemas: ' + resultado.mensagem, 'warning');
+                }
+                
+            } catch (error) {
+                mostrarAlerta('❌ Erro na conexão: ' + error.message, 'danger');
+            } finally {
+                mostrarLoading(false);
+            }
+        }
+
+        async function sincronizarDados() {
+            try {
+                mostrarLoading(true);
+                await carregarDadosSalvos();
+                
+                atualizarEstatisticasHome();
+                atualizarEstatisticasConfig();
+                
+                mostrarAlerta('✅ Sincronização completa realizada!', 'success');
+                
+            } catch (error) {
+                mostrarAlerta('❌ Erro na sincronização: ' + error.message, 'danger');
+            } finally {
+                mostrarLoading(false);
+            }
+        }
+
+        async function backupGoogleSheets() {
+            try {
+                const resultado = await enviarParaGoogleSheets('backup_completo');
+                
+                if (resultado.sucesso) {
+                    const blob = new Blob([JSON.stringify(resultado.dados, null, 2)], { type: 'application/json' });
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'backup_sheets_' + new Date().toISOString().split('T')[0] + '.json';
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                    
+                    mostrarAlerta('💾 Backup do Google Sheets exportado!', 'success');
+                } else {
+                    throw new Error(resultado.mensagem);
+                }
+                
+            } catch (error) {
+                mostrarAlerta('❌ Erro no backup: ' + error.message, 'danger');
+            }
+        }
+
         async function importarColaboradores() {
             const arquivo = document.getElementById('arquivoColaboradores').files[0];
             if (!arquivo) {
@@ -1333,464 +2121,6 @@
         }
 
         // =====================================================
-        // FUNÇÕES DE INTERFACE
-        // =====================================================
-
-        function showSection(sectionId) {
-            document.querySelectorAll('.section').forEach(section => {
-                section.classList.remove('active');
-            });
-
-            document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-
-            document.getElementById(sectionId).classList.add('active');
-
-            // Adicionar classe ativa ao botão correto
-            const botoes = document.querySelectorAll('.nav-btn');
-            botoes.forEach(btn => {
-                if (btn.onclick && btn.onclick.toString().includes(sectionId)) {
-                    btn.classList.add('active');
-                }
-            });
-
-            // Atualizar dados específicos da seção
-            switch(sectionId) {
-                case 'home':
-                    atualizarEstatisticasHome();
-                    break;
-                case 'avaliacao':
-                    inicializarFormularioAvaliacao();
-                    break;
-                case 'historico':
-                    carregarHistorico();
-                    break;
-                case 'configuracoes':
-                    atualizarEstatisticasConfig();
-                    break;
-            }
-        }
-
-        function inicializarFormularioAvaliacao() {
-            criarFormularioCompetencias();
-            atualizarProgresso();
-            configurarBuscaAutomatica();
-        }
-
-        function criarFormularioCompetencias() {
-            const container = document.getElementById('competenciasContainer');
-            let html = '';
-            let fatorIndex = 0;
-
-            COMPETENCIAS.forEach((competencia) => {
-                html += '<div class="competencia-card">';
-                html += '<div class="competencia-header">' + competencia.nome + '</div>';
-
-                competencia.fatores.forEach((fator) => {
-                    html += '<div class="fator-item">';
-                    html += '<div class="fator-texto">' + fator + '</div>';
-                    html += '<div class="rating-container">';
-                    html += '<span class="rating-label">Inadequado</span>';
-                    
-                    for(let i = 1; i <= 5; i++) {
-                        html += '<label class="rating-option">';
-                        html += '<input type="radio" name="fator_' + fatorIndex + '" value="' + i + '" onchange="atualizarProgresso()">';
-                        html += '<span>' + i + '</span>';
-                        html += '</label>';
-                    }
-                    
-                    html += '<span class="rating-label">Excelente</span>';
-                    html += '</div>';
-                    html += '</div>';
-                    fatorIndex++;
-                });
-
-                html += '</div>';
-            });
-
-            container.innerHTML = html;
-        }
-
-        function configurarBuscaAutomatica() {
-            const campoMatriculaAvaliado = document.getElementById('matriculaAvaliado');
-            if (campoMatriculaAvaliado) {
-                campoMatriculaAvaliado.addEventListener('input', function() {
-                    const matricula = this.value.trim();
-                    if (matricula.length >= 3) {
-                        const colaborador = colaboradores[matricula];
-                        if (colaborador) {
-                            document.getElementById('nomeAvaliado').value = colaborador.nome || '';
-                            document.getElementById('funcaoAvaliado').value = colaborador.funcao || '';
-                            document.getElementById('filial').value = colaborador.filial || '';
-                            document.getElementById('regional').value = colaborador.regional || '';
-                            
-                            this.style.borderColor = 'var(--cor-secundaria)';
-                            this.style.backgroundColor = 'rgba(143, 214, 148, 0.1)';
-                        } else {
-                            document.getElementById('nomeAvaliado').value = '';
-                            document.getElementById('funcaoAvaliado').value = '';
-                            document.getElementById('filial').value = '';
-                            document.getElementById('regional').value = '';
-                            
-                            this.style.borderColor = '#e0e0e0';
-                            this.style.backgroundColor = '';
-                        }
-                    }
-                });
-            }
-
-            const campoMatriculaGestor = document.getElementById('matriculaGestor');
-            if (campoMatriculaGestor) {
-                campoMatriculaGestor.addEventListener('input', function() {
-                    const matricula = this.value.trim();
-                    if (matricula.length >= 3) {
-                        const gestor = gestores[matricula];
-                        if (gestor) {
-                            document.getElementById('nomeGestor').value = gestor.nome || '';
-                            
-                            this.style.borderColor = 'var(--cor-secundaria)';
-                            this.style.backgroundColor = 'rgba(143, 214, 148, 0.1)';
-                        } else {
-                            document.getElementById('nomeGestor').value = '';
-                            
-                            this.style.borderColor = '#e0e0e0';
-                            this.style.backgroundColor = '';
-                        }
-                    }
-                });
-            }
-        }
-
-        function atualizarProgresso() {
-            const totalFatores = 31;
-            const fatoresAvaliados = document.querySelectorAll('input[type="radio"]:checked').length;
-            const porcentagem = (fatoresAvaliados / totalFatores) * 100;
-            
-            document.getElementById('progressFill').style.width = porcentagem + '%';
-            document.getElementById('progressText').textContent = fatoresAvaliados + ' de ' + totalFatores + ' fatores avaliados';
-            
-            return fatoresAvaliados;
-        }
-
-        function calcularResultado() {
-            const fatoresAvaliados = atualizarProgresso();
-            
-            if (fatoresAvaliados === 0) {
-                mostrarAlerta('❌ Avalie pelo menos um fator antes de calcular!', 'danger');
-                return;
-            }
-
-            const radios = document.querySelectorAll('input[type="radio"]:checked');
-            let somaNotas = 0;
-            
-            radios.forEach(radio => {
-                somaNotas += parseInt(radio.value);
-            });
-
-            const pontuacao = fatoresAvaliados > 0 ? (somaNotas / fatoresAvaliados) : 0;
-            let classificacao = '';
-            
-            if (pontuacao >= 4.5) {
-                classificacao = 'EXCELENTE';
-            } else if (pontuacao >= 3.5) {
-                classificacao = 'BOM';
-            } else if (pontuacao >= 2.5) {
-                classificacao = 'REGULAR';
-            } else {
-                classificacao = 'PRECISA MELHORAR';
-            }
-
-            document.getElementById('pontuacaoDisplay').textContent = pontuacao.toFixed(2) + '/5.00';
-            document.getElementById('classificacaoDisplay').textContent = classificacao;
-
-            const laudoResumo = gerarLaudoResumo(pontuacao, classificacao);
-            document.getElementById('laudoResumo').innerHTML = laudoResumo;
-
-            document.getElementById('resultadoCard').classList.add('show');
-
-            document.getElementById('btnSalvar').disabled = fatoresAvaliados < 15;
-
-            avaliacaoAtual = {
-                pontuacao: pontuacao,
-                classificacao: classificacao,
-                fatoresAvaliados: fatoresAvaliados,
-                respostas: coletarRespostas()
-            };
-
-            if (fatoresAvaliados < 15) {
-                mostrarAlerta('⚠️ Avalie pelo menos 15 fatores para poder salvar a avaliação completa.', 'warning');
-            }
-        }
-
-        function coletarRespostas() {
-            const respostas = {};
-            const radios = document.querySelectorAll('input[type="radio"]:checked');
-            
-            radios.forEach(radio => {
-                respostas[radio.name] = radio.value;
-            });
-
-            return respostas;
-        }
-
-        function gerarLaudoResumo(pontuacao, classificacao) {
-            let resumo = '';
-            
-            if (pontuacao >= 4.5) {
-                resumo = '<strong style="color: var(--cor-primaria);">🎯 EXCELENTE DESEMPENHO!</strong><br>';
-                resumo += 'O(a) avaliado(a) demonstra competências excepcionais em liderança. ';
-                resumo += 'Recomenda-se aproveitar seu potencial em projetos estratégicos e como mentor(a) de outros líderes.';
-            } else if (pontuacao >= 3.5) {
-                resumo = '<strong style="color: var(--cor-primaria);">👍 BOM DESEMPENHO!</strong><br>';
-                resumo += 'O(a) avaliado(a) apresenta desempenho sólido com oportunidades específicas de desenvolvimento. ';
-                resumo += 'Com investimento direcionado, pode alcançar nível de excelência.';
-            } else if (pontuacao >= 2.5) {
-                resumo = '<strong style="color: #ffc107;">📈 DESEMPENHO REGULAR</strong><br>';
-                resumo += 'É necessário um plano de desenvolvimento estruturado. ';
-                resumo += 'Recomenda-se coaching individual e acompanhamento próximo para evolução das competências.';
-            } else {
-                resumo = '<strong style="color: #dc3545;">📚 PRECISA MELHORAR</strong><br>';
-                resumo += 'Necessária intervenção imediata com programa intensivo de desenvolvimento. ';
-                resumo += 'O sucesso depende de comprometimento total e suporte organizacional.';
-            }
-
-            return resumo;
-        }
-
-        function limparFormulario() {
-            if (confirm('🗑️ Deseja realmente limpar todos os dados do formulário?')) {
-                document.getElementById('nomeAvaliado').value = '';
-                document.getElementById('matriculaAvaliado').value = '';
-                document.getElementById('funcaoAvaliado').value = '';
-                document.getElementById('nomeGestor').value = '';
-                document.getElementById('matriculaGestor').value = '';
-                document.getElementById('filial').value = '';
-                document.getElementById('regional').value = '';
-                document.getElementById('pontosFortes').value = '';
-                document.getElementById('oportunidades').value = '';
-                document.getElementById('comentarios').value = '';
-
-                document.querySelectorAll('input[type="radio"]').forEach(radio => {
-                    radio.checked = false;
-                });
-
-                document.getElementById('resultadoCard').classList.remove('show');
-                document.getElementById('btnSalvar').disabled = true;
-                
-                atualizarProgresso();
-                avaliacaoAtual = null;
-
-                mostrarAlerta('🗑️ Formulário limpo com sucesso!', 'info');
-            }
-        }
-
-        async function carregarHistorico() {
-            console.log('📋 Carregando histórico...');
-            
-            try {
-                mostrarLoading(true);
-                await carregarDadosSalvos();
-                atualizarEstatisticasHistorico();
-                atualizarTabelaHistorico();
-                mostrarAlerta('✅ Histórico sincronizado com Google Sheets!', 'success');
-                
-            } catch (error) {
-                console.error('❌ Erro ao carregar histórico:', error);
-                mostrarAlerta('❌ Erro ao carregar histórico do Google Sheets.', 'danger');
-            } finally {
-                mostrarLoading(false);
-            }
-        }
-
-        function atualizarEstatisticasHistorico() {
-            const total = avaliacoes.length;
-            let somaNotas = 0;
-            let excelentes = 0;
-            let precisamMelhorar = 0;
-
-            avaliacoes.forEach(av => {
-                const nota = parseFloat(av.pontuacao);
-                somaNotas += nota;
-                
-                if (av.classificacao === 'EXCELENTE') excelentes++;
-                if (av.classificacao === 'PRECISA MELHORAR') precisamMelhorar++;
-            });
-
-            const media = total > 0 ? (somaNotas / total).toFixed(2) : '0.00';
-
-            animarNumero('totalAvaliacoes', total);
-            animarNumero('mediaGeral', parseFloat(media));
-            animarNumero('excelentes', excelentes);
-            animarNumero('precisamMelhorar', precisamMelhorar);
-        }
-
-        function atualizarTabelaHistorico() {
-            const container = document.getElementById('tabelaHistorico');
-            
-            if (avaliacoes.length === 0) {
-                container.innerHTML = '<p style="text-align: center; padding: 30px; color: #666;">📭 Nenhuma avaliação encontrada</p>';
-                return;
-            }
-
-            let html = '<table style="width: 100%; border-collapse: collapse; margin: 20px 0;">';
-            html += '<thead><tr style="background: var(--cor-primaria); color: white;">';
-            html += '<th style="padding: 15px; border: 1px solid #ddd;">Data</th>';
-            html += '<th style="padding: 15px; border: 1px solid #ddd;">Avaliado</th>';
-            html += '<th style="padding: 15px; border: 1px solid #ddd;">Gestor</th>';
-            html += '<th style="padding: 15px; border: 1px solid #ddd;">Filial</th>';
-            html += '<th style="padding: 15px; border: 1px solid #ddd;">Pontuação</th>';
-            html += '<th style="padding: 15px; border: 1px solid #ddd;">Classificação</th>';
-            html += '</tr></thead>';
-            html += '<tbody>';
-
-            avaliacoes.forEach(av => {
-                const data = new Date(av.data).toLocaleDateString('pt-BR');
-                html += '<tr style="transition: all 0.3s ease;">';
-                html += '<td style="padding: 15px; border: 1px solid #ddd;">' + data + '</td>';
-                html += '<td style="padding: 15px; border: 1px solid #ddd;">' + av.nomeAvaliado + '</td>';
-                html += '<td style="padding: 15px; border: 1px solid #ddd;">' + av.nomeGestor + '</td>';
-                html += '<td style="padding: 15px; border: 1px solid #ddd;">' + av.filial + '</td>';
-                html += '<td style="padding: 15px; border: 1px solid #ddd;"><strong>' + av.pontuacao + '</strong></td>';
-                html += '<td style="padding: 15px; border: 1px solid #ddd;">' + av.classificacao + '</td>';
-                html += '</tr>';
-            });
-
-            html += '</tbody></table>';
-            container.innerHTML = html;
-        }
-
-        function atualizarEstatisticasHome() {
-            const total = avaliacoes.length;
-            let somaNotas = 0;
-            let excelentes = 0;
-
-            avaliacoes.forEach(av => {
-                somaNotas += parseFloat(av.pontuacao);
-                if (av.classificacao === 'EXCELENTE') excelentes++;
-            });
-
-            const media = total > 0 ? (somaNotas / total).toFixed(2) : '0.00';
-
-            animarNumero('totalAvaliacoesHome', total);
-            animarNumero('mediaGeralHome', parseFloat(media));
-            animarNumero('excelentesHome', excelentes);
-            animarNumero('usuariosOnline', 1);
-            
-            // Atualizar status de conexão
-            const statusEl = document.getElementById('statusConexaoHome');
-            if (statusEl) {
-                if (WEBAPP_URL && WEBAPP_URL !== 'SUA_URL_DO_GOOGLE_APPS_SCRIPT_AQUI') {
-                    statusEl.innerHTML = '🟢 <strong>Conectado ao Google Sheets</strong>';
-                    statusEl.style.color = 'var(--cor-primaria)';
-                } else {
-                    statusEl.innerHTML = '🔴 <strong>URL não configurada</strong>';
-                    statusEl.style.color = '#dc3545';
-                }
-            }
-        }
-
-        function atualizarEstatisticasConfig() {
-            const totalColabs = Object.keys(colaboradores).length;
-            const totalGests = Object.keys(gestores).length;
-
-            animarNumero('totalColaboradores', totalColabs);
-            animarNumero('totalGestoresConfig', totalGests);
-            
-            document.getElementById('statusSincronizacao').textContent = 'OK';
-            document.getElementById('ultimaSync').textContent = 'Agora';
-            
-            // Atualizar URL exibida
-            const urlEl = document.getElementById('webappUrl');
-            if (urlEl) {
-                if (WEBAPP_URL && WEBAPP_URL !== 'SUA_URL_DO_GOOGLE_APPS_SCRIPT_AQUI') {
-                    urlEl.textContent = WEBAPP_URL.substring(0, 50) + '...';
-                    urlEl.style.color = 'var(--cor-primaria)';
-                } else {
-                    urlEl.textContent = 'Não configurada';
-                    urlEl.style.color = '#dc3545';
-                }
-            }
-        }
-
-        // =====================================================
-        // FUNÇÕES DE CONFIGURAÇÃO
-        // =====================================================
-
-        function configurarWebApp() {
-            const novaURL = prompt('🔗 Digite a URL da sua Web App do Google Apps Script:\n\n(Exemplo: https://script.google.com/macros/s/SEU_ID/exec)', WEBAPP_URL);
-            
-            if (novaURL && novaURL.trim()) {
-                WEBAPP_URL = novaURL.trim();
-                localStorage.setItem('webapp_url_gg', WEBAPP_URL);
-                
-                atualizarEstatisticasConfig();
-                atualizarEstatisticasHome();
-                
-                mostrarAlerta('✅ URL da Web App configurada com sucesso!', 'success');
-                console.log('🔗 URL configurada:', WEBAPP_URL);
-            }
-        }
-
-        async function testarConexaoSheets() {
-            try {
-                mostrarLoading(true);
-                const resultado = await buscarDoGoogleSheets('status');
-                
-                if (resultado.sucesso) {
-                    mostrarAlerta('✅ Conexão com Google Sheets funcionando perfeitamente!', 'success');
-                } else {
-                    mostrarAlerta('⚠️ Conectado, mas com problemas: ' + resultado.mensagem, 'warning');
-                }
-                
-            } catch (error) {
-                mostrarAlerta('❌ Erro na conexão: ' + error.message, 'danger');
-            } finally {
-                mostrarLoading(false);
-            }
-        }
-
-        async function sincronizarDados() {
-            try {
-                mostrarLoading(true);
-                await carregarDadosSalvos();
-                
-                atualizarEstatisticasHome();
-                atualizarEstatisticasConfig();
-                
-                mostrarAlerta('✅ Sincronização completa realizada!', 'success');
-                
-            } catch (error) {
-                mostrarAlerta('❌ Erro na sincronização: ' + error.message, 'danger');
-            } finally {
-                mostrarLoading(false);
-            }
-        }
-
-        async function backupGoogleSheets() {
-            try {
-                const resultado = await enviarParaGoogleSheets('backup_completo');
-                
-                if (resultado.sucesso) {
-                    const blob = new Blob([JSON.stringify(resultado.dados, null, 2)], { type: 'application/json' });
-                    const url = window.URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = 'backup_sheets_' + new Date().toISOString().split('T')[0] + '.json';
-                    a.click();
-                    window.URL.revokeObjectURL(url);
-                    
-                    mostrarAlerta('💾 Backup do Google Sheets exportado!', 'success');
-                } else {
-                    throw new Error(resultado.mensagem);
-                }
-                
-            } catch (error) {
-                mostrarAlerta('❌ Erro no backup: ' + error.message, 'danger');
-            }
-        }
-
-        // =====================================================
         // FUNÇÕES AUXILIARES
         // =====================================================
 
@@ -1854,14 +2184,16 @@
         }
 
         function exportarDados() {
-            if (avaliacoes.length === 0) {
+            const dadosFiltrados = filtrarDadosPorAcesso(avaliacoes);
+            
+            if (dadosFiltrados.length === 0) {
                 mostrarAlerta('❌ Nenhuma avaliação para exportar!', 'danger');
                 return;
             }
 
             let csv = 'Data,Avaliado,Matricula,Funcao,Gestor,Filial,Pontuacao,Classificacao\n';
             
-            avaliacoes.forEach(av => {
+            dadosFiltrados.forEach(av => {
                 const linha = [
                     new Date(av.data).toLocaleDateString('pt-BR'),
                     av.nomeAvaliado,
@@ -1879,7 +2211,12 @@
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'avaliacoes_gg_' + new Date().toISOString().split('T')[0] + '.csv';
+            
+            const nomeArquivo = acessoAtual.tipo === 'filial' 
+                ? `avaliacoes_filial_${acessoAtual.filial}_${new Date().toISOString().split('T')[0]}.csv`
+                : `avaliacoes_gg_${new Date().toISOString().split('T')[0]}.csv`;
+            
+            a.download = nomeArquivo;
             a.click();
             window.URL.revokeObjectURL(url);
 
@@ -1945,13 +2282,17 @@
             const colaboradoresExemplo = {
                 '12345': { nome: 'João Silva', funcao: 'COORD. DE LOGISTICA', filial: '713', regional: 'SP' },
                 '67890': { nome: 'Ana Costa', funcao: 'GERENTE DE OPERACOES', filial: '264', regional: 'SC' },
-                '11111': { nome: 'Carlos Mendes', funcao: 'ANALISTA DE LOGISTICA', filial: '743', regional: 'MS' }
+                '11111': { nome: 'Carlos Mendes', funcao: 'ANALISTA DE LOGISTICA', filial: '743', regional: 'MS' },
+                '22222': { nome: 'Fernanda Lima', funcao: 'SUPERVISORA', filial: '753', regional: 'MT' },
+                '33333': { nome: 'Pedro Santos', funcao: 'COORDENADOR', filial: '364', regional: 'DF' }
             };
 
             const gestoresExemplo = {
                 'G001': { nome: 'Maria Santos', funcao: 'GERENTE GERAL', filial: '713', regional: 'SP' },
                 'G002': { nome: 'Pedro Oliveira', funcao: 'GERENTE REGIONAL', filial: '264', regional: 'SC' },
-                'G003': { nome: 'Fernanda Lima', funcao: 'SUPERVISORA GERAL', filial: '743', regional: 'MS' }
+                'G003': { nome: 'Roberto Silva', funcao: 'SUPERVISOR GERAL', filial: '743', regional: 'MS' },
+                'G004': { nome: 'Ana Paula Costa', funcao: 'GERENTE FILIAL', filial: '753', regional: 'MT' },
+                'G005': { nome: 'Carlos Eduardo', funcao: 'COORDENADOR GERAL', filial: '364', regional: 'DF' }
             };
 
             // Atualizar dados locais
@@ -1985,7 +2326,7 @@
         // =====================================================
 
         document.addEventListener('DOMContentLoaded', async function() {
-            console.log('🔄 Iniciando sistema integrado com Google Sheets...');
+            console.log('🔄 Iniciando sistema integrado com autenticação...');
             
             // Carregar URL salva
             const urlSalva = localStorage.getItem('webapp_url_gg');
@@ -1999,7 +2340,7 @@
             // Inicializar interface
             atualizarEstatisticasHome();
             
-            console.log('🎯 Sistema integrado inicializado!');
+            console.log('🎯 Sistema integrado com autenticação inicializado!');
         });
 
         // =====================================================
@@ -2008,17 +2349,23 @@
 
         window.sistemaGG = {
             info: () => ({
-                versao: '2.1.0 - Google Sheets Integration',
+                versao: '2.2.0 - Google Sheets Integration with Authentication',
                 totalAvaliacoes: avaliacoes.length,
                 totalColaboradores: Object.keys(colaboradores).length,
                 totalGestores: Object.keys(gestores).length,
                 webappURL: WEBAPP_URL,
+                acessoAtual: acessoAtual,
+                senhasFiliais: Object.keys(SENHAS_FILIAIS),
+                senhasEspeciais: Object.keys(SENHAS_ESPECIAIS),
                 cache: cacheLocal
             }),
             sincronizar: sincronizarDados,
             testarConexao: testarConexaoSheets,
             configurarURL: configurarWebApp,
             backup: backupGoogleSheets,
+            logout: logout,
+            acesso: () => acessoAtual,
+            filtrarDados: filtrarDadosPorAcesso,
             cache: () => cacheLocal,
             avaliacoes: () => avaliacoes,
             colaboradores: () => colaboradores,
@@ -2026,23 +2373,30 @@
         };
 
         console.log(`
-🎯 SISTEMA G&G - VERSÃO GOOGLE SHEETS INTEGRATION
-================================================
+🎯 SISTEMA G&G - VERSÃO COM AUTENTICAÇÃO POR FILIAL
+==================================================
 ✅ Sistema integrado com Google Sheets
+✅ Controle de acesso por filial implementado
+✅ Filtros automáticos de dados
+✅ Senhas específicas por filial
+✅ Acesso master e administrativo
 ✅ Dados compartilhados entre usuários
 ✅ Sincronização em tempo real
 ✅ Fallback para localStorage
-✅ Interface otimizada
-✅ Comandos de console disponíveis
 
-🔗 CONFIGURAÇÃO:
-1. Configure a URL da Web App em Configurações
-2. Importe colaboradores e gestores
-3. Comece a usar o sistema
+🔐 CONTROLE DE ACESSO:
+• Histórico: Senhas específicas por filial (GGxxxxx)
+• Configurações: Acesso restrito (GGMASTERJP)
+• Master: Acesso completo (GGMASTER/GGMASTERJP)
+
+🏢 FILIAIS CADASTRADAS:
+743-MS | 264-SC | 753-MT | 364-DF | 713-SP
+468-MT | 892-SP | 723-SP | 230-SP | 773-RS
+473-MT | 167-MS | 20-AGP
 
 💻 DESENVOLVIDO POR: Juliano Patrick
 📧 CONTATO: julianocorrea@bateforte.com.br
-================================================
+==================================================
         `);
     </script>
 </body>
