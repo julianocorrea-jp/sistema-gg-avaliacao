@@ -3,14 +3,14 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎯 Sistema de Avaliação de Desempenho - Integrado com Google Sheets</title>
+    <title>🎯 Sistema de Avaliação de Desempenho - Busca Automática</title>
     <style>
         :root {
-            --cor-primaria: #1e441e;     /* Emerald */
-            --cor-secundaria: #8FD694;   /* Celadon */
-            --cor-acento: #77AD78;       /* Asparagus */
-            --cor-neutra: #6F8F72;       /* Reseda green */
-            --cor-escura: #504B43;       /* Walnut brown */
+            --cor-primaria: #1e441e;     
+            --cor-secundaria: #8FD694;   
+            --cor-acento: #77AD78;       
+            --cor-neutra: #6F8F72;       
+            --cor-escura: #504B43;       
             --cor-clara: #F8FAF9;
             --cor-branca: #FFFFFF;
         }
@@ -636,6 +636,26 @@
             transform: scale(1.01);
             transition: all 0.3s ease;
         }
+
+        .status-conexao {
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .status-conectado {
+            background: rgba(143, 214, 148, 0.1);
+            border: 2px solid var(--cor-secundaria);
+            color: var(--cor-primaria);
+        }
+
+        .status-desconectado {
+            background: rgba(220, 53, 69, 0.1);
+            border: 2px solid #dc3545;
+            color: #721c24;
+        }
     </style>
 </head>
 <body>
@@ -643,14 +663,14 @@
     <header class="main-header">
         <div class="container">
             <h1>🎯 SISTEMA DE AVALIAÇÃO DE DESEMPENHO</h1>
-            <p>Integrado com Google Sheets - Dados Compartilhados com Controle de Acesso</p>
+            <p>Busca Automática no Google Sheets - Dados Sempre Atualizados</p>
         </div>
 
         <!-- Créditos do Desenvolvedor -->
         <footer style="background: var(--cor-primaria); color: white; text-align: center; padding: 15px; margin-top: 50px;">
             <div class="container">
                 <p style="margin: 2px 0; font-size: 11px; opacity: 0.7;">
-                    Desenvolvido por Juliano Patrick | julianocorrea@bateforte.com.br | Sistema v2.2 - Google Sheets com Autenticação © 2025
+                    Desenvolvido por Juliano Patrick | julianocorrea@bateforte.com.br | Sistema v3.0 - Busca Automática © 2025
                 </p>
             </div>
         </footer>
@@ -667,20 +687,23 @@
 
         <!-- Seção Home -->
         <section id="home" class="section active">
-            <h2>🏠 Sistema Integrado com Google Sheets</h2>
+            <h2>🏠 Sistema com Busca Automática</h2>
+            
+            <div id="statusConexaoHome" class="status-conexao">
+                <span id="textoStatus">🔄 Verificando conexão...</span>
+            </div>
             
             <div class="alert alert-info">
-                <h4>🔗 Sistema Conectado ao Google Sheets com Controle de Acesso</h4>
-                <p><strong>Todos os usuários agora compartilham os mesmos dados com segurança!</strong></p>
+                <h4>🔗 Sistema Conectado ao Google Sheets</h4>
+                <p><strong>Busca automática de dados sempre atualizados!</strong></p>
                 <ul style="margin: 10px 0; padding-left: 30px;">
-                    <li>✅ Avaliações sincronizadas em tempo real</li>
-                    <li>✅ Colaboradores e gestores compartilhados</li>
-                    <li>✅ Histórico centralizado na nuvem</li>
-                    <li>✅ Backup automático no Google Sheets</li>
-                    <li>🔐 Controle de acesso por filial</li>
-                    <li>🛡️ Segurança avançada de dados</li>
+                    <li>✅ Colaboradores buscados automaticamente das planilhas</li>
+                    <li>✅ Gestores sincronizados em tempo real</li>
+                    <li>✅ Avaliações salvas na nuvem instantaneamente</li>
+                    <li>✅ Histórico centralizado com filtros por filial</li>
+                    <li>🔐 Controle de acesso por filial mantido</li>
+                    <li>🛡️ Dados sempre atualizados das planilhas</li>
                 </ul>
-                <p><strong>Status:</strong> <span id="statusConexaoHome">Verificando...</span></p>
             </div>
             
             <div class="stats-grid">
@@ -693,23 +716,24 @@
                     <div class="stat-label">Média Geral</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number" id="excelentesHome">0</div>
-                    <div class="stat-label">Avaliações Excelentes</div>
+                    <div class="stat-number" id="totalColaboradoresHome">0</div>
+                    <div class="stat-label">Colaboradores Cadastrados</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number" id="usuariosOnline">1</div>
-                    <div class="stat-label">Usuários Conectados</div>
+                    <div class="stat-number" id="totalGestoresHome">0</div>
+                    <div class="stat-label">Gestores Cadastrados</div>
                 </div>
             </div>
 
             <div class="info-card">
                 <h3>🔐 Controle de Acesso por Filial</h3>
-                <p><strong>Sistema de Segurança Implementado:</strong></p>
+                <p><strong>Sistema de Segurança Mantido:</strong></p>
                 <ul style="margin: 15px 0; padding-left: 30px;">
                     <li>📋 <strong>Histórico:</strong> Acesso restrito por filial com senha específica</li>
                     <li>⚙️ <strong>Configurações:</strong> Acesso exclusivo para administradores (GGMASTERJP)</li>
                     <li>🔑 <strong>Senhas Master:</strong> GGMASTER e GGMASTERJP para acesso total</li>
                     <li>🛡️ <strong>Filtros Automáticos:</strong> Dados filtrados conforme nível de acesso</li>
+                    <li>🔄 <strong>Busca Automática:</strong> Dados sempre atualizados das planilhas</li>
                 </ul>
 
                 <h4 style="margin-top: 20px;">🎯 Competências Avaliadas:</h4>
@@ -728,13 +752,19 @@
         <section id="avaliacao" class="section">
             <h2>📝 Nova Avaliação</h2>
 
+            <!-- Status de Carregamento dos Dados -->
+            <div id="statusDados" class="alert alert-info">
+                <p>🔄 <strong>Carregando dados das planilhas...</strong></p>
+            </div>
+
             <!-- Dados Pessoais -->
             <div class="info-card">
                 <h3>👤 Dados Pessoais</h3>
                 <div class="form-row">
                     <div class="form-group">
                         <label for="matriculaAvaliado">Matrícula do Avaliado *</label>
-                        <input type="text" id="matriculaAvaliado" required placeholder="Digite a matrícula...">
+                        <input type="text" id="matriculaAvaliado" required placeholder="Digite a matrícula..." 
+                               onchange="buscarColaborador(this.value)">
                     </div>
                     <div class="form-group">
                         <label for="nomeAvaliado">Nome do Avaliado</label>
@@ -757,11 +787,22 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label for="matriculaGestor">Matrícula do Gestor *</label>
-                        <input type="text" id="matriculaGestor" required placeholder="Digite a matrícula do gestor...">
+                        <input type="text" id="matriculaGestor" required placeholder="Digite a matrícula do gestor..." 
+                               onchange="buscarGestor(this.value)">
                     </div>
                     <div class="form-group">
                         <label for="nomeGestor">Nome do Gestor</label>
                         <input type="text" id="nomeGestor" readonly style="background: #f0f0f0;">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="funcaoGestor">Função do Gestor</label>
+                        <input type="text" id="funcaoGestor" readonly style="background: #f0f0f0;">
+                    </div>
+                    <div class="form-group">
+                        <label for="regionalGestor">Regional</label>
+                        <input type="text" id="regionalGestor" readonly style="background: #f0f0f0;">
                     </div>
                 </div>
             </div>
@@ -879,10 +920,10 @@
                     <p><strong>Acesso Exclusivo para Administradores:</strong></p>
                     <ul style="text-align: left; margin: 15px 0;">
                         <li>🔒 Apenas administradores autorizados</li>
-                        <li>⚙️ Configuração de colaboradores e gestores</li>
-                        <li>📋 Importação de dados via planilha</li>
-                        <li>🔧 Configurações do sistema Google Sheets</li>
-                        <li>🛠️ Ferramentas de manutenção e backup</li>
+                        <li>⚙️ Configuração da URL da Web App</li>
+                        <li>🔧 Testes de conexão com Google Sheets</li>
+                        <li>📊 Visualização de estatísticas completas</li>
+                        <li>🛠️ Ferramentas de diagnóstico e manutenção</li>
                     </ul>
                     
                     <div style="background: rgba(220, 53, 69, 0.1); padding: 15px; border-radius: 10px; margin-top: 15px; border-left: 4px solid #dc3545;">
@@ -947,71 +988,64 @@
 
             <h2>⚙️ Configurações do Sistema</h2>
 
-            <div class="alert alert-warning">
-                <h4>🔧 Configuração da Integração</h4>
-                <p><strong>URL da Web App:</strong> <span id="webappUrl">Não configurada</span></p>
-                <button class="btn btn-sm" onclick="configurarWebApp()">🔗 Configurar URL</button>
+            <!-- Configuração da URL -->
+            <div class="info-card">
+                <h3>🔗 Configuração da Web App</h3>
+                <div class="alert alert-warning">
+                    <p><strong>URL Atual:</strong> <span id="webappUrl">Não configurada</span></p>
+                </div>
+                <div style="text-align: center; margin: 20px 0;">
+                    <button class="btn btn-info" onclick="configurarWebApp()">🔗 Configurar URL da Web App</button>
+                    <button class="btn btn-success" onclick="testarConexaoSheets()">🧪 Testar Conexão</button>
+                </div>
             </div>
 
+            <!-- Status dos Dados -->
             <div class="stats-grid">
                 <div class="stat-card">
-                    <div class="stat-number" id="totalColaboradores">0</div>
-                    <div class="stat-label">Colaboradores</div>
+                    <div class="stat-number" id="totalColaboradoresConfig">0</div>
+                    <div class="stat-label">Colaboradores na Base</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-number" id="totalGestoresConfig">0</div>
-                    <div class="stat-label">Gestores</div>
+                    <div class="stat-label">Gestores na Base</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number" id="statusSincronizacao">OK</div>
-                    <div class="stat-label">Status Sync</div>
+                    <div class="stat-number" id="totalAvaliacoesConfig">0</div>
+                    <div class="stat-label">Avaliações na Base</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number" id="ultimaSync">Agora</div>
-                    <div class="stat-label">Última Sync</div>
+                    <div class="stat-number" id="statusSincronizacao">--</div>
+                    <div class="stat-label">Status da Conexão</div>
                 </div>
             </div>
 
-            <!-- Importação de Colaboradores -->
+            <!-- Ferramentas de Administração -->
             <div class="info-card">
-                <h3>👥 Importar Colaboradores (Sincroniza com Google Sheets)</h3>
-                <p>Arquivo será salvo no Google Sheets e ficará disponível para todos os usuários.</p>
-                
-                <div class="form-group">
-                    <label for="arquivoColaboradores">Arquivo de Colaboradores (CSV)</label>
-                    <input type="file" id="arquivoColaboradores" accept=".csv" style="width: 100%; padding: 12px; border: 2px dashed var(--cor-primaria); border-radius: 8px;">
-                </div>
+                <h3>🛠️ Ferramentas de Administração</h3>
+                <p>Mantenha o sistema sempre atualizado e funcionando perfeitamente.</p>
                 
                 <div style="text-align: center; margin: 20px 0;">
-                    <button class="btn btn-info" onclick="importarColaboradores()">☁️ Importar para Google Sheets</button>
-                    <button class="btn btn-warning" onclick="baixarModeloColaboradores()">📥 Baixar Modelo</button>
-                </div>
-            </div>
-
-            <!-- Importação de Gestores -->
-            <div class="info-card">
-                <h3>👔 Importar Gestores (Sincroniza com Google Sheets)</h3>
-                <p>Arquivo será salvo no Google Sheets e ficará disponível para todos os usuários.</p>
-                
-                <div class="form-group">
-                    <label for="arquivoGestores">Arquivo de Gestores (CSV)</label>
-                    <input type="file" id="arquivoGestores" accept=".csv" style="width: 100%; padding: 12px; border: 2px dashed var(--cor-primaria); border-radius: 8px;">
-                </div>
-                
-                <div style="text-align: center; margin: 20px 0;">
-                    <button class="btn btn-info" onclick="importarGestores()">☁️ Importar para Google Sheets</button>
-                    <button class="btn btn-warning" onclick="baixarModeloGestores()">📥 Baixar Modelo</button>
-                </div>
-            </div>
-
-            <!-- Ações Avançadas -->
-            <div class="info-card">
-                <h3>🔧 Ações Avançadas</h3>
-                <div style="text-align: center; margin: 20px 0;">
-                    <button class="btn btn-success" onclick="testarConexaoSheets()">🧪 Testar Conexão</button>
-                    <button class="btn btn-info" onclick="sincronizarDados()">🔄 Sincronizar Dados</button>
-                    <button class="btn btn-warning" onclick="backupGoogleSheets()">💾 Backup Google Sheets</button>
+                    <button class="btn btn-info" onclick="sincronizarDados()">🔄 Sincronizar Todos os Dados</button>
+                    <button class="btn btn-warning" onclick="verificarIntegridadeDados()">🔍 Verificar Integridade</button>
+                    <button class="btn btn-success" onclick="gerarRelatorioCompleto()">📊 Relatório Completo</button>
                     <button class="btn btn-danger" onclick="logout()">🚪 Sair das Configurações</button>
+                </div>
+            </div>
+
+            <!-- Instruções -->
+            <div class="info-card">
+                <h3>📋 Como Atualizar os Dados</h3>
+                <div class="alert alert-info">
+                    <p><strong>Para atualizar colaboradores e gestores:</strong></p>
+                    <ol style="margin: 15px 0; padding-left: 30px; text-align: left;">
+                        <li>Acesse as planilhas do Google Sheets diretamente</li>
+                        <li>Edite os dados na planilha de Colaboradores</li>
+                        <li>Edite os dados na planilha de Gestores</li>
+                        <li>O sistema buscará automaticamente os dados atualizados</li>
+                        <li>Use o botão "Sincronizar" para forçar atualização</li>
+                    </ol>
+                    <p style="margin-top: 15px;"><strong>💡 Dica:</strong> As mudanças nas planilhas são refletidas automaticamente no sistema!</p>
                 </div>
             </div>
         </section>
@@ -1022,15 +1056,15 @@
         // CONFIGURAÇÃO DA INTEGRAÇÃO GOOGLE SHEETS
         // =====================================================
 
-        // URL da Web App do Google Apps Script (SUBSTITUA PELA SUA URL)
+        // URL da Web App do Google Apps Script
         let WEBAPP_URL = 'https://script.google.com/a/macros/bateforte.com.br/s/AKfycbyt0V1SCUl0NlIuoj-a5lK7I8mqEc-QeQzim4vXHfCNKZ_52moQyqUWl3iNBRl1n8Hq/exec';
 
         // Sistema de controle de acesso
         let acessoAtual = {
-            tipo: null,           // 'filial', 'master', 'admin'
-            senha: null,          // senha utilizada
-            filial: null,         // filial específica (se aplicável)
-            permissoes: []        // array de permissões
+            tipo: null,           
+            senha: null,          
+            filial: null,         
+            permissoes: []        
         };
 
         // Mapeamento de senhas por filial
@@ -1056,19 +1090,21 @@
             'GGMASTERJP': { tipo: 'admin', descricao: 'Acesso administrativo completo' }
         };
 
-        // Cache local para performance
-        let cacheLocal = {
-            avaliacoes: [],
-            colaboradores: {},
-            gestores: {},
-            ultimaAtualizacao: null
-        };
-
-        // Variáveis globais
+        // Variáveis globais para dados
         let avaliacoes = [];
         let colaboradores = {};
         let gestores = {};
         let avaliacaoAtual = null;
+        let dadosCarregados = false;
+
+        // Cache com timestamp para controle de atualização
+        let cacheLocal = {
+            avaliacoes: [],
+            colaboradores: {},
+            gestores: {},
+            ultimaAtualizacao: null,
+            tempoCache: 5 * 60 * 1000 // 5 minutos
+        };
 
         // Competências do sistema
         const COMPETENCIAS = [
@@ -1134,6 +1170,272 @@
                 ]
             }
         ];
+
+        // =====================================================
+        // FUNÇÕES DE COMUNICAÇÃO COM GOOGLE SHEETS
+        // =====================================================
+
+        async function buscarDoGoogleSheets(acao) {
+            if (!WEBAPP_URL || WEBAPP_URL.includes('SEU_ID')) {
+                console.warn('⚠️ URL não configurada');
+                throw new Error('URL da Web App não configurada');
+            }
+
+            try {
+                console.log(`📡 Buscando ${acao} do Google Sheets...`);
+                
+                const response = await fetch(`${WEBAPP_URL}?acao=${acao}`, { 
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const resultado = await response.json();
+                
+                if (resultado && resultado.sucesso) {
+                    console.log(`✅ ${acao} carregado com sucesso (${Array.isArray(resultado.dados) ? resultado.dados.length : Object.keys(resultado.dados || {}).length} itens)`);
+                    return resultado;
+                } else {
+                    throw new Error(resultado?.mensagem || 'Resposta inválida do servidor');
+                }
+
+            } catch (error) {
+                console.error(`❌ Erro ao buscar ${acao}:`, error);
+                throw error;
+            }
+        }
+
+        async function enviarParaGoogleSheets(acao, dados = {}) {
+            if (!WEBAPP_URL || WEBAPP_URL.includes('SEU_ID')) {
+                throw new Error('URL da Web App não configurada');
+            }
+
+            try {
+                console.log('📤 Enviando para Google Sheets:', acao);
+                
+                const payload = { acao: acao, ...dados };
+                
+                const response = await fetch(WEBAPP_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const resultado = await response.json();
+                
+                if (resultado && resultado.sucesso) {
+                    console.log('✅ Dados enviados com sucesso');
+                    return resultado;
+                } else {
+                    throw new Error(resultado?.mensagem || 'Erro desconhecido');
+                }
+                
+            } catch (error) {
+                console.error('❌ Erro na comunicação:', error);
+                throw error;
+            }
+        }
+
+        // =====================================================
+        // FUNÇÕES DE CARREGAMENTO DE DADOS
+        // =====================================================
+
+        async function carregarDadosSalvos() {
+            console.log('📂 Carregando dados das planilhas...');
+            
+            try {
+                // Verificar se os dados em cache ainda são válidos
+                const agora = new Date().getTime();
+                const ultimaAtualizacao = cacheLocal.ultimaAtualizacao;
+                
+                if (ultimaAtualizacao && (agora - ultimaAtualizacao) < cacheLocal.tempoCache && dadosCarregados) {
+                    console.log('💾 Usando dados do cache (ainda válidos)');
+                    atualizarStatusDados('📋 Dados em cache atualizados', 'success');
+                    return;
+                }
+                
+                atualizarStatusDados('🔄 Buscando dados das planilhas...', 'info');
+                
+                // Buscar dados em paralelo
+                const [resAvaliacoes, resColaboradores, resGestores] = await Promise.all([
+                    buscarDoGoogleSheets('buscar_avaliacoes'),
+                    buscarDoGoogleSheets('buscar_colaboradores'),
+                    buscarDoGoogleSheets('buscar_gestores')
+                ]);
+                
+                // Processar resultados
+                if (resAvaliacoes.sucesso) {
+                    avaliacoes = resAvaliacoes.dados || [];
+                    cacheLocal.avaliacoes = avaliacoes;
+                }
+                
+                if (resColaboradores.sucesso) {
+                    colaboradores = resColaboradores.dados || {};
+                    cacheLocal.colaboradores = colaboradores;
+                }
+                
+                if (resGestores.sucesso) {
+                    gestores = resGestores.dados || {};
+                    cacheLocal.gestores = gestores;
+                }
+                
+                cacheLocal.ultimaAtualizacao = agora;
+                dadosCarregados = true;
+                
+                // Salvar no localStorage como backup
+                localStorage.setItem('gg_cache', JSON.stringify(cacheLocal));
+                
+                console.log('✅ Dados carregados:', {
+                    avaliacoes: avaliacoes.length,
+                    colaboradores: Object.keys(colaboradores).length,
+                    gestores: Object.keys(gestores).length
+                });
+                
+                atualizarStatusDados(`✅ Dados carregados: ${Object.keys(colaboradores).length} colaboradores, ${Object.keys(gestores).length} gestores`, 'success');
+                atualizarStatusConexaoHome(true);
+                
+            } catch (error) {
+                console.error('❌ Erro ao carregar dados:', error);
+                
+                // Tentar usar cache do localStorage como fallback
+                try {
+                    const cacheStorage = localStorage.getItem('gg_cache');
+                    if (cacheStorage) {
+                        const dadosCache = JSON.parse(cacheStorage);
+                        cacheLocal = dadosCache;
+                        avaliacoes = dadosCache.avaliacoes || [];
+                        colaboradores = dadosCache.colaboradores || {};
+                        gestores = dadosCache.gestores || {};
+                        dadosCarregados = true;
+                        
+                        atualizarStatusDados('⚠️ Usando dados em cache (offline)', 'warning');
+                        atualizarStatusConexaoHome(false);
+                    } else {
+                        throw new Error('Nenhum cache disponível');
+                    }
+                } catch (cacheError) {
+                    console.error('❌ Erro no cache também:', cacheError);
+                    atualizarStatusDados('❌ Erro ao carregar dados. Verifique a conexão.', 'danger');
+                    atualizarStatusConexaoHome(false);
+                }
+            }
+        }
+
+        function atualizarStatusDados(mensagem, tipo) {
+            const statusEl = document.getElementById('statusDados');
+            if (statusEl) {
+                statusEl.className = `alert alert-${tipo}`;
+                statusEl.innerHTML = `<p><strong>${mensagem}</strong></p>`;
+            }
+        }
+
+        function atualizarStatusConexaoHome(conectado) {
+            const statusEl = document.getElementById('statusConexaoHome');
+            const textoEl = document.getElementById('textoStatus');
+            
+            if (statusEl && textoEl) {
+                if (conectado) {
+                    statusEl.className = 'status-conexao status-conectado';
+                    textoEl.textContent = '🟢 Conectado ao Google Sheets - Dados Atualizados';
+                } else {
+                    statusEl.className = 'status-conexao status-desconectado';
+                    textoEl.textContent = '🔴 Sem conexão - Usando dados em cache';
+                }
+            }
+        }
+
+        // =====================================================
+        // FUNÇÕES DE BUSCA DE COLABORADORES E GESTORES
+        // =====================================================
+
+        function buscarColaborador(matricula) {
+            if (!matricula || matricula.trim() === '') {
+                limparCamposColaborador();
+                return;
+            }
+            
+            const colaborador = colaboradores[matricula.trim()];
+            
+            if (colaborador) {
+                document.getElementById('nomeAvaliado').value = colaborador.nome || '';
+                document.getElementById('funcaoAvaliado').value = colaborador.funcao || '';
+                document.getElementById('filial').value = colaborador.filial || '';
+                
+                // Feedback visual
+                const campo = document.getElementById('matriculaAvaliado');
+                campo.style.borderColor = 'var(--cor-secundaria)';
+                campo.style.backgroundColor = 'rgba(143, 214, 148, 0.1)';
+                
+                mostrarAlerta(`✅ Colaborador encontrado: ${colaborador.nome}`, 'success');
+            } else {
+                limparCamposColaborador();
+                
+                const campo = document.getElementById('matriculaAvaliado');
+                campo.style.borderColor = '#dc3545';
+                campo.style.backgroundColor = 'rgba(220, 53, 69, 0.1)';
+                
+                mostrarAlerta(`❌ Colaborador não encontrado para a matrícula: ${matricula}`, 'warning');
+            }
+        }
+
+        function buscarGestor(matricula) {
+            if (!matricula || matricula.trim() === '') {
+                limparCamposGestor();
+                return;
+            }
+            
+            const gestor = gestores[matricula.trim()];
+            
+            if (gestor) {
+                document.getElementById('nomeGestor').value = gestor.nome || '';
+                document.getElementById('funcaoGestor').value = gestor.funcao || '';
+                document.getElementById('regionalGestor').value = gestor.regional || '';
+                
+                // Feedback visual
+                const campo = document.getElementById('matriculaGestor');
+                campo.style.borderColor = 'var(--cor-secundaria)';
+                campo.style.backgroundColor = 'rgba(143, 214, 148, 0.1)';
+                
+                mostrarAlerta(`✅ Gestor encontrado: ${gestor.nome}`, 'success');
+            } else {
+                limparCamposGestor();
+                
+                const campo = document.getElementById('matriculaGestor');
+                campo.style.borderColor = '#dc3545';
+                campo.style.backgroundColor = 'rgba(220, 53, 69, 0.1)';
+                
+                mostrarAlerta(`❌ Gestor não encontrado para a matrícula: ${matricula}`, 'warning');
+            }
+        }
+
+        function limparCamposColaborador() {
+            document.getElementById('nomeAvaliado').value = '';
+            document.getElementById('funcaoAvaliado').value = '';
+            document.getElementById('filial').value = '';
+            
+            const campo = document.getElementById('matriculaAvaliado');
+            campo.style.borderColor = '#e0e0e0';
+            campo.style.backgroundColor = '';
+        }
+
+        function limparCamposGestor() {
+            document.getElementById('nomeGestor').value = '';
+            document.getElementById('funcaoGestor').value = '';
+            document.getElementById('regionalGestor').value = '';
+            
+            const campo = document.getElementById('matriculaGestor');
+            campo.style.borderColor = '#e0e0e0';
+            campo.style.backgroundColor = '';
+        }
 
         // =====================================================
         // FUNÇÕES DE AUTENTICAÇÃO E CONTROLE DE ACESSO
@@ -1224,7 +1526,6 @@
             if (!statusElement) return;
 
             let statusText = '';
-            let statusClass = 'access-status';
 
             switch(acessoAtual.tipo) {
                 case 'admin':
@@ -1284,179 +1585,8 @@
         }
 
         // =====================================================
-        // FUNÇÕES DE COMUNICAÇÃO COM GOOGLE SHEETS
-        // =====================================================
-
-        async function enviarParaGoogleSheets(acao, dados = {}) {
-            if (!WEBAPP_URL || WEBAPP_URL === 'https://script.google.com/a/macros/bateforte.com.br/s/AKfycbyt0V1SCUl0NlIuoj-a5lK7I8mqEc-QeQzim4vXHfCNKZ_52moQyqUWl3iNBRl1n8Hq/exec') {
-                throw new Error('URL da Web App não configurada. Configure em Configurações.');
-            }
-
-            try {
-                mostrarLoading(true);
-                console.log('📤 Enviando para Google Sheets:', acao);
-                
-                const payload = { acao: acao, ...dados };
-                
-                const response = await fetch(WEBAPP_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-                
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                
-                const resultado = await response.json();
-                console.log('📥 Resposta do Google Sheets:', resultado);
-                
-                return resultado;
-                
-            } catch (error) {
-                console.error('❌ Erro na comunicação:', error);
-                throw error;
-            } finally {
-                mostrarLoading(false);
-            }
-        }
-
-        async function buscarDoGoogleSheets(acao) {
-    if (!WEBAPP_URL || WEBAPP_URL.includes('SEU_ID')) {
-        console.warn('⚠️ URL não configurada, usando dados locais');
-        return usarCacheLocal(acao);
-    }
-
-    try {
-        const response = await fetch(`${WEBAPP_URL}?acao=${acao}`, { method: 'GET' });
-        
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        
-        const resultado = await response.json();
-        
-        if (resultado && resultado.sucesso) {
-            console.log(`📋 ${acao} carregado com sucesso (${Array.isArray(resultado.dados) ? resultado.dados.length : Object.keys(resultado.dados || {}).length} itens)`);
-            
-            // Salvar no cache e localStorage
-            if (acao === 'buscar_avaliacoes') {
-                cacheLocal.avaliacoes = resultado.dados;
-                localStorage.setItem('avaliacoes_gg', JSON.stringify(resultado.dados));
-            } else if (acao === 'buscar_colaboradores') {
-                cacheLocal.colaboradores = resultado.dados;
-                localStorage.setItem('colaboradores_gg', JSON.stringify(resultado.dados));
-            } else if (acao === 'buscar_gestores') {
-                cacheLocal.gestores = resultado.dados;
-                localStorage.setItem('gestores_gg', JSON.stringify(resultado.dados));
-            }
-
-            return resultado;
-        } else {
-            console.warn(`⚠️ ${acao} sem sucesso:`, resultado?.mensagem);
-            return usarCacheLocal(acao);
-        }
-
-    } catch (error) {
-        console.error(`❌ Erro ao buscar ${acao}:`, error);
-        return usarCacheLocal(acao);
-    }
-}
-
-function usarCacheLocal(acao) {
-    console.log('💾 Usando cache local para:', acao);
-    let dados;
-
-    if (acao === 'buscar_avaliacoes') {
-        dados = cacheLocal.avaliacoes.length ? cacheLocal.avaliacoes : JSON.parse(localStorage.getItem('avaliacoes_gg') || '[]');
-        return { sucesso: true, dados: dados, mensagem: 'Cache local' };
-    }
-    if (acao === 'buscar_colaboradores') {
-        dados = Object.keys(cacheLocal.colaboradores).length ? cacheLocal.colaboradores : JSON.parse(localStorage.getItem('colaboradores_gg') || '{}');
-        return { sucesso: true, dados: dados, mensagem: 'Cache local' };
-    }
-    if (acao === 'buscar_gestores') {
-        dados = Object.keys(cacheLocal.gestores).length ? cacheLocal.gestores : JSON.parse(localStorage.getItem('gestores_gg') || '{}');
-        return { sucesso: true, dados: dados, mensagem: 'Cache local' };
-    }
-
-    return { sucesso: false, mensagem: '❌ Dados não encontrados nem no cache' };
-};
-                case 'buscar_colaboradores':
-                    return { sucesso: true, dados: cacheLocal.colaboradores || {}, mensagem: 'Cache local' };
-                case 'buscar_gestores':
-                    return { sucesso: true, dados: cacheLocal.gestores || {}, mensagem: 'Cache local' };
-                default:
-                    return { sucesso: false, mensagem: 'Não disponível no cache' };
-            }
-        }
-
-        // =====================================================
         // FUNÇÕES PRINCIPAIS DO SISTEMA
         // =====================================================
-
-        async function carregarDadosSalvos() {
-            console.log('📂 Carregando dados...');
-            
-            try {
-                // Tentar carregar do Google Sheets
-                const [resAvaliacoes, resColaboradores, resGestores] = await Promise.all([
-                    buscarDoGoogleSheets('buscar_avaliacoes'),
-                    buscarDoGoogleSheets('buscar_colaboradores'),
-                    buscarDoGoogleSheets('buscar_gestores')
-                ]);
-                
-                if (resAvaliacoes.sucesso) {
-                    avaliacoes = resAvaliacoes.dados || [];
-                    cacheLocal.avaliacoes = avaliacoes;
-                }
-                
-                if (resColaboradores.sucesso) {
-                    colaboradores = resColaboradores.dados || {};
-                    cacheLocal.colaboradores = colaboradores;
-                }
-                
-                if (resGestores.sucesso) {
-                    gestores = resGestores.dados || {};
-                    cacheLocal.gestores = gestores;
-                }
-                
-                cacheLocal.ultimaAtualizacao = new Date();
-                
-                console.log('✅ Dados carregados:', {
-                    avaliacoes: avaliacoes.length,
-                    colaboradores: Object.keys(colaboradores).length,
-                    gestores: Object.keys(gestores).length
-                });
-                
-                // Se não há dados, criar exemplos
-                if (avaliacoes.length === 0 && Object.keys(colaboradores).length === 0) {
-                    await criarDadosExemplo();
-                }
-                
-            } catch (error) {
-                console.error('❌ Erro ao carregar:', error);
-                carregarDadosDoLocalStorage();
-            }
-        }
-
-        function carregarDadosDoLocalStorage() {
-            console.log('💾 Usando localStorage como fallback...');
-            
-            try {
-                avaliacoes = JSON.parse(localStorage.getItem('avaliacoes_gg') || '[]');
-                colaboradores = JSON.parse(localStorage.getItem('colaboradores_gg') || '{}');
-                gestores = JSON.parse(localStorage.getItem('gestores_gg') || '{}');
-                
-                cacheLocal = { avaliacoes, colaboradores, gestores, ultimaAtualizacao: new Date() };
-                
-            } catch (error) {
-                console.error('❌ Erro no localStorage:', error);
-                avaliacoes = [];
-                colaboradores = {};
-                gestores = {};
-            }
-        }
 
         async function salvarAvaliacao() {
             if (!avaliacaoAtual) {
@@ -1481,8 +1611,9 @@ function usarCacheLocal(acao) {
                 funcaoAvaliado: document.getElementById('funcaoAvaliado').value,
                 nomeGestor: nomeGestor,
                 matriculaGestor: document.getElementById('matriculaGestor').value,
+                funcaoGestor: document.getElementById('funcaoGestor').value,
                 filial: filial,
-                regional: document.getElementById('regional').value || 'N/A',
+                regional: document.getElementById('regionalGestor').value || 'N/A',
                 pontuacao: avaliacaoAtual.pontuacao.toFixed(2),
                 classificacao: avaliacaoAtual.classificacao,
                 pontosFortes: document.getElementById('pontosFortes').value,
@@ -1492,12 +1623,13 @@ function usarCacheLocal(acao) {
             };
 
             try {
+                mostrarLoading(true);
                 const resultado = await enviarParaGoogleSheets('salvar_avaliacao', { avaliacao: avaliacao });
                 
                 if (resultado.sucesso) {
                     avaliacoes.push(avaliacao);
                     cacheLocal.avaliacoes = avaliacoes;
-                    localStorage.setItem('avaliacoes_gg', JSON.stringify(avaliacoes));
+                    localStorage.setItem('gg_cache', JSON.stringify(cacheLocal));
                     
                     mostrarAlerta('✅ Avaliação salva no Google Sheets! ID: ' + avaliacao.id, 'success');
                     
@@ -1512,11 +1644,9 @@ function usarCacheLocal(acao) {
                 
             } catch (error) {
                 console.error('❌ Erro ao salvar na cloud:', error);
-                
-                // Fallback para localStorage
-                avaliacoes.push(avaliacao);
-                localStorage.setItem('avaliacoes_gg', JSON.stringify(avaliacoes));
-                mostrarAlerta('⚠️ Avaliação salva localmente. Será sincronizada quando possível.', 'warning');
+                mostrarAlerta('❌ Erro ao salvar: ' + error.message, 'danger');
+            } finally {
+                mostrarLoading(false);
             }
         }
 
@@ -1525,6 +1655,8 @@ function usarCacheLocal(acao) {
             
             try {
                 mostrarLoading(true);
+                
+                // Recarregar dados se necessário
                 await carregarDadosSalvos();
                 
                 // Filtrar dados conforme acesso
@@ -1538,7 +1670,7 @@ function usarCacheLocal(acao) {
                 
             } catch (error) {
                 console.error('❌ Erro ao carregar histórico:', error);
-                mostrarAlerta('❌ Erro ao carregar histórico do Google Sheets.', 'danger');
+                mostrarAlerta('❌ Erro ao carregar histórico: ' + error.message, 'danger');
             } finally {
                 mostrarLoading(false);
             }
@@ -1656,7 +1788,11 @@ function usarCacheLocal(acao) {
         function inicializarFormularioAvaliacao() {
             criarFormularioCompetencias();
             atualizarProgresso();
-            configurarBuscaAutomatica();
+            
+            // Verificar se os dados estão carregados
+            if (!dadosCarregados) {
+                carregarDadosSalvos();
+            }
         }
 
         function criarFormularioCompetencias() {
@@ -1691,54 +1827,6 @@ function usarCacheLocal(acao) {
             });
 
             container.innerHTML = html;
-        }
-
-        function configurarBuscaAutomatica() {
-            const campoMatriculaAvaliado = document.getElementById('matriculaAvaliado');
-            if (campoMatriculaAvaliado) {
-                campoMatriculaAvaliado.addEventListener('input', function() {
-                    const matricula = this.value.trim();
-                    if (matricula.length >= 3) {
-                        const colaborador = colaboradores[matricula];
-                        if (colaborador) {
-                            document.getElementById('nomeAvaliado').value = colaborador.nome || '';
-                            document.getElementById('funcaoAvaliado').value = colaborador.funcao || '';
-                            document.getElementById('filial').value = colaborador.filial || '';
-                            
-                            this.style.borderColor = 'var(--cor-secundaria)';
-                            this.style.backgroundColor = 'rgba(143, 214, 148, 0.1)';
-                        } else {
-                            document.getElementById('nomeAvaliado').value = '';
-                            document.getElementById('funcaoAvaliado').value = '';
-                            document.getElementById('filial').value = '';
-                            
-                            this.style.borderColor = '#e0e0e0';
-                            this.style.backgroundColor = '';
-                        }
-                    }
-                });
-            }
-
-            const campoMatriculaGestor = document.getElementById('matriculaGestor');
-            if (campoMatriculaGestor) {
-                campoMatriculaGestor.addEventListener('input', function() {
-                    const matricula = this.value.trim();
-                    if (matricula.length >= 3) {
-                        const gestor = gestores[matricula];
-                        if (gestor) {
-                            document.getElementById('nomeGestor').value = gestor.nome || '';
-                            
-                            this.style.borderColor = 'var(--cor-secundaria)';
-                            this.style.backgroundColor = 'rgba(143, 214, 148, 0.1)';
-                        } else {
-                            document.getElementById('nomeGestor').value = '';
-                            
-                            this.style.borderColor = '#e0e0e0';
-                            this.style.backgroundColor = '';
-                        }
-                    }
-                });
-            }
         }
 
         function atualizarProgresso() {
@@ -1844,7 +1932,9 @@ function usarCacheLocal(acao) {
                 document.getElementById('funcaoAvaliado').value = '';
                 document.getElementById('nomeGestor').value = '';
                 document.getElementById('matriculaGestor').value = '';
+                document.getElementById('funcaoGestor').value = '';
                 document.getElementById('filial').value = '';
+                document.getElementById('regionalGestor').value = '';
                 document.getElementById('pontosFortes').value = '';
                 document.getElementById('oportunidades').value = '';
                 document.getElementById('comentarios').value = '';
@@ -1855,6 +1945,10 @@ function usarCacheLocal(acao) {
 
                 document.getElementById('resultadoCard').classList.remove('show');
                 document.getElementById('btnSalvar').disabled = true;
+                
+                // Resetar feedback visual
+                limparCamposColaborador();
+                limparCamposGestor();
                 
                 atualizarProgresso();
                 avaliacaoAtual = null;
@@ -1877,36 +1971,35 @@ function usarCacheLocal(acao) {
 
             animarNumero('totalAvaliacoesHome', total);
             animarNumero('mediaGeralHome', parseFloat(media));
-            animarNumero('excelentesHome', excelentes);
-            animarNumero('usuariosOnline', 1);
-            
-            // Atualizar status de conexão
-            const statusEl = document.getElementById('statusConexaoHome');
-            if (statusEl) {
-                if (WEBAPP_URL && WEBAPP_URL !== 'https://script.google.com/a/macros/bateforte.com.br/s/AKfycbyt0V1SCUl0NlIuoj-a5lK7I8mqEc-QeQzim4vXHfCNKZ_52moQyqUWl3iNBRl1n8Hq/exec') {
-                    statusEl.innerHTML = '🟢 <strong>Conectado ao Google Sheets</strong>';
-                    statusEl.style.color = 'var(--cor-primaria)';
-                } else {
-                    statusEl.innerHTML = '🔴 <strong>URL não configurada</strong>';
-                    statusEl.style.color = '#dc3545';
-                }
-            }
+            animarNumero('totalColaboradoresHome', Object.keys(colaboradores).length);
+            animarNumero('totalGestoresHome', Object.keys(gestores).length);
         }
 
         function atualizarEstatisticasConfig() {
             const totalColabs = Object.keys(colaboradores).length;
             const totalGests = Object.keys(gestores).length;
+            const totalAvs = avaliacoes.length;
 
-            animarNumero('totalColaboradores', totalColabs);
+            animarNumero('totalColaboradoresConfig', totalColabs);
             animarNumero('totalGestoresConfig', totalGests);
+            animarNumero('totalAvaliacoesConfig', totalAvs);
             
-            document.getElementById('statusSincronizacao').textContent = 'OK';
-            document.getElementById('ultimaSync').textContent = 'Agora';
+            // Atualizar status da conexão
+            const statusEl = document.getElementById('statusSincronizacao');
+            if (statusEl) {
+                if (dadosCarregados) {
+                    statusEl.textContent = 'OK';
+                    statusEl.style.color = 'var(--cor-primaria)';
+                } else {
+                    statusEl.textContent = 'ERRO';
+                    statusEl.style.color = '#dc3545';
+                }
+            }
             
             // Atualizar URL exibida
             const urlEl = document.getElementById('webappUrl');
             if (urlEl) {
-                if (WEBAPP_URL && WEBAPP_URL !== 'https://script.google.com/a/macros/bateforte.com.br/s/AKfycbyt0V1SCUl0NlIuoj-a5lK7I8mqEc-QeQzim4vXHfCNKZ_52moQyqUWl3iNBRl1n8Hq/exec') {
+                if (WEBAPP_URL && !WEBAPP_URL.includes('SEU_ID')) {
                     urlEl.textContent = WEBAPP_URL.substring(0, 50) + '...';
                     urlEl.style.color = 'var(--cor-primaria)';
                 } else {
@@ -1927,11 +2020,17 @@ function usarCacheLocal(acao) {
                 WEBAPP_URL = novaURL.trim();
                 localStorage.setItem('webapp_url_gg', WEBAPP_URL);
                 
+                // Resetar dados para forçar nova busca
+                dadosCarregados = false;
+                cacheLocal.ultimaAtualizacao = null;
+                
                 atualizarEstatisticasConfig();
-                atualizarEstatisticasHome();
                 
                 mostrarAlerta('✅ URL da Web App configurada com sucesso!', 'success');
                 console.log('🔗 URL configurada:', WEBAPP_URL);
+                
+                // Tentar carregar dados automaticamente
+                carregarDadosSalvos();
             }
         }
 
@@ -1956,6 +2055,11 @@ function usarCacheLocal(acao) {
         async function sincronizarDados() {
             try {
                 mostrarLoading(true);
+                
+                // Forçar nova busca dos dados
+                dadosCarregados = false;
+                cacheLocal.ultimaAtualizacao = null;
+                
                 await carregarDadosSalvos();
                 
                 atualizarEstatisticasHome();
@@ -1970,248 +2074,68 @@ function usarCacheLocal(acao) {
             }
         }
 
-        async function backupGoogleSheets() {
+        async function verificarIntegridadeDados() {
             try {
-                const resultado = await enviarParaGoogleSheets('backup_completo');
+                mostrarLoading(true);
                 
-                if (resultado.sucesso) {
-                    const blob = new Blob([JSON.stringify(resultado.dados, null, 2)], { type: 'application/json' });
-                    const url = window.URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = 'backup_sheets_' + new Date().toISOString().split('T')[0] + '.json';
-                    a.click();
-                    window.URL.revokeObjectURL(url);
-                    
-                    mostrarAlerta('💾 Backup do Google Sheets exportado!', 'success');
-                } else {
-                    throw new Error(resultado.mensagem);
-                }
+                const stats = {
+                    colaboradores: Object.keys(colaboradores).length,
+                    gestores: Object.keys(gestores).length,
+                    avaliacoes: avaliacoes.length,
+                    cacheValido: cacheLocal.ultimaAtualizacao && (new Date().getTime() - cacheLocal.ultimaAtualizacao) < cacheLocal.tempoCache
+                };
+                
+                let relatorio = `📊 RELATÓRIO DE INTEGRIDADE\n\n`;
+                relatorio += `• Colaboradores: ${stats.colaboradores}\n`;
+                relatorio += `• Gestores: ${stats.gestores}\n`;
+                relatorio += `• Avaliações: ${stats.avaliacoes}\n`;
+                relatorio += `• Cache válido: ${stats.cacheValido ? 'Sim' : 'Não'}\n`;
+                relatorio += `• Última atualização: ${cacheLocal.ultimaAtualizacao ? new Date(cacheLocal.ultimaAtualizacao).toLocaleString() : 'Nunca'}`;
+                
+                alert(relatorio);
+                mostrarAlerta('✅ Verificação de integridade concluída!', 'info');
                 
             } catch (error) {
-                mostrarAlerta('❌ Erro no backup: ' + error.message, 'danger');
+                mostrarAlerta('❌ Erro na verificação: ' + error.message, 'danger');
+            } finally {
+                mostrarLoading(false);
             }
         }
 
-        async function importarColaboradores() {
-            const arquivo = document.getElementById('arquivoColaboradores').files[0];
-            if (!arquivo) {
-                mostrarAlerta('❌ Selecione um arquivo primeiro!', 'danger');
-                return;
+        async function gerarRelatorioCompleto() {
+            try {
+                const dadosCompletos = {
+                    sistema: {
+                        versao: '3.0.0',
+                        timestamp: new Date().toISOString(),
+                        usuario: acessoAtual.senha || 'Anônimo'
+                    },
+                    estatisticas: {
+                        colaboradores: Object.keys(colaboradores).length,
+                        gestores: Object.keys(gestores).length,
+                        avaliacoes: avaliacoes.length,
+                        dadosCarregados: dadosCarregados
+                    },
+                    dados: {
+                        colaboradores: colaboradores,
+                        gestores: gestores,
+                        avaliacoes: avaliacoes
+                    }
+                };
+                
+                const blob = new Blob([JSON.stringify(dadosCompletos, null, 2)], { type: 'application/json' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'relatorio_completo_gg_' + new Date().toISOString().split('T')[0] + '.json';
+                a.click();
+                window.URL.revokeObjectURL(url);
+                
+                mostrarAlerta('📊 Relatório completo exportado!', 'success');
+                
+            } catch (error) {
+                mostrarAlerta('❌ Erro ao gerar relatório: ' + error.message, 'danger');
             }
-
-            mostrarLoading(true);
-            
-            const reader = new FileReader();
-            reader.onload = async function(e) {
-                try {
-                    const dados = processarCSV(e.target.result);
-                    
-                    if (!dados || dados.length === 0) {
-                        mostrarAlerta('❌ Arquivo vazio ou formato inválido!', 'danger');
-                        mostrarLoading(false);
-                        return;
-                    }
-
-                    const novosColaboradores = {};
-                    let processados = 0;
-
-                    dados.forEach((linha) => {
-                        if (linha.length >= 2) {
-                            const matricula = linha[0]?.toString().trim();
-                            const nome = linha[1]?.toString().trim();
-                            const funcao = linha[2]?.toString().trim() || '';
-                            const filial = linha[3]?.toString().trim() || '';
-                            const regional = linha[4]?.toString().trim() || '';
-
-                            if (matricula && nome) {
-                                novosColaboradores[matricula] = { nome, funcao, filial, regional };
-                                processados++;
-                            }
-                        }
-                    });
-
-                    if (processados === 0) {
-                        mostrarAlerta('❌ Nenhum colaborador foi processado!', 'danger');
-                        mostrarLoading(false);
-                        return;
-                    }
-
-                    try {
-                        const resultado = await enviarParaGoogleSheets('salvar_colaboradores', { 
-                            colaboradores: novosColaboradores 
-                        });
-                        
-                        if (resultado.sucesso) {
-                            colaboradores = { ...colaboradores, ...novosColaboradores };
-                            cacheLocal.colaboradores = colaboradores;
-                            localStorage.setItem('colaboradores_gg', JSON.stringify(colaboradores));
-                            
-                            atualizarEstatisticasConfig();
-                            mostrarAlerta(`✅ ${processados} colaboradores salvos no Google Sheets!`, 'success');
-                            
-                        } else {
-                            throw new Error(resultado.mensagem);
-                        }
-                        
-                    } catch (error) {
-                        console.error('❌ Erro ao salvar na cloud:', error);
-                        colaboradores = { ...colaboradores, ...novosColaboradores };
-                        localStorage.setItem('colaboradores_gg', JSON.stringify(colaboradores));
-                        mostrarAlerta(`⚠️ ${processados} colaboradores salvos localmente.`, 'warning');
-                    }
-
-                } catch (error) {
-                    console.error('❌ Erro na importação:', error);
-                    mostrarAlerta('❌ Erro ao processar arquivo: ' + error.message, 'danger');
-                } finally {
-                    mostrarLoading(false);
-                }
-            };
-
-            reader.readAsText(arquivo, 'UTF-8');
-        }
-
-        async function importarGestores() {
-            const arquivo = document.getElementById('arquivoGestores').files[0];
-            if (!arquivo) {
-                mostrarAlerta('❌ Selecione um arquivo primeiro!', 'danger');
-                return;
-            }
-
-            mostrarLoading(true);
-            
-            const reader = new FileReader();
-            reader.onload = async function(e) {
-                try {
-                    const dados = processarCSV(e.target.result);
-                    
-                    if (!dados || dados.length === 0) {
-                        mostrarAlerta('❌ Arquivo vazio ou formato inválido!', 'danger');
-                        mostrarLoading(false);
-                        return;
-                    }
-
-                    const novosGestores = {};
-                    let processados = 0;
-
-                    dados.forEach((linha) => {
-                        if (linha.length >= 2) {
-                            const matricula = linha[0]?.toString().trim();
-                            const nome = linha[1]?.toString().trim();
-                            const funcao = linha[2]?.toString().trim() || '';
-                            const filial = linha[3]?.toString().trim() || '';
-                            const regional = linha[4]?.toString().trim() || '';
-
-                            if (matricula && nome) {
-                                novosGestores[matricula] = { nome, funcao, filial, regional };
-                                processados++;
-                            }
-                        }
-                    });
-
-                    if (processados === 0) {
-                        mostrarAlerta('❌ Nenhum gestor foi processado!', 'danger');
-                        mostrarLoading(false);
-                        return;
-                    }
-
-                    try {
-                        const resultado = await enviarParaGoogleSheets('salvar_gestores', { 
-                            gestores: novosGestores 
-                        });
-                        
-                        if (resultado.sucesso) {
-                            gestores = { ...gestores, ...novosGestores };
-                            cacheLocal.gestores = gestores;
-                            localStorage.setItem('gestores_gg', JSON.stringify(gestores));
-                            
-                            atualizarEstatisticasConfig();
-                            mostrarAlerta(`✅ ${processados} gestores salvos no Google Sheets!`, 'success');
-                            
-                        } else {
-                            throw new Error(resultado.mensagem);
-                        }
-                        
-                    } catch (error) {
-                        console.error('❌ Erro ao salvar na cloud:', error);
-                        gestores = { ...gestores, ...novosGestores };
-                        localStorage.setItem('gestores_gg', JSON.stringify(gestores));
-                        mostrarAlerta(`⚠️ ${processados} gestores salvos localmente.`, 'warning');
-                    }
-
-                } catch (error) {
-                    console.error('❌ Erro na importação:', error);
-                    mostrarAlerta('❌ Erro ao processar arquivo: ' + error.message, 'danger');
-                } finally {
-                    mostrarLoading(false);
-                }
-            };
-
-            reader.readAsText(arquivo, 'UTF-8');
-        }
-
-        // =====================================================
-        // FUNÇÕES AUXILIARES
-        // =====================================================
-
-        function processarCSV(conteudo) {
-            const linhas = conteudo.split('\n');
-            const dados = [];
-            
-            linhas.forEach((linha) => {
-                if (linha.trim()) {
-                    let campos;
-                    
-                    if (linha.includes(';')) {
-                        campos = linha.split(';').map(campo => campo.trim().replace(/"/g, ''));
-                    } else if (linha.includes(',')) {
-                        campos = linha.split(',').map(campo => campo.trim().replace(/"/g, ''));
-                    } else {
-                        campos = [linha.trim()];
-                    }
-                    
-                    dados.push(campos);
-                }
-            });
-
-            // Remover cabeçalho se existir
-            if (dados.length > 0) {
-                const textoLinha = dados[0].join(' ').toLowerCase();
-                if (textoLinha.includes('matricula') || textoLinha.includes('nome')) {
-                    dados.shift();
-                }
-            }
-
-            return dados;
-        }
-
-        function baixarModeloColaboradores() {
-            const modelo = 'Matricula;Nome;Funcao;Filial;Regional\n12345;João Silva;Analista;713;SP\n67890;Maria Santos;Coordenadora;743;MS';
-            
-            const blob = new Blob([modelo], { type: 'text/csv' });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'modelo_colaboradores.csv';
-            a.click();
-            window.URL.revokeObjectURL(url);
-
-            mostrarAlerta('📥 Modelo de colaboradores baixado!', 'info');
-        }
-
-        function baixarModeloGestores() {
-            const modelo = 'Matricula;Nome;Funcao;Filial;Regional\nG001;Pedro Oliveira;Gerente;713;SP\nG002;Ana Costa;Supervisora;743;MS';
-            
-            const blob = new Blob([modelo], { type: 'text/csv' });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'modelo_gestores.csv';
-            a.click();
-            window.URL.revokeObjectURL(url);
-
-            mostrarAlerta('📥 Modelo de gestores baixado!', 'info');
         }
 
         function exportarDados() {
@@ -2254,6 +2178,10 @@ function usarCacheLocal(acao) {
             mostrarAlerta('📥 Dados exportados com sucesso!', 'success');
         }
 
+        // =====================================================
+        // FUNÇÕES AUXILIARES
+        // =====================================================
+
         function animarNumero(elementId, valorFinal, duracao = 1000) {
             const elemento = document.getElementById(elementId);
             if (!elemento) return;
@@ -2283,7 +2211,11 @@ function usarCacheLocal(acao) {
 
         function mostrarAlerta(mensagem, tipo) {
             const alertasExistentes = document.querySelectorAll('.alert');
-            alertasExistentes.forEach(alerta => alerta.remove());
+            alertasExistentes.forEach(alerta => {
+                if (!alerta.id || alerta.id !== 'statusDados') {
+                    alerta.remove();
+                }
+            });
 
             const alerta = document.createElement('div');
             alerta.className = 'alert alert-' + tipo;
@@ -2306,58 +2238,12 @@ function usarCacheLocal(acao) {
             }
         }
 
-        async function criarDadosExemplo() {
-            console.log('🆕 Criando dados de exemplo...');
-            
-            // Dados de exemplo
-            const colaboradoresExemplo = {
-                '12345': { nome: 'João Silva', funcao: 'COORD. DE LOGISTICA', filial: '713', regional: 'SP' },
-                '67890': { nome: 'Ana Costa', funcao: 'GERENTE DE OPERACOES', filial: '264', regional: 'SC' },
-                '11111': { nome: 'Carlos Mendes', funcao: 'ANALISTA DE LOGISTICA', filial: '743', regional: 'MS' },
-                '22222': { nome: 'Fernanda Lima', funcao: 'SUPERVISORA', filial: '753', regional: 'MT' },
-                '33333': { nome: 'Pedro Santos', funcao: 'COORDENADOR', filial: '364', regional: 'DF' }
-            };
-
-            const gestoresExemplo = {
-                'G001': { nome: 'Maria Santos', funcao: 'GERENTE GERAL', filial: '713', regional: 'SP' },
-                'G002': { nome: 'Pedro Oliveira', funcao: 'GERENTE REGIONAL', filial: '264', regional: 'SC' },
-                'G003': { nome: 'Roberto Silva', funcao: 'SUPERVISOR GERAL', filial: '743', regional: 'MS' },
-                'G004': { nome: 'Ana Paula Costa', funcao: 'GERENTE FILIAL', filial: '753', regional: 'MT' },
-                'G005': { nome: 'Carlos Eduardo', funcao: 'COORDENADOR GERAL', filial: '364', regional: 'DF' }
-            };
-
-            // Atualizar dados locais
-            colaboradores = colaboradoresExemplo;
-            gestores = gestoresExemplo;
-            cacheLocal.colaboradores = colaboradores;
-            cacheLocal.gestores = gestores;
-
-            // Salvar localmente
-            localStorage.setItem('colaboradores_gg', JSON.stringify(colaboradores));
-            localStorage.setItem('gestores_gg', JSON.stringify(gestores));
-
-            // Tentar salvar no Google Sheets se configurado
-            if (WEBAPP_URL && WEBAPP_URL !== 'https://script.google.com/a/macros/bateforte.com.br/s/AKfycbyt0V1SCUl0NlIuoj-a5lK7I8mqEc-QeQzim4vXHfCNKZ_52moQyqUWl3iNBRl1n8Hq/exec') {
-                try {
-                    await Promise.all([
-                        enviarParaGoogleSheets('salvar_colaboradores', { colaboradores: colaboradoresExemplo }),
-                        enviarParaGoogleSheets('salvar_gestores', { gestores: gestoresExemplo })
-                    ]);
-                    console.log('✅ Dados de exemplo salvos no Google Sheets');
-                } catch (error) {
-                    console.log('⚠️ Dados de exemplo criados localmente apenas');
-                }
-            }
-
-            console.log('✅ Dados de exemplo criados');
-        }
-
         // =====================================================
         // INICIALIZAÇÃO
         // =====================================================
 
         document.addEventListener('DOMContentLoaded', async function() {
-            console.log('🔄 Iniciando sistema integrado com autenticação...');
+            console.log('🔄 Iniciando sistema com busca automática...');
             
             // Carregar URL salva
             const urlSalva = localStorage.getItem('webapp_url_gg');
@@ -2365,60 +2251,78 @@ function usarCacheLocal(acao) {
                 WEBAPP_URL = urlSalva;
             }
             
-            // Carregar dados
+            // Tentar carregar cache do localStorage
+            try {
+                const cacheStorage = localStorage.getItem('gg_cache');
+                if (cacheStorage) {
+                    const dadosCache = JSON.parse(cacheStorage);
+                    cacheLocal = dadosCache;
+                    avaliacoes = dadosCache.avaliacoes || [];
+                    colaboradores = dadosCache.colaboradores || {};
+                    gestores = dadosCache.gestores || {};
+                    console.log('💾 Cache local carregado como fallback');
+                }
+            } catch (error) {
+                console.warn('⚠️ Erro ao carregar cache local:', error);
+            }
+            
+            // Carregar dados das planilhas
             await carregarDadosSalvos();
             
             // Inicializar interface
             atualizarEstatisticasHome();
             
-            console.log('🎯 Sistema integrado com autenticação inicializado!');
+            console.log('🎯 Sistema com busca automática inicializado!');
         });
 
         // =====================================================
-        // COMANDOS DE CONSOLE
+        // COMANDOS DE CONSOLE PARA DEBUG
         // =====================================================
 
         window.sistemaGG = {
             info: () => ({
-                versao: '2.2.0 - Google Sheets Integration with Authentication',
+                versao: '3.0.0 - Busca Automática',
                 totalAvaliacoes: avaliacoes.length,
                 totalColaboradores: Object.keys(colaboradores).length,
                 totalGestores: Object.keys(gestores).length,
                 webappURL: WEBAPP_URL,
                 acessoAtual: acessoAtual,
-                senhasFiliais: Object.keys(SENHAS_FILIAIS),
-                senhasEspeciais: Object.keys(SENHAS_ESPECIAIS),
-                cache: cacheLocal
+                dadosCarregados: dadosCarregados,
+                cache: cacheLocal,
+                ultimaAtualizacao: cacheLocal.ultimaAtualizacao ? new Date(cacheLocal.ultimaAtualizacao).toLocaleString() : 'Nunca'
             }),
             sincronizar: sincronizarDados,
             testarConexao: testarConexaoSheets,
             configurarURL: configurarWebApp,
-            backup: backupGoogleSheets,
+            verificarIntegridade: verificarIntegridadeDados,
             logout: logout,
             acesso: () => acessoAtual,
-            filtrarDados: filtrarDadosPorAcesso,
+            dados: () => ({ avaliacoes, colaboradores, gestores }),
             cache: () => cacheLocal,
-            avaliacoes: () => avaliacoes,
-            colaboradores: () => colaboradores,
-            gestores: () => gestores
+            buscarColaborador: buscarColaborador,
+            buscarGestor: buscarGestor,
+            recarregarDados: () => {
+                dadosCarregados = false;
+                cacheLocal.ultimaAtualizacao = null;
+                return carregarDadosSalvos();
+            }
         };
 
         console.log(`
-🎯 SISTEMA G&G - VERSÃO COM AUTENTICAÇÃO POR FILIAL
-==================================================
-✅ Sistema integrado com Google Sheets
-✅ Controle de acesso por filial implementado
-✅ Filtros automáticos de dados
-✅ Senhas específicas por filial
-✅ Acesso master e administrativo
-✅ Dados compartilhados entre usuários
-✅ Sincronização em tempo real
-✅ Fallback para localStorage
+🎯 SISTEMA G&G - VERSÃO COM BUSCA AUTOMÁTICA
+============================================
+✅ Busca automática de colaboradores e gestores
+✅ Sincronização em tempo real com Google Sheets
+✅ Cache inteligente para melhor performance
+✅ Controle de acesso por filial mantido
+✅ Dados sempre atualizados das planilhas
+✅ Fallback para cache local em caso de falha
 
-🔐 CONTROLE DE ACESSO:
-• Histórico: Senhas específicas por filial (GGxxxxx)
-• Configurações: Acesso restrito (GGMASTERJP)
-• Master: Acesso completo (GGMASTER/GGMASTERJP)
+🔧 COMO FUNCIONA:
+• Sistema busca automaticamente dados das planilhas
+• Colaboradores e gestores são carregados em tempo real
+• Cache de 5 minutos para otimizar performance
+• Atualizações automáticas conforme necessário
 
 🏢 FILIAIS CADASTRADAS:
 743-MS | 264-SC | 753-MT | 364-DF | 713-SP
@@ -2427,7 +2331,13 @@ function usarCacheLocal(acao) {
 
 💻 DESENVOLVIDO POR: Juliano Patrick
 📧 CONTATO: julianocorrea@bateforte.com.br
-==================================================
+============================================
+
+🔧 COMANDOS DE DEBUG:
+• sistemaGG.info() - Informações do sistema
+• sistemaGG.sincronizar() - Forçar sincronização
+• sistemaGG.testarConexao() - Testar Google Sheets
+• sistemaGG.recarregarDados() - Recarregar dados
         `);
     </script>
 </body>
