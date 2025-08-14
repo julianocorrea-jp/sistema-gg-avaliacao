@@ -1023,7 +1023,7 @@
         // =====================================================
 
         // URL da Web App do Google Apps Script (SUBSTITUA PELA SUA URL)
-        let WEBAPP_URL = 'SUA_URL_DO_GOOGLE_APPS_SCRIPT_AQUI';
+        let WEBAPP_URL = 'https://script.google.com/a/macros/bateforte.com.br/s/AKfycbyt0V1SCUl0NlIuoj-a5lK7I8mqEc-QeQzim4vXHfCNKZ_52moQyqUWl3iNBRl1n8Hq/exec';
 
         // Sistema de controle de acesso
         let acessoAtual = {
@@ -1288,7 +1288,7 @@
         // =====================================================
 
         async function enviarParaGoogleSheets(acao, dados = {}) {
-            if (!WEBAPP_URL || WEBAPP_URL === 'SUA_URL_DO_GOOGLE_APPS_SCRIPT_AQUI') {
+            if (!WEBAPP_URL || WEBAPP_URL === 'https://script.google.com/a/macros/bateforte.com.br/s/AKfycbyt0V1SCUl0NlIuoj-a5lK7I8mqEc-QeQzim4vXHfCNKZ_52moQyqUWl3iNBRl1n8Hq/exec') {
                 throw new Error('URL da Web App não configurada. Configure em Configurações.');
             }
 
@@ -1322,7 +1322,7 @@
         }
 
         async function buscarDoGoogleSheets(acao) {
-            if (!WEBAPP_URL || WEBAPP_URL === 'SUA_URL_DO_GOOGLE_APPS_SCRIPT_AQUI') {
+            if (!WEBAPP_URL || WEBAPP_URL === 'https://script.google.com/a/macros/bateforte.com.br/s/AKfycbyt0V1SCUl0NlIuoj-a5lK7I8mqEc-QeQzim4vXHfCNKZ_52moQyqUWl3iNBRl1n8Hq/exec') {
                 console.log('⚠️ URL não configurada, usando dados locais');
                 return usarCacheLocal(acao);
             }
@@ -1852,7 +1852,7 @@
             // Atualizar status de conexão
             const statusEl = document.getElementById('statusConexaoHome');
             if (statusEl) {
-                if (WEBAPP_URL && WEBAPP_URL !== 'SUA_URL_DO_GOOGLE_APPS_SCRIPT_AQUI') {
+                if (WEBAPP_URL && WEBAPP_URL !== 'https://script.google.com/a/macros/bateforte.com.br/s/AKfycbyt0V1SCUl0NlIuoj-a5lK7I8mqEc-QeQzim4vXHfCNKZ_52moQyqUWl3iNBRl1n8Hq/exec') {
                     statusEl.innerHTML = '🟢 <strong>Conectado ao Google Sheets</strong>';
                     statusEl.style.color = 'var(--cor-primaria)';
                 } else {
@@ -1875,7 +1875,7 @@
             // Atualizar URL exibida
             const urlEl = document.getElementById('webappUrl');
             if (urlEl) {
-                if (WEBAPP_URL && WEBAPP_URL !== 'SUA_URL_DO_GOOGLE_APPS_SCRIPT_AQUI') {
+                if (WEBAPP_URL && WEBAPP_URL !== 'https://script.google.com/a/macros/bateforte.com.br/s/AKfycbyt0V1SCUl0NlIuoj-a5lK7I8mqEc-QeQzim4vXHfCNKZ_52moQyqUWl3iNBRl1n8Hq/exec') {
                     urlEl.textContent = WEBAPP_URL.substring(0, 50) + '...';
                     urlEl.style.color = 'var(--cor-primaria)';
                 } else {
@@ -2306,7 +2306,7 @@
             localStorage.setItem('gestores_gg', JSON.stringify(gestores));
 
             // Tentar salvar no Google Sheets se configurado
-            if (WEBAPP_URL && WEBAPP_URL !== 'SUA_URL_DO_GOOGLE_APPS_SCRIPT_AQUI') {
+            if (WEBAPP_URL && WEBAPP_URL !== 'https://script.google.com/a/macros/bateforte.com.br/s/AKfycbyt0V1SCUl0NlIuoj-a5lK7I8mqEc-QeQzim4vXHfCNKZ_52moQyqUWl3iNBRl1n8Hq/exec') {
                 try {
                     await Promise.all([
                         enviarParaGoogleSheets('salvar_colaboradores', { colaboradores: colaboradoresExemplo }),
