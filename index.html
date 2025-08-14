@@ -918,7 +918,7 @@
             // =====================================================
 
             async buscarDoGoogleSheets(acao) {
-                if (!this.WEBAPP_URL || this.WEBAPP_URL.includes('SEU_ID')) {
+                if (!this.WEBAPP_URL || this.WEBAPP_URL.includes('https://script.google.com/macros/s/AKfycbyATwLkulj-5o1CL-R6FxdNj6X-dNXbzxKEbyJWtavYSKGyGd5viUk1TPJf_V2_76hzkA/exec')) {
                     throw new Error('URL da Web App não configurada');
                 }
 
@@ -955,7 +955,7 @@
             },
 
             async enviarParaGoogleSheets(acao, dados = {}) {
-                if (!this.WEBAPP_URL || this.WEBAPP_URL.includes('SEU_ID')) {
+                if (!this.WEBAPP_URL || this.WEBAPP_URL.includes('https://script.google.com/macros/s/AKfycbyATwLkulj-5o1CL-R6FxdNj6X-dNXbzxKEbyJWtavYSKGyGd5viUk1TPJf_V2_76hzkA/exec')) {
                     throw new Error('URL da Web App não configurada');
                 }
 
@@ -1849,7 +1849,7 @@
                 
                 const urlEl = document.getElementById('webappUrl');
                 if (urlEl) {
-                    if (this.WEBAPP_URL && !this.WEBAPP_URL.includes('SEU_ID')) {
+                    if (this.WEBAPP_URL && !this.WEBAPP_URL.includes('https://script.google.com/macros/s/AKfycbyATwLkulj-5o1CL-R6FxdNj6X-dNXbzxKEbyJWtavYSKGyGd5viUk1TPJf_V2_76hzkA/exec')) {
                         urlEl.textContent = this.WEBAPP_URL.substring(0, 50) + '...';
                         urlEl.style.color = 'var(--cor-primaria)';
                     } else {
@@ -1973,7 +1973,7 @@
                     }
                     
                     // Verificar URL e carregar dados
-                    if (this.WEBAPP_URL && !this.WEBAPP_URL.includes('SEU_ID')) {
+                    if (this.WEBAPP_URL && !this.WEBAPP_URL.includes('https://script.google.com/macros/s/AKfycbyATwLkulj-5o1CL-R6FxdNj6X-dNXbzxKEbyJWtavYSKGyGd5viUk1TPJf_V2_76hzkA/exec')) {
                         console.log('🔗 Carregando dados...');
                         await this.carregarDadosSalvos();
                     } else {
