@@ -633,18 +633,30 @@
             .info-card {
                 box-shadow: none !important;
                 border: 1px solid #ddd !important;
-                margin-bottom: 20px !important;
+                margin-bottom: 15px !important;
+                padding: 15px !important;
                 page-break-inside: avoid;
             }
             
             .competencia-card {
                 page-break-inside: avoid;
-                margin-bottom: 15px !important;
+                margin-bottom: 10px !important;
+                padding: 10px !important;
             }
             
-            h2, h3 {
+            h2, h3, h4 {
                 page-break-after: avoid;
                 color: #1e441e !important;
+                margin-bottom: 10px !important;
+            }
+            
+            .form-row {
+                gap: 10px !important;
+            }
+            
+            .competencia-header {
+                padding: 10px !important;
+                font-size: 1.0em !important;
             }
         }
 
@@ -744,13 +756,10 @@
             <button class="nav-btn" onclick="GG.showSection('avaliacao')">
                 <i class="fas fa-edit"></i> Nova Avaliação
             </button>
-            <button class="nav-btn" onclick="GG.showSection('laudos')">
-                <i class="fas fa-file-medical"></i> Laudos
-            </button>
             <button class="nav-btn" onclick="GG.acessoHistorico()">
                 <i class="fas fa-clipboard-list"></i> Histórico
             </button>
-            <button class="nav-btn" onclick="GG.showSection('relatorios')">
+            <button class="nav-btn" onclick="GG.acessoRelatorios()">
                 <i class="fas fa-chart-bar"></i> Relatórios
             </button>
             <button class="nav-btn" onclick="GG.acessoConfiguracoes()">
@@ -781,7 +790,7 @@
                     <div class="stat-label">Avaliações Realizadas</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number" id="mediaGeralHome">0.00</div>
+                    <div class="stat-number" id="mediaGeralHome">0.0</div>
                     <div class="stat-label">Média Geral</div>
                 </div>
                 <div class="stat-card">
@@ -885,198 +894,6 @@
                         <strong style="color: #dc3545;">PRECISA MELHORAR</strong><br>
                         Necessária intervenção imediata com programa intensivo de desenvolvimento em liderança.
                     </div>
-                </div>
-            </div>
-
-            <!-- GERADOR DE LAUDOS -->
-            <div class="info-card">
-                <h3><i class="fas fa-file-medical"></i> Gerador de Laudos e Relatórios</h3>
-                <p style="margin-bottom: 20px;">Gere laudos detalhados das avaliações com análise por competência, fatores individuais e campo para plano de desenvolvimento personalizado.</p>
-                
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 20px;">
-                    <div class="feature-card">
-                        <div class="feature-icon"><i class="fas fa-search"></i></div>
-                        <div class="feature-title">Buscar Avaliação</div>
-                        <div class="feature-description">
-                            Digite a matrícula do colaborador para localizar e gerar o laudo detalhado de qualquer avaliação realizada.
-                        </div>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon"><i class="fas fa-chart-pie"></i></div>
-                        <div class="feature-title">Análise Detalhada</div>
-                        <div class="feature-description">
-                            Visualize a pontuação de cada competência e fator individual, com gráficos e comparativos detalhados.
-                        </div>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon"><i class="fas fa-edit"></i></div>
-                        <div class="feature-title">Plano de Desenvolvimento</div>
-                        <div class="feature-description">
-                            Campo editável para o gestor inserir o plano de desenvolvimento personalizado antes da impressão.
-                        </div>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon"><i class="fas fa-print"></i></div>
-                        <div class="feature-title">Impressão Otimizada</div>
-                        <div class="feature-description">
-                            Layout otimizado para impressão/PDF com formatação profissional e logomarca da empresa.
-                        </div>
-                    </div>
-                </div>
-
-                <div style="text-align: center; margin-top: 30px;">
-                    <button class="btn btn-success" onclick="GG.showSection('laudos')" style="font-size: 1.1em; padding: 15px 30px;">
-                        <i class="fas fa-file-medical"></i> Acessar Gerador de Laudos
-                    </button>
-                </div>
-            </div>
-        </section>
-
-        <!-- Seção Gerador de Laudos -->
-        <section id="laudos" class="section">
-            <h2><i class="fas fa-file-medical"></i> Gerador de Laudos e Relatórios</h2>
-            
-            <div class="info-card">
-                <h3><i class="fas fa-search"></i> Buscar Avaliação para Laudo</h3>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="matriculaBusca">Matrícula do Colaborador *</label>
-                        <input type="text" id="matriculaBusca" placeholder="Digite a matrícula..." 
-                               oninput="GG.buscarAvaliacoesLaudo(this.value)">
-                    </div>
-                    <div class="form-group">
-                        <label for="avaliacaoSelect">Selecionar Avaliação</label>
-                        <select id="avaliacaoSelect" onchange="GG.carregarAvaliacaoLaudo()">
-                            <option value="">Primeiro digite uma matrícula</option>
-                        </select>
-                    </div>
-                </div>
-                <div style="text-align: center; margin: 20px 0;">
-                    <button class="btn btn-info" onclick="GG.carregarAvaliacaoLaudo()">
-                        <i class="fas fa-search"></i> Carregar Avaliação
-                    </button>
-                    <button class="btn" onclick="GG.limparBuscaLaudo()">
-                        <i class="fas fa-times"></i> Limpar
-                    </button>
-                </div>
-            </div>
-
-            <!-- DADOS DA AVALIAÇÃO CARREGADA -->
-            <div id="dadosAvaliacaoLaudo" style="display: none;">
-                <div class="info-card">
-                    <h3><i class="fas fa-user"></i> Dados da Avaliação</h3>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Nome do Avaliado</label>
-                            <input type="text" id="laudoNomeAvaliado" readonly style="background: #f0f0f0;">
-                        </div>
-                        <div class="form-group">
-                            <label>Matrícula</label>
-                            <input type="text" id="laudoMatriculaAvaliado" readonly style="background: #f0f0f0;">
-                        </div>
-                        <div class="form-group">
-                            <label>Gestor</label>
-                            <input type="text" id="laudoNomeGestor" readonly style="background: #f0f0f0;">
-                        </div>
-                        <div class="form-group">
-                            <label>Data da Avaliação</label>
-                            <input type="text" id="laudoDataAvaliacao" readonly style="background: #f0f0f0;">
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Pontuação Final</label>
-                            <input type="text" id="laudoPontuacao" readonly style="background: #f0f0f0; font-weight: bold; font-size: 1.2em;">
-                        </div>
-                        <div class="form-group">
-                            <label>Classificação</label>
-                            <input type="text" id="laudoClassificacao" readonly style="background: #f0f0f0; font-weight: bold; font-size: 1.2em;">
-                        </div>
-                        <div class="form-group">
-                            <label>Filial</label>
-                            <input type="text" id="laudoFilial" readonly style="background: #f0f0f0;">
-                        </div>
-                        <div class="form-group">
-                            <label>Evolução</label>
-                            <input type="text" id="laudoEvolucao" readonly style="background: #f0f0f0;">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ANÁLISE POR COMPETÊNCIAS -->
-                <div class="info-card">
-                    <h3><i class="fas fa-chart-pie"></i> Análise Detalhada por Competências</h3>
-                    <div id="competenciasLaudo"></div>
-                </div>
-
-                <!-- PLANO DE DESENVOLVIMENTO -->
-                <div class="info-card">
-                    <h3><i class="fas fa-clipboard-list"></i> Plano de Desenvolvimento</h3>
-                    <p style="color: #666; margin-bottom: 20px;">
-                        <i class="fas fa-info-circle"></i> Este campo será incluído no laudo impresso. Preencha com as ações específicas de desenvolvimento para o colaborador.
-                    </p>
-                    
-                    <div class="form-group">
-                        <label for="planoDesenvolvimento">Plano de Desenvolvimento Personalizado</label>
-                        <textarea id="planoDesenvolvimento" rows="8" 
-                                  placeholder="Digite aqui o plano de desenvolvimento específico para este colaborador...
-
-Exemplo:
-• Participar do treinamento de Liderança Estratégica (prazo: 60 dias)
-• Implementar reuniões 1:1 semanais com a equipe (início imediato)
-• Desenvolver projeto piloto de melhoria de processos (prazo: 90 dias)
-• Mentorar colaborador júnior por 6 meses
-• Participar de workshop de comunicação assertiva (prazo: 30 dias)"></textarea>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="metasDesenvolvimento">Metas de Desenvolvimento (próxima avaliação)</label>
-                            <textarea id="metasDesenvolvimento" rows="4" 
-                                      placeholder="Defina as metas específicas que devem ser alcançadas até a próxima avaliação..."></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="prazosDesenvolvimento">Prazos e Responsabilidades</label>
-                            <textarea id="prazosDesenvolvimento" rows="4" 
-                                      placeholder="Estabeleça prazos claros e defina responsabilidades (colaborador, gestor, RH)..."></textarea>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- AÇÕES DO LAUDO -->
-                <div style="text-align: center; margin: 30px 0;">
-                    <button class="btn btn-success" onclick="GG.gerarLaudoPDF()" style="font-size: 1.1em; padding: 15px 30px;">
-                        <i class="fas fa-file-pdf"></i> Gerar Laudo Completo
-                    </button>
-                    <button class="btn btn-info" onclick="GG.visualizarLaudo()">
-                        <i class="fas fa-eye"></i> Visualizar para Impressão
-                    </button>
-                    <button class="btn btn-warning" onclick="GG.salvarPlanoDesenvolvimento()">
-                        <i class="fas fa-save"></i> Salvar Plano
-                    </button>
-                    <button class="btn" onclick="GG.showSection('home')">
-                        <i class="fas fa-home"></i> Voltar ao Home
-                    </button>
-                </div>
-            </div>
-
-            <!-- PREVIEW DO LAUDO -->
-            <div id="previewLaudo" style="display: none;">
-                <div class="info-card" style="background: white; border: 2px solid #ddd;">
-                    <div style="text-align: center; border-bottom: 2px solid var(--cor-primaria); padding-bottom: 20px; margin-bottom: 30px;">
-                        <h2 style="color: var(--cor-primaria); margin: 0;">LAUDO DE AVALIAÇÃO DE DESEMPENHO</h2>
-                        <p style="margin: 5px 0; color: #666;">Sistema G&G v4.0 - Gestão de Performance</p>
-                        <p style="margin: 5px 0; color: #666;" id="dataGeracao"></p>
-                    </div>
-                    <div id="conteudoLaudo"></div>
-                </div>
-                <div style="text-align: center; margin: 20px 0;">
-                    <button class="btn btn-success" onclick="window.print()">
-                        <i class="fas fa-print"></i> Imprimir Laudo
-                    </button>
-                    <button class="btn" onclick="GG.fecharPreview()">
-                        <i class="fas fa-times"></i> Fechar Preview
-                    </button>
                 </div>
             </div>
         </section>
@@ -1251,6 +1068,48 @@ Exemplo:
             </div>
         </section>
 
+        <!-- Seção de Login para Relatórios -->
+        <section id="loginRelatorios" class="section">
+            <h2><i class="fas fa-chart-bar"></i> Acesso aos Relatórios</h2>
+            <div class="login-card">
+                <h3 style="color: var(--cor-primaria); margin-bottom: 30px;">
+                    <i class="fas fa-key"></i> Digite a Senha da sua Filial
+                </h3>
+                <div class="form-group">
+                    <input type="password" id="senhaRelatorios" class="login-input" 
+                           placeholder="Digite a senha da sua filial..." onkeypress="GG.verificarEnter(event, 'relatorios')">
+                </div>
+                <button class="btn btn-success" onclick="GG.validarSenhaRelatorios()">
+                    <i class="fas fa-unlock"></i> Acessar Relatórios
+                </button>
+                <button class="btn" onclick="GG.showSection('home')">
+                    <i class="fas fa-times"></i> Cancelar
+                </button>
+                <div style="background: rgba(255, 255, 255, 0.7); border-radius: 15px; padding: 25px; margin-top: 30px; text-align: left;">
+                    <h4 style="color: var(--cor-primaria); margin-bottom: 15px; text-align: center;">
+                        <i class="fas fa-info-circle"></i> Senhas de Acesso
+                    </h4>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; font-size: 0.9em;">
+                        <p><strong>GG74301</strong> - Filial 743-MS</p>
+                        <p><strong>GG26402</strong> - Filial 264-SC</p>
+                        <p><strong>GG75303</strong> - Filial 753-MT</p>
+                        <p><strong>GG36404</strong> - Filial 364-DF</p>
+                        <p><strong>GG71305</strong> - Filial 713-SP</p>
+                        <p><strong>GG46806</strong> - Filial 468-MT</p>
+                        <p><strong>GG89207</strong> - Filial 892-SP</p>
+                        <p><strong>GG72308</strong> - Filial 723-SP</p>
+                        <p><strong>GG23009</strong> - Filial 230-SP</p>
+                        <p><strong>GG77310</strong> - Filial 773-RS</p>
+                        <p><strong>GG47311</strong> - Filial 473-MT</p>
+                        <p><strong>GG16712</strong> - Filial 167-MS</p>
+                        <p><strong>GG02013</strong> - Filial 20-AGP</p>
+                    </div>
+                    <hr style="margin: 15px 0;">
+                    <p style="text-align: center;"><strong>GGMASTER</strong> - Acesso Total (Todas as Filiais)</p>
+                </div>
+            </div>
+        </section>
+
         <!-- Seção Histórico -->
         <section id="historico" class="section">
             <div id="accessStatus" class="access-status" style="display: none;"></div>
@@ -1262,7 +1121,7 @@ Exemplo:
                     <div class="stat-label">Total de Avaliações</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number" id="mediaGeral">0.00</div>
+                    <div class="stat-number" id="mediaGeral">0.0</div>
                     <div class="stat-label">Média Geral</div>
                 </div>
                 <div class="stat-card">
@@ -1278,6 +1137,9 @@ Exemplo:
             <div style="text-align: center; margin: 30px 0;">
                 <button class="btn btn-info" onclick="GG.carregarHistorico()">
                     <i class="fas fa-sync"></i> Sincronizar
+                </button>
+                <button class="btn btn-success" onclick="GG.toggleLaudos()">
+                    <i class="fas fa-file-medical"></i> Gerar Laudos
                 </button>
                 <button class="btn btn-warning" onclick="GG.exportarDados()">
                     <i class="fas fa-download"></i> Exportar
@@ -1353,10 +1215,150 @@ Exemplo:
                     <i class="fas fa-chart-bar"></i> Carregando dados...
                 </p>
             </div>
+
+            <!-- SEÇÃO GERADOR DE LAUDOS -->
+            <div id="secaoLaudos" style="display: none; margin-top: 40px; border-top: 2px solid var(--cor-primaria); padding-top: 30px;">
+                <h3><i class="fas fa-file-medical"></i> Gerador de Laudos e Relatórios</h3>
+                
+                <div class="info-card">
+                    <h4><i class="fas fa-search"></i> Buscar Avaliação para Laudo</h4>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="matriculaBusca">Matrícula do Colaborador *</label>
+                            <input type="text" id="matriculaBusca" placeholder="Digite a matrícula..." 
+                                   oninput="GG.buscarAvaliacoesLaudo(this.value)">
+                        </div>
+                        <div class="form-group">
+                            <label for="avaliacaoSelect">Selecionar Avaliação</label>
+                            <select id="avaliacaoSelect" onchange="GG.carregarAvaliacaoLaudo()">
+                                <option value="">Primeiro digite uma matrícula</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div style="text-align: center; margin: 20px 0;">
+                        <button class="btn btn-info" onclick="GG.carregarAvaliacaoLaudo()">
+                            <i class="fas fa-search"></i> Carregar Avaliação
+                        </button>
+                        <button class="btn" onclick="GG.limparBuscaLaudo()">
+                            <i class="fas fa-times"></i> Limpar
+                        </button>
+                    </div>
+                </div>
+
+                <!-- DADOS DA AVALIAÇÃO CARREGADA -->
+                <div id="dadosAvaliacaoLaudo" style="display: none;">
+                    <div class="info-card">
+                        <h4><i class="fas fa-user"></i> Dados da Avaliação</h4>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Nome do Avaliado</label>
+                                <input type="text" id="laudoNomeAvaliado" readonly style="background: #f0f0f0;">
+                            </div>
+                            <div class="form-group">
+                                <label>Matrícula</label>
+                                <input type="text" id="laudoMatriculaAvaliado" readonly style="background: #f0f0f0;">
+                            </div>
+                            <div class="form-group">
+                                <label>Gestor</label>
+                                <input type="text" id="laudoNomeGestor" readonly style="background: #f0f0f0;">
+                            </div>
+                            <div class="form-group">
+                                <label>Data da Avaliação</label>
+                                <input type="text" id="laudoDataAvaliacao" readonly style="background: #f0f0f0;">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Pontuação Final</label>
+                                <input type="text" id="laudoPontuacao" readonly style="background: #f0f0f0; font-weight: bold; font-size: 1.2em;">
+                            </div>
+                            <div class="form-group">
+                                <label>Classificação</label>
+                                <input type="text" id="laudoClassificacao" readonly style="background: #f0f0f0; font-weight: bold; font-size: 1.2em;">
+                            </div>
+                            <div class="form-group">
+                                <label>Filial</label>
+                                <input type="text" id="laudoFilial" readonly style="background: #f0f0f0;">
+                            </div>
+                            <div class="form-group">
+                                <label>Evolução</label>
+                                <input type="text" id="laudoEvolucao" readonly style="background: #f0f0f0;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ANÁLISE POR COMPETÊNCIAS -->
+                    <div class="info-card">
+                        <h4><i class="fas fa-chart-pie"></i> Análise Detalhada por Competências</h4>
+                        <div id="competenciasLaudo"></div>
+                    </div>
+
+                    <!-- PLANO DE DESENVOLVIMENTO -->
+                    <div class="info-card">
+                        <h4><i class="fas fa-clipboard-list"></i> Plano de Desenvolvimento</h4>
+                        <p style="color: #666; margin-bottom: 15px; font-size: 0.9em;">
+                            <i class="fas fa-info-circle"></i> Este campo será incluído no laudo impresso.
+                        </p>
+                        
+                        <div class="form-group">
+                            <label for="planoDesenvolvimento">Plano de Desenvolvimento Personalizado</label>
+                            <textarea id="planoDesenvolvimento" rows="6" 
+                                      placeholder="Digite aqui o plano de desenvolvimento específico para este colaborador..."></textarea>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="metasDesenvolvimento">Metas de Desenvolvimento</label>
+                                <textarea id="metasDesenvolvimento" rows="3" 
+                                          placeholder="Defina as metas específicas..."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="prazosDesenvolvimento">Prazos e Responsabilidades</label>
+                                <textarea id="prazosDesenvolvimento" rows="3" 
+                                          placeholder="Estabeleça prazos claros..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- AÇÕES DO LAUDO -->
+                    <div style="text-align: center; margin: 30px 0;">
+                        <button class="btn btn-success" onclick="GG.gerarLaudoPDF()">
+                            <i class="fas fa-file-pdf"></i> Gerar Laudo Completo
+                        </button>
+                        <button class="btn btn-info" onclick="GG.visualizarLaudo()">
+                            <i class="fas fa-eye"></i> Visualizar para Impressão
+                        </button>
+                        <button class="btn btn-warning" onclick="GG.salvarPlanoDesenvolvimento()">
+                            <i class="fas fa-save"></i> Salvar Plano
+                        </button>
+                    </div>
+                </div>
+
+                <!-- PREVIEW DO LAUDO -->
+                <div id="previewLaudo" style="display: none;">
+                    <div class="info-card" style="background: white; border: 2px solid #ddd;">
+                        <div style="text-align: center; border-bottom: 2px solid var(--cor-primaria); padding-bottom: 15px; margin-bottom: 20px;">
+                            <h2 style="color: var(--cor-primaria); margin: 0; font-size: 1.8em;">LAUDO DE AVALIAÇÃO DE DESEMPENHO</h2>
+                            <p style="margin: 5px 0; color: #666; font-size: 0.9em;">Sistema G&G v4.0 - Gestão de Performance</p>
+                            <p style="margin: 5px 0; color: #666; font-size: 0.9em;" id="dataGeracao"></p>
+                        </div>
+                        <div id="conteudoLaudo"></div>
+                    </div>
+                    <div style="text-align: center; margin: 15px 0;">
+                        <button class="btn btn-success" onclick="window.print()">
+                            <i class="fas fa-print"></i> Imprimir Laudo
+                        </button>
+                        <button class="btn" onclick="GG.fecharPreview()">
+                            <i class="fas fa-times"></i> Fechar Preview
+                        </button>
+                    </div>
+                </div>
+            </div>
         </section>
 
-        <!-- SEÇÃO RELATÓRIOS - SEM SENHA -->
+        <!-- SEÇÃO RELATÓRIOS - COM SENHA -->
         <section id="relatorios" class="section">
+            <div id="relatoriosAccessStatus" class="access-status" style="display: none;"></div>
             <h2><i class="fas fa-chart-bar"></i> Relatórios Comparativos</h2>
 
             <div class="relatorio-tabs">
@@ -1381,8 +1383,8 @@ Exemplo:
                 <button class="btn btn-warning" onclick="GG.exportarRelatorios()">
                     <i class="fas fa-download"></i> Exportar
                 </button>
-                <button class="btn" onclick="GG.showSection('home')">
-                    <i class="fas fa-home"></i> Voltar ao Home
+                <button class="btn btn-danger" onclick="GG.logout()">
+                    <i class="fas fa-sign-out-alt"></i> Sair
                 </button>
             </div>
 
@@ -1531,6 +1533,7 @@ Exemplo:
             // Dados do sistema
             dados: {
                 avaliacoes: [],
+                avaliacoesDetalhes: [], // NOVA: detalhes das avaliações
                 colaboradores: {},
                 gestores: {},
                 avaliacaoAtual: null,
@@ -1540,6 +1543,7 @@ Exemplo:
             // Cache
             cache: {
                 avaliacoes: [],
+                avaliacoesDetalhes: [], // NOVA: cache dos detalhes
                 colaboradores: {},
                 gestores: {},
                 ultimaAtualizacao: null,
@@ -1836,15 +1840,28 @@ Exemplo:
                         this.dados.avaliacoes = [];
                     }
 
+                    // NOVO: Carregar detalhes das avaliações
+                    console.log('📋 Carregando TODOS os detalhes das avaliações...');
+                    try {
+                        const avaliacoesDetalhes = await this.buscarTodosRegistros('avaliacoes_detalhes');
+                        this.dados.avaliacoesDetalhes = avaliacoesDetalhes || [];
+                        console.log(`📋 ${this.dados.avaliacoesDetalhes.length} detalhes carregados (TODOS OS DETALHES)`);
+                    } catch (error) {
+                        console.warn('⚠️ Erro ao carregar detalhes das avaliações:', error);
+                        this.dados.avaliacoesDetalhes = [];
+                    }
+
                     // Status final
                     const totalColaboradores = Object.keys(this.dados.colaboradores).length;
                     const totalGestores = Object.keys(this.dados.gestores).length;
                     const totalAvaliacoes = this.dados.avaliacoes.length;
+                    const totalDetalhes = this.dados.avaliacoesDetalhes.length;
 
                     console.log(`📊 RESUMO DOS DADOS CARREGADOS (SEM LIMITE):`);
                     console.log(`👥 Colaboradores: ${totalColaboradores}`);
                     console.log(`👔 Gestores: ${totalGestores}`);
                     console.log(`📋 Avaliações: ${totalAvaliacoes}`);
+                    console.log(`📊 Detalhes: ${totalDetalhes}`);
 
                     // Atualizar cache
                     this.cache.ultimaAtualizacao = Date.now();
@@ -1854,6 +1871,7 @@ Exemplo:
                         this.cache.colaboradores = this.dados.colaboradores;
                         this.cache.gestores = this.dados.gestores;
                         this.cache.avaliacoes = this.dados.avaliacoes;
+                        this.cache.avaliacoesDetalhes = this.dados.avaliacoesDetalhes; // NOVO
                         localStorage.setItem('gg_cache_supabase', JSON.stringify(this.cache));
                         console.log('💾 Cache atualizado no localStorage');
                     } catch (storageError) {
@@ -1883,13 +1901,15 @@ Exemplo:
                         const dadosCache = JSON.parse(cacheStorage);
                         this.cache = dadosCache;
                         this.dados.avaliacoes = dadosCache.avaliacoes || [];
+                        this.dados.avaliacoesDetalhes = dadosCache.avaliacoesDetalhes || []; // NOVO
                         this.dados.colaboradores = dadosCache.colaboradores || {};
                         this.dados.gestores = dadosCache.gestores || {};
                         this.dados.dadosCarregados = true;
 
                         const totalColabs = Object.keys(this.dados.colaboradores).length;
                         const totalGests = Object.keys(this.dados.gestores).length;
-                        this.atualizarStatusDados(`⚠️ Usando dados em cache: ${totalColabs} colaboradores, ${totalGests} gestores`, 'warning');
+                        const totalDetalhes = this.dados.avaliacoesDetalhes.length;
+                        this.atualizarStatusDados(`⚠️ Usando dados em cache: ${totalColabs} colaboradores, ${totalGests} gestores, ${totalDetalhes} detalhes`, 'warning');
                         console.log('💾 Dados carregados do cache');
                     } else {
                         this.atualizarStatusDados('❌ Nenhum cache disponível - Verifique a conexão com o Supabase', 'danger');
@@ -2042,7 +2062,7 @@ Exemplo:
                     classificacao = 'PRECISA MELHORAR';
                 }
 
-                document.getElementById('pontuacaoDisplay').textContent = pontuacao.toFixed(2) + '/5.00';
+                document.getElementById('pontuacaoDisplay').textContent = pontuacao.toFixed(1) + '/5.0';
                 document.getElementById('classificacaoDisplay').textContent = classificacao;
 
                 const laudoResumo = this.gerarLaudoResumo(pontuacao, classificacao);
@@ -2122,6 +2142,9 @@ Exemplo:
                 // NOVA FUNCIONALIDADE: Calcular evolução
                 const evolucao = this.calcularEvolucao(matriculaAvaliado, this.dados.avaliacaoAtual.pontuacao);
 
+                // Data da avaliação
+                const dataAvaliacao = new Date().toISOString();
+
                 // CORREÇÃO: usar os nomes EXATOS das colunas da tabela avaliacoes + CORRIGIR CASAS DECIMAIS
                 const avaliacao = {
                     nome_avaliado: nomeAvaliado,
@@ -2129,11 +2152,11 @@ Exemplo:
                     nome_gestor: nomeGestor,
                     matricula_gestor: document.getElementById('matriculaGestor').value || '',
                     filial: filial,
-                    pontuacao: parseFloat(this.dados.avaliacaoAtual.pontuacao.toFixed(2)), // CORREÇÃO: Sempre 2 casas decimais
+                    pontuacao: parseFloat(this.dados.avaliacaoAtual.pontuacao.toFixed(1)), // CORREÇÃO: Sempre 1 casa decimal
                     classificacao: this.dados.avaliacaoAtual.classificacao,
                     comentarios: document.getElementById('comentarios').value || '',
                     evolucao: evolucao, // NOVA COLUNA: evolução calculada
-                    created_at: new Date().toISOString()
+                    created_at: dataAvaliacao
                 };
 
                 try {
@@ -2141,9 +2164,13 @@ Exemplo:
                     
                     console.log('💾 Salvando avaliação com evolução:', avaliacao);
                     
+                    // Salvar avaliação principal
                     const resultado = await this.inserirNoSupabase('avaliacoes', avaliacao);
                     
                     if (resultado) {
+                        // NOVO: Salvar detalhes da avaliação (por fator)
+                        await this.salvarDetalhesAvaliacao(matriculaAvaliado, nomeAvaliado, dataAvaliacao);
+                        
                         this.dados.avaliacoes.push(avaliacao);
                         this.cache.avaliacoes = this.dados.avaliacoes;
                         
@@ -2156,7 +2183,7 @@ Exemplo:
                         let mensagemSucesso = `✅ Avaliação salva no Supabase!`;
                         if (evolucao !== null) {
                             const tipoEvolucao = evolucao > 0 ? 'melhoria' : evolucao < 0 ? 'queda' : 'estabilidade';
-                            mensagemSucesso += `\n📈 Evolução registrada: ${tipoEvolucao} de ${evolucao.toFixed(2)} pontos`;
+                            mensagemSucesso += `\n📈 Evolução registrada: ${tipoEvolucao} de ${evolucao.toFixed(1)} pontos`;
                         }
                         
                         this.mostrarAlerta(mensagemSucesso, 'success');
@@ -2174,6 +2201,59 @@ Exemplo:
                 } finally {
                     this.mostrarLoading(false);
                 }
+            },
+
+            // NOVA FUNÇÃO: Salvar detalhes da avaliação por fator
+            async salvarDetalhesAvaliacao(matricula, nome, dataAvaliacao) {
+                console.log('💾 Salvando detalhes da avaliação...');
+                
+                const detalhes = [];
+                
+                // Coletar todas as respostas dos formulários
+                this.COMPETENCIAS.forEach((competencia, compIndex) => {
+                    competencia.fatores.forEach((fator, fatorIndex) => {
+                        const fatorGlobalIndex = this.calcularIndiceFatorGlobal(compIndex, fatorIndex);
+                        const radio = document.querySelector(`input[name="fator_${fatorGlobalIndex}"]:checked`);
+                        
+                        if (radio) {
+                            detalhes.push({
+                                matricula_avaliado: matricula,
+                                nome_avaliado: nome,
+                                data_avaliacao: dataAvaliacao,
+                                competencia: competencia.nome,
+                                fator_numero: fatorIndex + 1,
+                                fator_texto: fator,
+                                pontuacao: parseInt(radio.value),
+                                created_at: dataAvaliacao
+                            });
+                        }
+                    });
+                });
+
+                // Salvar todos os detalhes no banco
+                if (detalhes.length > 0) {
+                    try {
+                        // Salvar em lotes para melhor performance
+                        for (const detalhe of detalhes) {
+                            await this.inserirNoSupabase('avaliacoes_detalhes', detalhe);
+                        }
+                        console.log(`✅ ${detalhes.length} detalhes salvos com sucesso!`);
+                    } catch (error) {
+                        console.error('❌ Erro ao salvar detalhes:', error);
+                        throw error;
+                    }
+                } else {
+                    console.warn('⚠️ Nenhum detalhe para salvar');
+                }
+            },
+
+            // FUNÇÃO AUXILIAR: Calcular índice global do fator
+            calcularIndiceFatorGlobal(competenciaIndex, fatorIndex) {
+                let indiceGlobal = 0;
+                for (let i = 0; i < competenciaIndex; i++) {
+                    indiceGlobal += this.COMPETENCIAS[i].fatores.length;
+                }
+                return indiceGlobal + fatorIndex;
             },
 
             // NOVA FUNÇÃO: Calcular evolução em relação à avaliação anterior
@@ -2195,7 +2275,7 @@ Exemplo:
                 const pontuacaoAnterior = parseFloat(ultimaAvaliacao.pontuacao);
                 const evolucao = novaPontuacao - pontuacaoAnterior;
 
-                console.log(`📈 Evolução calculada: ${evolucao.toFixed(2)} (${novaPontuacao.toFixed(2)} - ${pontuacaoAnterior.toFixed(2)})`);
+                console.log(`📈 Evolução calculada: ${evolucao.toFixed(1)} (${novaPontuacao.toFixed(1)} - ${pontuacaoAnterior.toFixed(1)})`);
                 
                 return evolucao;
             },
@@ -2217,7 +2297,6 @@ Exemplo:
                 botoes.forEach(btn => {
                     if ((sectionId === 'home' && btn.textContent.includes('Home')) ||
                         (sectionId === 'avaliacao' && btn.textContent.includes('Nova')) ||
-                        (sectionId === 'laudos' && btn.textContent.includes('Laudos')) ||
                         (sectionId === 'historico' && btn.textContent.includes('Histórico')) ||
                         (sectionId === 'relatorios' && btn.textContent.includes('Relatórios')) ||
                         (sectionId === 'configuracoes' && btn.textContent.includes('Configurações'))) {
@@ -2238,10 +2317,9 @@ Exemplo:
                         }
                         break;
                     case 'relatorios':
-                        this.gerarRelatorios();
-                        break;
-                    case 'laudos':
-                        this.inicializarLaudos();
+                        if (this.acesso.tipo) {
+                            this.gerarRelatorios();
+                        }
                         break;
                     case 'configuracoes':
                         if (this.acesso.tipo === 'admin') {
@@ -2337,9 +2415,26 @@ Exemplo:
             // =====================================================
             // ACESSO E AUTENTICAÇÃO + NOVA SEÇÃO RELATÓRIOS
             // =====================================================
+            toggleLaudos() {
+                const secaoLaudos = document.getElementById('secaoLaudos');
+                if (secaoLaudos.style.display === 'none') {
+                    secaoLaudos.style.display = 'block';
+                    this.inicializarLaudos();
+                    this.mostrarAlerta('✅ Gerador de laudos aberto!', 'info');
+                } else {
+                    secaoLaudos.style.display = 'none';
+                    this.limparBuscaLaudo();
+                }
+            },
+
             acessoHistorico() {
                 this.acesso = { tipo: null, senha: null, filial: null, permissoes: [] };
                 this.showSection('loginHistorico');
+            },
+
+            acessoRelatorios() {
+                this.acesso = { tipo: null, senha: null, filial: null, permissoes: [] };
+                this.showSection('loginRelatorios');
             },
 
             acessoConfiguracoes() {
@@ -2387,6 +2482,46 @@ Exemplo:
                 this.mostrarAlerta('❌ Senha inválida!', 'danger');
             },
 
+            validarSenhaRelatorios() {
+                const senha = document.getElementById('senhaRelatorios').value.trim().toUpperCase();
+                
+                if (!senha) {
+                    this.mostrarAlerta('❌ Digite uma senha!', 'danger');
+                    return;
+                }
+
+                if (this.SENHAS_ESPECIAIS[senha]) {
+                    const tipoAcesso = this.SENHAS_ESPECIAIS[senha].tipo;
+                    this.acesso = {
+                        tipo: tipoAcesso,
+                        senha: senha,
+                        filial: tipoAcesso === 'master' ? 'TODAS' : null,
+                        permissoes: tipoAcesso === 'admin' ? ['historico', 'configuracoes', 'relatorios'] : ['relatorios']
+                    };
+                    this.exibirStatusAcesso('relatorios');
+                    this.showSection('relatorios');
+                    this.mostrarAlerta(`✅ Acesso liberado: ${this.SENHAS_ESPECIAIS[senha].descricao}`, 'success');
+                    return;
+                }
+
+                if (this.SENHAS_FILIAIS[senha]) {
+                    const dadosFilial = this.SENHAS_FILIAIS[senha];
+                    this.acesso = {
+                        tipo: 'filial',
+                        senha: senha,
+                        filial: dadosFilial.filial,
+                        regional: dadosFilial.regional,
+                        permissoes: ['relatorios']
+                    };
+                    this.exibirStatusAcesso('relatorios');
+                    this.showSection('relatorios');
+                    this.mostrarAlerta(`✅ Acesso liberado para Filial ${dadosFilial.filial} - ${dadosFilial.regional}`, 'success');
+                    return;
+                }
+
+                this.mostrarAlerta('❌ Senha inválida!', 'danger');
+            },
+
             validarSenhaConfiguracoes() {
                 const senha = document.getElementById('senhaConfiguracoes').value.trim().toUpperCase();
                 
@@ -2411,6 +2546,9 @@ Exemplo:
                 switch(secao) {
                     case 'historico':
                         statusElementId = 'accessStatus';
+                        break;
+                    case 'relatorios':
+                        statusElementId = 'relatoriosAccessStatus';
                         break;
                     case 'configuracoes':
                         statusElementId = 'configStatus';
@@ -2445,6 +2583,8 @@ Exemplo:
                 if (event.key === 'Enter') {
                     if (tipo === 'historico') {
                         this.validarSenhaHistorico();
+                    } else if (tipo === 'relatorios') {
+                        this.validarSenhaRelatorios();
                     } else if (tipo === 'configuracoes') {
                         this.validarSenhaConfiguracoes();
                     }
@@ -2454,8 +2594,10 @@ Exemplo:
             logout() {
                 this.acesso = { tipo: null, senha: null, filial: null, permissoes: [] };
                 document.getElementById('senhaHistorico').value = '';
+                document.getElementById('senhaRelatorios').value = '';
                 document.getElementById('senhaConfiguracoes').value = '';
                 document.getElementById('accessStatus').style.display = 'none';
+                document.getElementById('relatoriosAccessStatus').style.display = 'none';
                 document.getElementById('configStatus').style.display = 'none';
                 this.showSection('home');
                 this.mostrarAlerta('🚪 Sessão encerrada!', 'info');
@@ -2512,7 +2654,7 @@ Exemplo:
                     if (av.classificacao === 'PRECISA MELHORAR') precisamMelhorar++;
                 });
 
-                const media = total > 0 ? (somaNotas / total).toFixed(2) : '0.00';
+                const media = total > 0 ? (somaNotas / total).toFixed(1) : '0.0';
 
                 this.animarNumero('totalAvaliacoes', total);
                 this.animarNumero('mediaGeral', parseFloat(media));
@@ -2598,7 +2740,7 @@ Exemplo:
                     icone = '📉';
                 }
 
-                return `<span style="color: ${cor}; font-weight: bold;">${icone} ${numeroAvaliacao - 1}ª→${numeroAvaliacao}ª: ${sinal}${evolucao.toFixed(2)}</span>`;
+                return `<span style="color: ${cor}; font-weight: bold;">${icone} ${numeroAvaliacao - 1}ª→${numeroAvaliacao}ª: ${sinal}${evolucao.toFixed(1)}</span>`;
             },
 
             // NOVA FUNÇÃO: Preencher filtro de filiais
@@ -2727,7 +2869,7 @@ Exemplo:
                 let csv = 'Data,Avaliado,Matricula,Funcao,Gestor,Filial,Pontuacao,Classificacao,Evolucao\n';
                 
                 dadosFiltrados.forEach(av => {
-                    const evolucao = av.evolucao !== null && av.evolucao !== undefined ? av.evolucao.toFixed(2) : '--';
+                    const evolucao = av.evolucao !== null && av.evolucao !== undefined ? av.evolucao.toFixed(1) : '--';
                     const linha = [
                         new Date(av.created_at || av.criado_em).toLocaleDateString('pt-BR'),
                         av.nome_avaliado || av.nomeAvaliado,
@@ -2834,7 +2976,7 @@ Exemplo:
                 // Calcular médias e ordenar
                 const rankingFuncoes = Object.keys(funcoes).map(funcao => ({
                     funcao: funcao,
-                    media: (funcoes[funcao].soma / funcoes[funcao].total).toFixed(2),
+                    media: (funcoes[funcao].soma / funcoes[funcao].total).toFixed(1),
                     total: funcoes[funcao].total
                 })).sort((a, b) => parseFloat(b.media) - parseFloat(a.media));
 
@@ -3001,7 +3143,7 @@ Exemplo:
                     html += `<strong>${item.nome}</strong><br>`;
                     html += `Pontuação atual: ${item.pontuacao}`;
                     html += '</div>';
-                    html += `<div style="font-size: 1.2em; font-weight: bold; color: ${corEvolucao};">${icone} ${sinal}${item.evolucao.toFixed(2)}</div>`;
+                    html += `<div style="font-size: 1.2em; font-weight: bold; color: ${corEvolucao};">${icone} ${sinal}${item.evolucao.toFixed(1)}</div>`;
                     html += '</div>';
                 });
 
@@ -3284,7 +3426,7 @@ Exemplo:
                 document.getElementById('laudoMatriculaAvaliado').value = avaliacao.matricula_avaliado || avaliacao.matriculaAvaliado || '';
                 document.getElementById('laudoNomeGestor').value = avaliacao.nome_gestor || avaliacao.nomeGestor || '';
                 document.getElementById('laudoDataAvaliacao').value = new Date(avaliacao.created_at || avaliacao.criado_em).toLocaleDateString('pt-BR');
-                document.getElementById('laudoPontuacao').value = `${avaliacao.pontuacao}/5.00`;
+                document.getElementById('laudoPontuacao').value = `${avaliacao.pontuacao}/5.0`;
                 document.getElementById('laudoClassificacao').value = avaliacao.classificacao || '';
                 document.getElementById('laudoFilial').value = avaliacao.filial || '';
                 
@@ -3293,7 +3435,7 @@ Exemplo:
                 let textoEvolucao = 'Primeira avaliação';
                 if (evolucao !== null && evolucao !== undefined) {
                     const sinal = evolucao >= 0 ? '+' : '';
-                    textoEvolucao = `${sinal}${evolucao.toFixed(2)} pontos`;
+                    textoEvolucao = `${sinal}${evolucao.toFixed(1)} pontos`;
                 }
                 document.getElementById('laudoEvolucao').value = textoEvolucao;
 
@@ -3305,16 +3447,180 @@ Exemplo:
                 this.mostrarAlerta('✅ Avaliação carregada! Preencha o plano de desenvolvimento.', 'success');
             },
 
-            gerarAnaliseCompetencias(avaliacao) {
+            async gerarAnaliseCompetencias(avaliacao) {
                 const container = document.getElementById('competenciasLaudo');
                 
-                // Simular dados por competência (em uma implementação real, você salvaria isso)
+                console.log('📋 Buscando análise real da avaliação...');
+                
+                try {
+                    // Buscar detalhes reais da avaliação no banco de dados
+                    const detalhes = await this.buscarDetalhesAvaliacao(
+                        avaliacao.matricula_avaliado || avaliacao.matriculaAvaliado,
+                        avaliacao.created_at || avaliacao.criado_em
+                    );
+
+                    if (detalhes.length === 0) {
+                        console.warn('⚠️ Nenhum detalhe encontrado, usando dados simulados');
+                        this.gerarAnaliseSimulada(container);
+                        return;
+                    }
+
+                    // Processar dados reais por competência
+                    const analiseCompetencias = this.processarDetalhesReais(detalhes);
+                    
+                    // Gerar HTML com dados reais
+                    this.renderizarAnaliseCompetencias(container, analiseCompetencias);
+                    
+                } catch (error) {
+                    console.error('❌ Erro ao buscar detalhes:', error);
+                    console.warn('⚠️ Usando dados simulados devido ao erro');
+                    this.gerarAnaliseSimulada(container);
+                }
+            },
+
+            // NOVA FUNÇÃO: Buscar detalhes reais da avaliação
+            async buscarDetalhesAvaliacao(matricula, dataAvaliacao) {
+                try {
+                    console.log(`🔍 Buscando detalhes para ${matricula} em ${dataAvaliacao}`);
+                    
+                    // Primeiro, tentar buscar nos dados em cache
+                    if (this.dados.avaliacoesDetalhes && this.dados.avaliacoesDetalhes.length > 0) {
+                        const dataFormatada = new Date(dataAvaliacao).toISOString().split('T')[0];
+                        
+                        const detalhesCache = this.dados.avaliacoesDetalhes.filter(d => {
+                            const dataDetalhe = new Date(d.data_avaliacao).toISOString().split('T')[0];
+                            return d.matricula_avaliado === matricula && dataDetalhe === dataFormatada;
+                        });
+
+                        if (detalhesCache.length > 0) {
+                            console.log(`✅ ${detalhesCache.length} detalhes encontrados no cache`);
+                            return detalhesCache;
+                        }
+                    }
+
+                    // Se não encontrou no cache, buscar no Supabase
+                    console.log('🔍 Buscando detalhes no Supabase...');
+                    const dataFormatada = new Date(dataAvaliacao).toISOString().split('T')[0];
+                    
+                    // Buscar detalhes no Supabase
+                    const detalhes = await this.buscarDoSupabase('avaliacoes_detalhes', {
+                        matricula_avaliado: matricula
+                    });
+
+                    // Filtrar pela data mais próxima (mesmo dia)
+                    const detalhesFiltrados = detalhes.filter(d => {
+                        const dataDetalhe = new Date(d.data_avaliacao).toISOString().split('T')[0];
+                        return dataDetalhe === dataFormatada;
+                    });
+
+                    console.log(`✅ ${detalhesFiltrados.length} detalhes encontrados no Supabase`);
+                    return detalhesFiltrados;
+                    
+                } catch (error) {
+                    console.error('❌ Erro ao buscar detalhes da avaliação:', error);
+                    return [];
+                }
+            },
+
+            // NOVA FUNÇÃO: Processar detalhes reais por competência
+            processarDetalhesReais(detalhes) {
+                const competenciasMap = {};
+                
+                // Agrupar por competência
+                detalhes.forEach(detalhe => {
+                    const competencia = detalhe.competencia;
+                    
+                    if (!competenciasMap[competencia]) {
+                        competenciasMap[competencia] = {
+                            nome: competencia,
+                            fatores: [],
+                            somaNotas: 0,
+                            totalFatores: 0
+                        };
+                    }
+                    
+                    competenciasMap[competencia].fatores.push({
+                        texto: detalhe.fator_texto,
+                        pontuacao: detalhe.pontuacao.toString()
+                    });
+                    
+                    competenciasMap[competencia].somaNotas += detalhe.pontuacao;
+                    competenciasMap[competencia].totalFatores++;
+                });
+
+                // Calcular médias e ordenar fatores
+                const analiseCompetencias = Object.values(competenciasMap).map(comp => {
+                    const media = comp.totalFatores > 0 ? (comp.somaNotas / comp.totalFatores) : 0;
+                    
+                    // Ordenar fatores por número (manter ordem original)
+                    comp.fatores.sort((a, b) => {
+                        // Se não conseguir ordenar, manter ordem atual
+                        return 0;
+                    });
+                    
+                    return {
+                        nome: comp.nome,
+                        pontuacao: media.toFixed(1),
+                        fatores: comp.fatores
+                    };
+                });
+
+                // Ordenar competências pela ordem padrão do sistema
+                const ordemCompetencias = this.COMPETENCIAS.map(c => c.nome);
+                analiseCompetencias.sort((a, b) => {
+                    const indexA = ordemCompetencias.indexOf(a.nome);
+                    const indexB = ordemCompetencias.indexOf(b.nome);
+                    return indexA - indexB;
+                });
+
+                console.log('📊 Análise processada:', analiseCompetencias);
+                return analiseCompetencias;
+            },
+
+            // NOVA FUNÇÃO: Renderizar análise de competências
+            renderizarAnaliseCompetencias(container, analiseCompetencias) {
+                let html = '';
+                
+                analiseCompetencias.forEach((comp, index) => {
+                    const corCompetencia = parseFloat(comp.pontuacao) >= 4.0 ? '#28a745' : 
+                                          parseFloat(comp.pontuacao) >= 3.0 ? '#ffc107' : '#dc3545';
+                    
+                    html += '<div class="competencia-card">';
+                    html += `<div class="competencia-header" style="padding: 12px; font-size: 1.1em;">${comp.nome}</div>`;
+                    html += '<div style="padding: 15px;">';
+                    html += `<div style="text-align: center; margin-bottom: 15px;">`;
+                    html += `<span style="font-size: 1.8em; font-weight: bold; color: ${corCompetencia};">${comp.pontuacao}/5.0</span>`;
+                    html += `<div style="margin-top: 8px; color: #666; font-size: 0.9em;">Pontuação da Competência</div>`;
+                    html += '</div>';
+                    
+                    html += '<h4 style="margin-bottom: 12px; font-size: 1.0em;"><i class="fas fa-list"></i> Fatores Avaliados:</h4>';
+                    
+                    comp.fatores.forEach((fator, fatorIndex) => {
+                        const corFator = parseFloat(fator.pontuacao) >= 4.0 ? '#28a745' : 
+                                        parseFloat(fator.pontuacao) >= 3.0 ? '#ffc107' : '#dc3545';
+                        
+                        html += '<div style="display: flex; justify-content: space-between; align-items: center; padding: 8px; margin: 4px 0; background: #f8f9fa; border-radius: 6px; border-left: 3px solid ' + corFator + '; font-size: 0.9em;">';
+                        html += '<div style="flex: 1;">' + fator.texto + '</div>';
+                        html += `<div style="font-weight: bold; color: ${corFator}; min-width: 50px; text-align: center;">${fator.pontuacao}/5.0</div>`;
+                        html += '</div>';
+                    });
+                    
+                    html += '</div>';
+                    html += '</div>';
+                });
+
+                container.innerHTML = html;
+            },
+
+            // FUNÇÃO FALLBACK: Gerar análise simulada (caso não encontre dados)
+            gerarAnaliseSimulada(container) {
+                console.log('⚠️ Gerando análise simulada');
+                
                 const analiseCompetencias = this.COMPETENCIAS.map((comp, compIndex) => {
-                    // Simular pontuações (em implementação real, viria do banco de dados)
-                    const pontuacaoComp = (Math.random() * 2 + 3).toFixed(2); // Entre 3.00 e 5.00
+                    const pontuacaoComp = (Math.random() * 2 + 3).toFixed(1);
                     const fatoresAnalise = comp.fatores.map((fator, fatorIndex) => ({
                         texto: fator,
-                        pontuacao: (Math.random() * 2 + 3).toFixed(1) // Entre 3.0 e 5.0
+                        pontuacao: (Math.random() * 2 + 3).toFixed(1)
                     }));
                     
                     return {
@@ -3324,37 +3630,13 @@ Exemplo:
                     };
                 });
 
-                let html = '';
+                this.renderizarAnaliseCompetencias(container, analiseCompetencias);
                 
-                analiseCompetencias.forEach((comp, index) => {
-                    const corCompetencia = parseFloat(comp.pontuacao) >= 4.0 ? '#28a745' : 
-                                          parseFloat(comp.pontuacao) >= 3.0 ? '#ffc107' : '#dc3545';
-                    
-                    html += '<div class="competencia-card">';
-                    html += `<div class="competencia-header">${comp.nome}</div>`;
-                    html += '<div style="padding: 20px;">';
-                    html += `<div style="text-align: center; margin-bottom: 20px;">`;
-                    html += `<span style="font-size: 2em; font-weight: bold; color: ${corCompetencia};">${comp.pontuacao}/5.00</span>`;
-                    html += `<div style="margin-top: 10px; color: #666;">Pontuação da Competência</div>`;
-                    html += '</div>';
-                    
-                    html += '<h4 style="margin-bottom: 15px;"><i class="fas fa-list"></i> Fatores Avaliados:</h4>';
-                    
-                    comp.fatores.forEach((fator, fatorIndex) => {
-                        const corFator = parseFloat(fator.pontuacao) >= 4.0 ? '#28a745' : 
-                                        parseFloat(fator.pontuacao) >= 3.0 ? '#ffc107' : '#dc3545';
-                        
-                        html += '<div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; margin: 5px 0; background: #f8f9fa; border-radius: 8px; border-left: 4px solid ' + corFator + ';">';
-                        html += '<div style="flex: 1;">' + fator.texto + '</div>';
-                        html += `<div style="font-weight: bold; color: ${corFator}; min-width: 60px; text-align: center;">${fator.pontuacao}/5.0</div>`;
-                        html += '</div>';
-                    });
-                    
-                    html += '</div>';
-                    html += '</div>';
-                });
-
-                container.innerHTML = html;
+                // Mostrar aviso de dados simulados
+                const aviso = document.createElement('div');
+                aviso.className = 'alert alert-warning';
+                aviso.innerHTML = '<i class="fas fa-exclamation-triangle"></i> <strong>Atenção:</strong> Dados simulados - detalhes da avaliação não encontrados no banco.';
+                container.insertBefore(aviso, container.firstChild);
             },
 
             gerarLaudoPDF() {
@@ -3386,11 +3668,11 @@ Exemplo:
 
                 // Construir conteúdo do laudo
                 let conteudo = `
-                    <div style="margin-bottom: 30px;">
-                        <h3 style="color: var(--cor-primaria); border-bottom: 2px solid var(--cor-primaria); padding-bottom: 10px;">
+                    <div style="margin-bottom: 20px;">
+                        <h3 style="color: var(--cor-primaria); border-bottom: 2px solid var(--cor-primaria); padding-bottom: 8px; margin-bottom: 15px;">
                             <i class="fas fa-user"></i> DADOS DO COLABORADOR
                         </h3>
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 20px;">
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px;">
                             <div><strong>Nome:</strong> ${nomeAvaliado}</div>
                             <div><strong>Matrícula:</strong> ${matricula}</div>
                             <div><strong>Filial:</strong> ${filial}</div>
@@ -3400,18 +3682,18 @@ Exemplo:
                         </div>
                     </div>
 
-                    <div style="margin-bottom: 30px;">
-                        <h3 style="color: var(--cor-primaria); border-bottom: 2px solid var(--cor-primaria); padding-bottom: 10px;">
+                    <div style="margin-bottom: 20px;">
+                        <h3 style="color: var(--cor-primaria); border-bottom: 2px solid var(--cor-primaria); padding-bottom: 8px; margin-bottom: 15px;">
                             <i class="fas fa-chart-bar"></i> RESULTADO GERAL
                         </h3>
-                        <div style="text-align: center; margin: 20px 0; padding: 20px; background: linear-gradient(135deg, #f8faf9 0%, #e9f5ea 100%); border-radius: 15px; border: 2px solid var(--cor-secundaria);">
-                            <div style="font-size: 3em; font-weight: bold; color: var(--cor-primaria); margin-bottom: 10px;">${pontuacao}</div>
-                            <div style="font-size: 1.5em; font-weight: bold; background: var(--cor-primaria); color: white; padding: 10px 20px; border-radius: 25px; display: inline-block;">${classificacao}</div>
+                        <div style="text-align: center; margin: 15px 0; padding: 15px; background: linear-gradient(135deg, #f8faf9 0%, #e9f5ea 100%); border-radius: 10px; border: 2px solid var(--cor-secundaria);">
+                            <div style="font-size: 2.5em; font-weight: bold; color: var(--cor-primaria); margin-bottom: 8px;">${pontuacao}</div>
+                            <div style="font-size: 1.3em; font-weight: bold; background: var(--cor-primaria); color: white; padding: 8px 16px; border-radius: 20px; display: inline-block;">${classificacao}</div>
                         </div>
                     </div>
 
-                    <div style="margin-bottom: 30px;">
-                        <h3 style="color: var(--cor-primaria); border-bottom: 2px solid var(--cor-primaria); padding-bottom: 10px;">
+                    <div style="margin-bottom: 20px;">
+                        <h3 style="color: var(--cor-primaria); border-bottom: 2px solid var(--cor-primaria); padding-bottom: 8px; margin-bottom: 15px;">
                             <i class="fas fa-star"></i> ANÁLISE POR COMPETÊNCIAS
                         </h3>
                         <div id="competenciasLaudoPreview"></div>
@@ -3420,11 +3702,11 @@ Exemplo:
 
                 if (planoDesenvolvimento.trim()) {
                     conteudo += `
-                        <div style="margin-bottom: 30px;">
-                            <h3 style="color: var(--cor-primaria); border-bottom: 2px solid var(--cor-primaria); padding-bottom: 10px;">
+                        <div style="margin-bottom: 20px;">
+                            <h3 style="color: var(--cor-primaria); border-bottom: 2px solid var(--cor-primaria); padding-bottom: 8px; margin-bottom: 15px;">
                                 <i class="fas fa-clipboard-list"></i> PLANO DE DESENVOLVIMENTO
                             </h3>
-                            <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; border-left: 5px solid var(--cor-primaria); margin-top: 15px;">
+                            <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid var(--cor-primaria);">
                                 ${planoDesenvolvimento.replace(/\n/g, '<br>')}
                             </div>
                         </div>
@@ -3433,11 +3715,11 @@ Exemplo:
 
                 if (metas.trim()) {
                     conteudo += `
-                        <div style="margin-bottom: 30px;">
-                            <h3 style="color: var(--cor-primaria); border-bottom: 2px solid var(--cor-primaria); padding-bottom: 10px;">
+                        <div style="margin-bottom: 20px;">
+                            <h3 style="color: var(--cor-primaria); border-bottom: 2px solid var(--cor-primaria); padding-bottom: 8px; margin-bottom: 15px;">
                                 <i class="fas fa-target"></i> METAS DE DESENVOLVIMENTO
                             </h3>
-                            <div style="background: #fff3cd; padding: 20px; border-radius: 10px; border-left: 5px solid #ffc107; margin-top: 15px;">
+                            <div style="background: #fff3cd; padding: 15px; border-radius: 8px; border-left: 4px solid #ffc107;">
                                 ${metas.replace(/\n/g, '<br>')}
                             </div>
                         </div>
@@ -3446,11 +3728,11 @@ Exemplo:
 
                 if (prazos.trim()) {
                     conteudo += `
-                        <div style="margin-bottom: 30px;">
-                            <h3 style="color: var(--cor-primaria); border-bottom: 2px solid var(--cor-primaria); padding-bottom: 10px;">
+                        <div style="margin-bottom: 20px;">
+                            <h3 style="color: var(--cor-primaria); border-bottom: 2px solid var(--cor-primaria); padding-bottom: 8px; margin-bottom: 15px;">
                                 <i class="fas fa-calendar-alt"></i> PRAZOS E RESPONSABILIDADES
                             </h3>
-                            <div style="background: #e7f3ff; padding: 20px; border-radius: 10px; border-left: 5px solid #2196f3; margin-top: 15px;">
+                            <div style="background: #e7f3ff; padding: 15px; border-radius: 8px; border-left: 4px solid #2196f3;">
                                 ${prazos.replace(/\n/g, '<br>')}
                             </div>
                         </div>
@@ -3458,9 +3740,9 @@ Exemplo:
                 }
 
                 conteudo += `
-                    <div style="margin-top: 50px; text-align: center; border-top: 2px solid #ddd; padding-top: 20px;">
-                        <p style="color: #666; margin: 0;">Sistema G&G v4.0 - Gestão de Performance</p>
-                        <p style="color: #666; margin: 0;">Desenvolvido por Juliano Patrick | julianocorrea@bateforte.com.br</p>
+                    <div style="margin-top: 30px; text-align: center; border-top: 1px solid #ddd; padding-top: 15px;">
+                        <p style="color: #666; margin: 0; font-size: 0.9em;">Sistema G&G v4.0 - Gestão de Performance</p>
+                        <p style="color: #666; margin: 0; font-size: 0.8em;">Desenvolvido por Juliano Patrick | julianocorrea@bateforte.com.br</p>
                     </div>
                 `;
 
@@ -3628,7 +3910,7 @@ Exemplo:
                     debug += `📊 RELATÓRIOS: IMPLEMENTADOS\n\n`;
 
                     // Testar tabelas com busca sem limite
-                    const tabelas = ['colaboradores', 'gestores', 'avaliacoes']; // CORREÇÃO: avaliacoes sem acento
+                    const tabelas = ['colaboradores', 'gestores', 'avaliacoes', 'avaliacoes_detalhes']; // NOVA TABELA
                     for (const tabela of tabelas) {
                         try {
                             const dados = await this.buscarTodosRegistros(tabela);
@@ -3651,7 +3933,8 @@ Exemplo:
                     debug += ` 📊 Dados carregados: ${this.dados.dadosCarregados}\n`;
                     debug += ` 👥 Colaboradores em cache: ${Object.keys(this.dados.colaboradores).length}\n`;
                     debug += ` 👔 Gestores em cache: ${Object.keys(this.dados.gestores).length}\n`;
-                    debug += ` 📋 Avaliações em cache: ${this.dados.avaliacoes.length}\n\n`;
+                    debug += ` 📋 Avaliações em cache: ${this.dados.avaliacoes.length}\n`;
+                    debug += ` 📊 Detalhes em cache: ${this.dados.avaliacoesDetalhes.length}\n\n`;
 
                     debug += `🔐 ACESSO ATUAL:\n`;
                     debug += ` Tipo: ${this.acesso.tipo || 'Nenhum'}\n`;
@@ -3692,6 +3975,7 @@ Exemplo:
                 debug += `👥 Colaboradores: ${Object.keys(this.dados.colaboradores).length}\n`;
                 debug += `👔 Gestores: ${Object.keys(this.dados.gestores).length}\n`;
                 debug += `📋 Avaliações: ${this.dados.avaliacoes.length}\n`;
+                debug += `📊 Detalhes: ${this.dados.avaliacoesDetalhes.length}\n`;
                 debug += `💾 Cache válido: ${this.cache.ultimaAtualizacao ? 'Sim' : 'Não'}\n`;
                 debug += `🕐 Última sync: ${this.cache.ultimaAtualizacao ? new Date(this.cache.ultimaAtualizacao).toLocaleString() : 'Nunca'}\n`;
                 debug += `🔐 Acesso atual: ${this.acesso.tipo || 'Nenhum'}\n`;
@@ -3720,7 +4004,7 @@ Exemplo:
                     somaNotas += parseFloat(av.pontuacao || av.pontuacao);
                 });
 
-                const media = total > 0 ? (somaNotas / total).toFixed(2) : '0.00';
+                const media = total > 0 ? (somaNotas / total).toFixed(1) : '0.0';
 
                 this.animarNumero('totalAvaliacoesHome', total);
                 this.animarNumero('mediaGeralHome', parseFloat(media));
@@ -3766,7 +4050,7 @@ Exemplo:
                 });
 
                 const meses = Object.keys(porMes).sort();
-                const medias = meses.map(mes => (porMes[mes].soma / porMes[mes].total).toFixed(2));
+                const medias = meses.map(mes => (porMes[mes].soma / porMes[mes].total).toFixed(1));
 
                 if (window.graficoHistoricoChart) {
                     window.graficoHistoricoChart.destroy();
@@ -3843,7 +4127,7 @@ Exemplo:
                     const valorAtual = valorInicial + (valorFinal - valorInicial) * progressoSuave;
 
                     if (elementId.includes('media') || elementId.includes('Media')) {
-                        elemento.textContent = valorAtual.toFixed(2);
+                        elemento.textContent = valorAtual.toFixed(1);
                     } else {
                         elemento.textContent = Math.round(valorAtual);
                     }
@@ -3899,6 +4183,7 @@ Exemplo:
                             const dadosCache = JSON.parse(cacheStorage);
                             this.cache = dadosCache;
                             this.dados.avaliacoes = dadosCache.avaliacoes || [];
+                            this.dados.avaliacoesDetalhes = dadosCache.avaliacoesDetalhes || []; // NOVO
                             this.dados.colaboradores = dadosCache.colaboradores || {};
                             this.dados.gestores = dadosCache.gestores || {};
                             console.log('💾 Cache carregado');
@@ -3919,6 +4204,9 @@ Exemplo:
                     console.log('💾 Salvamento de avaliações corrigido ✅');
                     console.log('📈 Evolução implementada ✅');
                     console.log('📊 Relatórios comparativos implementados ✅');
+                    console.log('📋 Laudos integrados no histórico ✅');
+                    console.log('🗃️ Nova tabela avaliacoes_detalhes implementada ✅');
+                    console.log('🎯 Laudos com dados REAIS do banco ✅');
                 } catch (error) {
                     console.error('❌ Erro na inicialização:', error);
                     this.atualizarStatusConexaoHome(false);
@@ -3941,45 +4229,55 @@ Exemplo:
         window.sistemaGG = GG;
 
         console.log(`
-🎯 SISTEMA G&G v4.0 - VERSÃO FINAL COMPLETA COM GERADOR DE LAUDOS!
-=====================================================================
+🎯 SISTEMA G&G v4.0 - VERSÃO FINAL COM BANCO DE DADOS COMPLETO!
+================================================================
 🔗 URL SUPABASE: https://mtqwqwpqkzrbkxxkaffq.supabase.co
 ✅ BUSCA SEM LIMITE: Busca TODOS os registros (não apenas 1000)
 ✅ SALVAMENTO CORRIGIDO: Estrutura da tabela 'avaliacoes' ajustada
 ✅ EVOLUÇÃO SEQUENCIAL: Mostra 1ª→2ª, 2ª→3ª, etc. SOMENTE no histórico
-✅ RELATÓRIOS SEM SENHA: Acesso direto aos relatórios comparativos
+✅ RELATÓRIOS COM SENHA: Acesso controlado igual ao histórico
 ✅ FILTROS NO HISTÓRICO: Por data, classificação, filial, nome, evolução
 ✅ NOVA COLUNA: 'evolucao' para armazenar a diferença entre avaliações
+✅ NOVA TABELA: 'avaliacoes_detalhes' para armazenar resultados por fator
 ✅ API REST otimizada com paginação automática
 ✅ Interface responsiva otimizada para PDF
 ✅ HOME INFORMATIVO: Explicações sobre o sistema e pontuações
 ✅ TODAS AS FILIAIS: 13 filiais + senhas especiais incluídas
-✅ GERADOR DE LAUDOS: Relatórios detalhados com plano de desenvolvimento
+✅ GERADOR DE LAUDOS: INTEGRADO NO HISTÓRICO com dados REAIS do banco
+✅ PONTUAÇÕES: Limitadas a 1 CASA DECIMAL (X.X)
 
 🔧 FUNCIONALIDADES IMPLEMENTADAS:
-• Evolução sequencial (1ª avaliação → 2ª avaliação: +/-X.XX)
+• Evolução sequencial (1ª avaliação → 2ª avaliação: +/-X.X)
 • Filtros avançados no histórico (8 tipos de filtros)
-• Relatórios públicos (sem necessidade de senha)
+• Relatórios COM SENHA usando mesmas permissões do histórico
 • Busca TODOS os registros do Supabase
 • Exportação com análises detalhadas
 • Cache otimizado para grandes volumes
 • Home explicativo sobre o sistema
-• Gerador de laudos com análise por competência
+• Gerador de laudos INTEGRADO no histórico com DADOS REAIS
 • Plano de desenvolvimento editável
-• Impressão/PDF otimizada
+• Impressão/PDF otimizada com layout compacto
+• Salvamento detalhado por competência e fator
 
-📊 RELATÓRIOS DISPONÍVEIS:
+📊 RELATÓRIOS DISPONÍVEIS (COM SENHA):
 • Por Função: Rankings e performance por cargo
 • Por Filial: Análise comparativa entre filiais
 • Por Competência: Radar das 6 competências principais
 • Evolução: Análise de melhorias/quedas sequenciais
 
-📋 LAUDOS PERSONALIZADOS:
+📋 LAUDOS PERSONALIZADOS (INTEGRADOS NO HISTÓRICO):
 • Busca por matrícula do colaborador
-• Análise detalhada por competência e fator
+• Análise detalhada por competência e fator COM DADOS REAIS
 • Campo editável para plano de desenvolvimento
 • Metas e prazos personalizáveis
-• Layout profissional para impressão
+• Layout compacto e profissional para impressão
+• Pontuações REAIS salvas no banco de dados
+
+🗃️ ESTRUTURA DO BANCO DE DADOS:
+• colaboradores: Dados dos colaboradores
+• gestores: Dados dos gestores
+• avaliacoes: Avaliações principais com pontuação geral
+• avaliacoes_detalhes: Detalhes por competência e fator (NOVO!)
 
 🏢 FILIAIS CADASTRADAS (13 UNIDADES):
 743-MS | 264-SC | 753-MT | 364-DF | 713-SP | 468-MT | 892-SP | 723-SP
@@ -3987,13 +4285,17 @@ Exemplo:
 
 💻 DESENVOLVIDO POR: Juliano Patrick
 📧 CONTATO: julianocorrea@bateforte.com.br
-=====================================================================
-🚀 SISTEMA 100% OPERACIONAL - VERSÃO FINAL COM LAUDOS!
+================================================================
+🚀 SISTEMA 100% OPERACIONAL - VERSÃO FINAL COM BANCO COMPLETO!
 📈 EVOLUÇÃO: Apenas no histórico com progressão sequencial
-📊 RELATÓRIOS: Acesso livre sem senha
+📊 RELATÓRIOS: COM SENHA usando mesmas permissões do histórico
 🔍 FILTROS: 8 tipos de filtros no histórico
 🏠 HOME: Seção informativa sobre como funciona o sistema
-📋 LAUDOS: Geração de relatórios personalizados para impressão
+📋 LAUDOS: Geração INTEGRADA no histórico com DADOS REAIS do banco
+🎯 PONTUAÇÕES: Sempre 1 casa decimal (X.X)
+📄 IMPRESSÃO: Layout otimizado para economia de papel
+🔐 SEGURANÇA: Relatórios protegidos por senha igual ao histórico
+🗃️ BANCO: Estrutura completa com detalhes por fator
         `);
     </script>
 </body>
