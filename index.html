@@ -31,7 +31,7 @@
             padding: 20px;
         }
 
-        .main-header {
+       .main-header {
             background: linear-gradient(135deg, var(--cor-primaria) 0%, var(--cor-primaria) 100%);
             color: white;
             padding: 30px 0;
@@ -39,6 +39,56 @@
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             margin-bottom: 30px;
             border-radius: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .main-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='none' stroke='%23ffffff' stroke-width='0.5' opacity='0.1'%3E%3Ccircle cx='20' cy='20' r='8'/%3E%3Cpath d='M20 28c-5.5 0-10 4.5-10 10v5h20v-5c0-5.5-4.5-10-10-10z'/%3E%3Ccircle cx='60' cy='20' r='8'/%3E%3Cpath d='M60 28c-5.5 0-10 4.5-10 10v5h20v-5c0-5.5-4.5-10-10-10z'/%3E%3Ccircle cx='40' cy='60' r='8'/%3E%3Cpath d='M40 68c-5.5 0-10 4.5-10 10v5h20v-5c0-5.5-4.5-10-10-10z'/%3E%3C/g%3E%3C/svg%3E"),
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cg fill='%23ffffff' opacity='0.05'%3E%3Cpath d='M30 15c4.4 0 8 3.6 8 8s-3.6 8-8 8-8-3.6-8-8 3.6-8 8-8zm0 18c6.6 0 12 5.4 12 12v3H18v-3c0-6.6 5.4-12 12-12z'/%3E%3C/g%3E%3C/svg%3E");
+            background-position: 
+                0 0,
+                30px 30px;
+            background-size: 80px 80px, 60px 60px;
+            animation: floatPattern 20s linear infinite;
+            z-index: 1;
+        }
+
+        .main-header::after {
+            position: absolute;
+            top: 10px;
+            left: 0;
+            right: 0;
+            font-size: 24px;
+            opacity: 0.1;
+            letter-spacing: 20px;
+            animation: slideEmojis 15s linear infinite;
+            z-index: 1;
+        }
+
+        .main-header > div {
+            position: relative;
+            z-index: 2;
+        }
+
+        @keyframes floatPattern {
+            0% { transform: translateX(0) translateY(0); }
+            25% { transform: translateX(10px) translateY(-5px); }
+            50% { transform: translateX(0) translateY(-10px); }
+            75% { transform: translateX(-10px) translateY(-5px); }
+            100% { transform: translateX(0) translateY(0); }
+        }
+
+        @keyframes slideEmojis {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
         }
 
         .nav-menu {
@@ -744,7 +794,7 @@
     <header class="main-header">
         <div class="container">
             <h1><i class="fas fa-target"></i> SISTEMA DE AVALIAÇÃO DE DESEMPENHO</h1>
-            <p>Sistema G&G v4.0 - VERSÃO FINAL (Evolução Sequencial + Relatórios Livres + Filtros Avançados)</p>
+            <p>Sistema Avaliação de Desempenho - Plataforma para avaliar, acompanhar e desenvolver a performance de colaboradores de forma simples e estratégica. </p>
         </div>
     </header>
 
@@ -769,7 +819,7 @@
 
         <!-- Seção Home -->
         <section id="home" class="section active">
-            <h2><i class="fas fa-home"></i> Sistema G&G v4.0 - Avaliação de Desempenho</h2>
+            <h2><i class="fas fa-home"></i> Sistema - Avaliação de Desempenho V4.0</h2>
             
             <div id="statusConexaoHome" class="status-conexao">
                 <span id="textoStatus"><i class="fas fa-sync fa-spin"></i> Verificando conexão...</span>
@@ -777,7 +827,7 @@
 
             <div class="alert alert-success">
                 <h4><i class="fas fa-info-circle"></i> Como Funciona o Sistema de Avaliação</h4>
-                <p><strong>O Sistema G&G v4.0</strong> é uma plataforma completa para avaliação de desempenho de lideranças, focada em 6 competências principais com 31 fatores específicos de avaliação.</p>
+                <p><strong>O Sistema de avaliação</strong> é uma plataforma completa para avaliação de desempenho de lideranças, focada em 6 competências principais com 31 fatores específicos de avaliação.</p>
             </div>
 
             <div id="contadorRegistros" class="registro-contador" style="display: none;">
@@ -993,7 +1043,7 @@
                     <i class="fas fa-calculator"></i> Calcular Resultado
                 </button>
                 <button class="btn btn-success" onclick="GG.salvarAvaliacao()" id="btnSalvar" disabled>
-                    <i class="fas fa-save"></i> Salvar no Supabase
+                    <i class="fas fa-save"></i> Salvar 
                 </button>
                 <button class="btn" onclick="GG.limparFormulario()">
                     <i class="fas fa-trash"></i> Limpar Formulário
@@ -1025,25 +1075,14 @@
                 </button>
                 <div style="background: rgba(255, 255, 255, 0.7); border-radius: 15px; padding: 25px; margin-top: 30px; text-align: left;">
                     <h4 style="color: var(--cor-primaria); margin-bottom: 15px; text-align: center;">
-                        <i class="fas fa-info-circle"></i> Senhas de Acesso
+                        <i class="fas fa-info-circle"></i> Informações de Acesso
                     </h4>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; font-size: 0.9em;">
-                        <p><strong>GG74301</strong> - Filial 743-MS</p>
-                        <p><strong>GG26402</strong> - Filial 264-SC</p>
-                        <p><strong>GG75303</strong> - Filial 753-MT</p>
-                        <p><strong>GG36404</strong> - Filial 364-DF</p>
-                        <p><strong>GG71305</strong> - Filial 713-SP</p>
-                        <p><strong>GG46806</strong> - Filial 468-MT</p>
-                        <p><strong>GG89207</strong> - Filial 892-SP</p>
-                        <p><strong>GG72308</strong> - Filial 723-SP</p>
-                        <p><strong>GG23009</strong> - Filial 230-SP</p>
-                        <p><strong>GG77310</strong> - Filial 773-RS</p>
-                        <p><strong>GG47311</strong> - Filial 473-MT</p>
-                        <p><strong>GG16712</strong> - Filial 167-MS</p>
-                        <p><strong>GG02013</strong> - Filial 20-AGP</p>
-                    </div>
+                   <div style="display: flex; align-items: center; gap: 5px; font-size: 0.9em;">
+  <i class="fas fa-key"></i>
+  <span>Cada filial possui sua senha específica - Entre em contato com o administrador para obter sua senha</span>
+</div>
                     <hr style="margin: 15px 0;">
-                    <p style="text-align: center;"><strong>GGMASTER</strong> - Acesso Total (Todas as Filiais)</p>
+                    <p style="text-align: center;"><strong>Contato:</strong> - julianocorrea@bateforte.com.br</p>
                 </div>
             </div>
         </section>
@@ -1087,25 +1126,14 @@
                 </button>
                 <div style="background: rgba(255, 255, 255, 0.7); border-radius: 15px; padding: 25px; margin-top: 30px; text-align: left;">
                     <h4 style="color: var(--cor-primaria); margin-bottom: 15px; text-align: center;">
-                        <i class="fas fa-info-circle"></i> Senhas de Acesso
+                         <i class="fas fa-info-circle"></i> Informações de Acesso
                     </h4>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; font-size: 0.9em;">
-                        <p><strong>GG74301</strong> - Filial 743-MS</p>
-                        <p><strong>GG26402</strong> - Filial 264-SC</p>
-                        <p><strong>GG75303</strong> - Filial 753-MT</p>
-                        <p><strong>GG36404</strong> - Filial 364-DF</p>
-                        <p><strong>GG71305</strong> - Filial 713-SP</p>
-                        <p><strong>GG46806</strong> - Filial 468-MT</p>
-                        <p><strong>GG89207</strong> - Filial 892-SP</p>
-                        <p><strong>GG72308</strong> - Filial 723-SP</p>
-                        <p><strong>GG23009</strong> - Filial 230-SP</p>
-                        <p><strong>GG77310</strong> - Filial 773-RS</p>
-                        <p><strong>GG47311</strong> - Filial 473-MT</p>
-                        <p><strong>GG16712</strong> - Filial 167-MS</p>
-                        <p><strong>GG02013</strong> - Filial 20-AGP</p>
-                    </div>
+                   <div style="display: flex; align-items: center; gap: 5px; font-size: 0.9em;">
+  <i class="fas fa-key"></i>
+  <span>Cada filial possui sua senha específica - Entre em contato com o administrador para obter sua senha</span>
+</div>
                     <hr style="margin: 15px 0;">
-                    <p style="text-align: center;"><strong>GGMASTER</strong> - Acesso Total (Todas as Filiais)</p>
+                    <p style="text-align: center;"><strong>Contato:</strong> - julianocorrea@bateforte.com.br</p>
                 </div>
             </div>
         </section>
@@ -1139,7 +1167,7 @@
                     <i class="fas fa-sync"></i> Sincronizar
                 </button>
                 <button class="btn btn-success" onclick="GG.toggleLaudos()">
-                    <i class="fas fa-file-medical"></i> Gerar Laudos
+                    <i class="fas fa-file-medical"></i> Gerar Relatório
                 </button>
                 <button class="btn btn-warning" onclick="GG.exportarDados()">
                     <i class="fas fa-download"></i> Exportar
@@ -1516,7 +1544,7 @@
     <footer style="background: var(--cor-primaria); color: white; text-align: center; padding: 15px; margin-top: 50px;">
         <div class="container">
             <p style="margin: 2px 0; font-size: 11px; opacity: 0.7;">
-                Desenvolvido por Juliano Patrick | julianocorrea@bateforte.com.br | Sistema v4.0 - VERSÃO FINAL COMPLETA © 2025
+                Desenvolvido por Juliano Patrick | julianocorrea@bateforte.com.br | Sistema v4.0 © 2025
             </p>
         </div>
     </footer>
@@ -2284,50 +2312,76 @@
             // INTERFACE
             // =====================================================
             showSection(sectionId) {
-                document.querySelectorAll('.section').forEach(section => {
-                    section.classList.remove('active');
-                });
-                document.querySelectorAll('.nav-btn').forEach(btn => {
-                    btn.classList.remove('active');
-                });
+    // Remover active de todas as seções
+    document.querySelectorAll('.section').forEach(section => {
+        section.classList.remove('active');
+    });
+    
+    // Remover active de todos os botões
+    document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
 
-                document.getElementById(sectionId).classList.add('active');
+    // Ativar a seção atual
+    document.getElementById(sectionId).classList.add('active');
 
-                const botoes = document.querySelectorAll('.nav-btn');
-                botoes.forEach(btn => {
-                    if ((sectionId === 'home' && btn.textContent.includes('Home')) ||
-                        (sectionId === 'avaliacao' && btn.textContent.includes('Nova')) ||
-                        (sectionId === 'historico' && btn.textContent.includes('Histórico')) ||
-                        (sectionId === 'relatorios' && btn.textContent.includes('Relatórios')) ||
-                        (sectionId === 'configuracoes' && btn.textContent.includes('Configurações'))) {
-                        btn.classList.add('active');
-                    }
-                });
+    // Ativar o botão correto - CORRIGIDO
+    const botoes = document.querySelectorAll('.nav-btn');
+    botoes.forEach(btn => {
+        const textoBtn = btn.textContent.trim().toLowerCase();
+        let ativar = false;
+        
+        switch(sectionId) {
+            case 'home':
+                ativar = textoBtn.includes('home');
+                break;
+            case 'avaliacao':
+                ativar = textoBtn.includes('nova') || textoBtn.includes('avaliação');
+                break;
+            case 'historico':
+            case 'loginHistorico':
+                ativar = textoBtn.includes('histórico');
+                break;
+            case 'relatorios':
+            case 'loginRelatorios':
+                ativar = textoBtn.includes('relatórios');
+                break;
+            case 'configuracoes':
+            case 'loginConfiguracoes':
+                ativar = textoBtn.includes('configurações');
+                break;
+        }
+        
+        if (ativar) {
+            btn.classList.add('active');
+        }
+    });
 
-                switch(sectionId) {
-                    case 'home':
-                        this.atualizarEstatisticasHome();
-                        break;
-                    case 'avaliacao':
-                        this.inicializarFormularioAvaliacao();
-                        break;
-                    case 'historico':
-                        if (this.acesso.tipo) {
-                            this.carregarHistorico();
-                        }
-                        break;
-                    case 'relatorios':
-                        if (this.acesso.tipo) {
-                            this.gerarRelatorios();
-                        }
-                        break;
-                    case 'configuracoes':
-                        if (this.acesso.tipo === 'admin') {
-                            this.atualizarEstatisticasConfig();
-                        }
-                        break;
-                }
-            },
+    // Executar ações específicas da seção
+    switch(sectionId) {
+        case 'home':
+            this.atualizarEstatisticasHome();
+            break;
+        case 'avaliacao':
+            this.inicializarFormularioAvaliacao();
+            break;
+        case 'historico':
+            if (this.acesso.tipo) {
+                this.carregarHistorico();
+            }
+            break;
+        case 'relatorios':
+            if (this.acesso.tipo) {
+                this.gerarRelatorios();
+            }
+            break;
+        case 'configuracoes':
+            if (this.acesso.tipo === 'admin') {
+                this.atualizarEstatisticasConfig();
+            }
+            break;
+    }
+},
 
             inicializarFormularioAvaliacao() {
                 this.criarFormularioCompetencias();
@@ -4161,7 +4215,7 @@
                 if (statusEl && textoEl) {
                     if (conectado) {
                         statusEl.className = 'status-conexao status-conectado';
-                        textoEl.innerHTML = '<i class="fas fa-check-circle"></i> Conectado ao Supabase - COMPLETO (Evolução + Relatórios)';
+                        textoEl.innerHTML = '<i class="fas fa-check-circle"></i> Conectado ao banco de dados';
                     } else {
                         statusEl.className = 'status-conexao status-desconectado';
                         textoEl.innerHTML = '<i class="fas fa-exclamation-circle"></i> Sem conexão - Verifique o Supabase';
