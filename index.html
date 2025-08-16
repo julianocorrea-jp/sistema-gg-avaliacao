@@ -3478,46 +3478,102 @@
                 }
             },
 
-            // NOVA FUNÇÃO: Buscar detalhes reais da avaliação
+            /// FUNÇÃO CORRIGIDA: Buscar detalhes reais da avaliação
             async buscarDetalhesAvaliacao(matricula, dataAvaliacao) {
                 try {
-                    console.log(`🔍 Buscando detalhes para ${matricula} em ${dataAvaliacao}`);
+                    console.log(`🔍 LAUDO: Buscando detalhes para matrícula ${matricula} na data ${dataAvaliacao}`);
                     
-                    // Primeiro, tentar buscar nos dados em cache
-                    if (this.dados.avaliacoesDetalhes && this.dados.avaliacoesDetalhes.length > 0) {
-                        const dataFormatada = new Date(dataAvaliacao).toISOString().split('T')[0];
-                        
-                        const detalhesCache = this.dados.avaliacoesDetalhes.filter(d => {
-                            const dataDetalhe = new Date(d.data_avaliacao).toISOString().split('T')[0];
-                            return d.matricula_avaliado === matricula && dataDetalhe === dataFormatada;
-                        });
+                    // Garantir que temos dados carregados
+                    if (!this.dados.dadosCarregados) {
+                        console.log('📊 Carregando dados do banco para o laudo...');
+                        await this.carregarDadosSalvos();
+                    }
 
-                        if (detalhesCache.length > 0) {
-                            console.log(`✅ ${detalhesCache.length} detalhes encontrados no cache`);
-                            return detalhesCache;
+                    // Buscar nos dados já carregados em memória primeiro
+                    console.log(`📋 Total de detalhes em memória: ${this.dados.avaliacoesDetalhes.length}`);
+                    
+                    if (this.dados.avaliacoesDetalhes && this.dados.avaliacoesDetalhes.length > 0) {
+                        // Converter a data para busca mais flexível
+                        const dataAvaliacao_ISO = new Date(dataAvaliacao).toISOString();
+                        const dataAvaliacao_Formatada = dataAvaliacao_ISO.split('T')[0];
+                        
+                        console.log(`🔍 Procurando detalhes para: ${matricula} na data ${dataAvaliacao_Formatada}`);
+                        
+                        // Buscar detalhes por matrícula
+                        const detalhesPorMatricula = this.dados.avaliacoesDetalhes.filter(d => {
+                            return d.matricula_avaliado === matricula;
+                        });
+                        
+                        console.log(`📊 Detalhes encontrados para a matrícula ${matricula}: ${detalhesPorMatricula.length}`);
+                        
+                        if (detalhesPorMatricula.length > 0) {
+                            // Mostrar todas as datas disponíveis para debug
+                            const datasDisponiveis = detalhesPorMatricula.map(d => {
+                                const dataD = new Date(d.data_avaliacao || d.created_at);
+                                return dataD.toISOString().split('T')[0];
+                            });
+                            console.log(`📅 Datas disponíveis para ${matricula}:`, [...new Set(datasDisponiveis)]);
+                            
+                            // Buscar pela data exata
+                            let detalhesNaData = detalhesPorMatricula.filter(d => {
+                                const dataDetalhe = new Date(d.data_avaliacao || d.created_at).toISOString().split('T')[0];
+                                return dataDetalhe === dataAvaliacao_Formatada;
+                            });
+                            
+                            if (detalhesNaData.length === 0) {
+                                // Se não encontrou na data exata, pegar a mais recente
+                                console.log('⚠️ Não encontrou na data exata, pegando a avaliação mais recente...');
+                                detalhesPorMatricula.sort((a, b) => {
+                                    const dataA = new Date(a.data_avaliacao || a.created_at);
+                                    const dataB = new Date(b.data_avaliacao || b.created_at);
+                                    return dataB.getTime() - dataA.getTime();
+                                });
+                                
+                                // Pegar todos os detalhes da avaliação mais recente
+                                const dataUltimaAvaliacao = new Date(detalhesPorMatricula[0].data_avaliacao || detalhesPorMatricula[0].created_at);
+                                const dataUltimaAvaliacao_ISO = dataUltimaAvaliacao.toISOString().split('T')[0];
+                                
+                                detalhesNaData = detalhesPorMatricula.filter(d => {
+                                    const dataD = new Date(d.data_avaliacao || d.created_at).toISOString().split('T')[0];
+                                    return dataD === dataUltimaAvaliacao_ISO;
+                                });
+                                
+                                console.log(`📊 Usando avaliação mais recente: ${dataUltimaAvaliacao_ISO} (${detalhesNaData.length} fatores)`);
+                            }
+                            
+                            if (detalhesNaData.length > 0) {
+                                console.log(`✅ ${detalhesNaData.length} detalhes encontrados para o laudo!`);
+                                console.log('📋 Exemplo de detalhe:', detalhesNaData[0]);
+                                return detalhesNaData;
+                            }
                         }
                     }
 
-                    // Se não encontrou no cache, buscar no Supabase
-                    console.log('🔍 Buscando detalhes no Supabase...');
-                    const dataFormatada = new Date(dataAvaliacao).toISOString().split('T')[0];
+                    // Se chegou até aqui, não encontrou nada
+                    console.log('❌ LAUDO: Nenhum detalhe encontrado nos dados carregados');
+                    console.log(`📊 Debug - Total de detalhes em memória: ${this.dados.avaliacoesDetalhes.length}`);
+                    console.log('📊 Debug - Primeiros 3 detalhes:', this.dados.avaliacoesDetalhes.slice(0, 3));
                     
-                    // Buscar detalhes no Supabase
-                    const detalhes = await this.buscarDoSupabase('avaliacoes_detalhes', {
-                        matricula_avaliado: matricula
-                    });
-
-                    // Filtrar pela data mais próxima (mesmo dia)
-                    const detalhesFiltrados = detalhes.filter(d => {
-                        const dataDetalhe = new Date(d.data_avaliacao).toISOString().split('T')[0];
-                        return dataDetalhe === dataFormatada;
-                    });
-
-                    console.log(`✅ ${detalhesFiltrados.length} detalhes encontrados no Supabase`);
-                    return detalhesFiltrados;
+                    // Tentar buscar diretamente no Supabase como último recurso
+                    console.log('🔄 Tentando buscar diretamente no Supabase...');
+                    try {
+                        const todosDetalhes = await this.buscarTodosRegistros('avaliacoes_detalhes');
+                        console.log(`📊 Total de detalhes no Supabase: ${todosDetalhes.length}`);
+                        
+                        const detalhesMatricula = todosDetalhes.filter(d => d.matricula_avaliado === matricula);
+                        console.log(`📊 Detalhes para ${matricula} no Supabase: ${detalhesMatricula.length}`);
+                        
+                        if (detalhesMatricula.length > 0) {
+                            return detalhesMatricula;
+                        }
+                    } catch (supabaseError) {
+                        console.error('❌ Erro ao buscar no Supabase:', supabaseError);
+                    }
+                    
+                    return [];
                     
                 } catch (error) {
-                    console.error('❌ Erro ao buscar detalhes da avaliação:', error);
+                    console.error('❌ Erro geral ao buscar detalhes da avaliação:', error);
                     return [];
                 }
             },
