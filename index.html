@@ -1366,7 +1366,7 @@
                 <div id="previewLaudo" style="display: none;">
                     <div class="info-card" style="background: white; border: 2px solid #ddd;">
                         <div style="text-align: center; border-bottom: 2px solid var(--cor-primaria); padding-bottom: 15px; margin-bottom: 20px;">
-                            <h2 style="color: var(--cor-primaria); margin: 0; font-size: 1.8em;">LAUDO DE AVALIAÇÃO DE DESEMPENHO</h2>
+                            <h2 style="color: var(--cor-primaria); margin: 0; font-size: 1.8em;">RELATÓRIO DE AVALIAÇÃO DE DESEMPENHO</h2>
                             <p style="margin: 5px 0; color: #666; font-size: 0.9em;">Sistema G&G v4.0 - Gestão de Performance</p>
                             <p style="margin: 5px 0; color: #666; font-size: 0.9em;" id="dataGeracao"></p>
                         </div>
@@ -2150,130 +2150,138 @@
                 return resumo;
             },
 
-            // FUNÇÃO ATUALIZADA: Calcular evolução e salvar
-            async salvarAvaliacao() {
-                if (!this.dados.avaliacaoAtual) {
-                    this.mostrarAlerta('❌ Calcule o resultado primeiro!', 'danger');
-                    return;
-                }
+           // FUNÇÃO ATUALIZADA: Calcular evolução e salvar COM ID
+async salvarAvaliacao() {
+    if (!this.dados.avaliacaoAtual) {
+        this.mostrarAlerta('❌ Calcule o resultado primeiro!', 'danger');
+        return;
+    }
 
-                const nomeAvaliado = document.getElementById('nomeAvaliado').value;
-                const nomeGestor = document.getElementById('nomeGestor').value;
-                const filial = document.getElementById('filial').value;
-                const matriculaAvaliado = document.getElementById('matriculaAvaliado').value;
+    const nomeAvaliado = document.getElementById('nomeAvaliado').value;
+    const nomeGestor = document.getElementById('nomeGestor').value;
+    const filial = document.getElementById('filial').value;
+    const matriculaAvaliado = document.getElementById('matriculaAvaliado').value;
 
-                if (!nomeAvaliado || !nomeGestor || !filial || !matriculaAvaliado) {
-                    this.mostrarAlerta('❌ Preencha os campos obrigatórios!', 'danger');
-                    return;
-                }
+    if (!nomeAvaliado || !nomeGestor || !filial || !matriculaAvaliado) {
+        this.mostrarAlerta('❌ Preencha os campos obrigatórios!', 'danger');
+        return;
+    }
 
-                // NOVA FUNCIONALIDADE: Calcular evolução
-                const evolucao = this.calcularEvolucao(matriculaAvaliado, this.dados.avaliacaoAtual.pontuacao);
+    // NOVA FUNCIONALIDADE: Calcular evolução
+    const evolucao = this.calcularEvolucao(matriculaAvaliado, this.dados.avaliacaoAtual.pontuacao);
 
-                // Data da avaliação
-                const dataAvaliacao = new Date().toISOString();
+    // Data da avaliação
+    const dataAvaliacao = new Date().toISOString();
 
-                // CORREÇÃO: usar os nomes EXATOS das colunas da tabela avaliacoes + CORRIGIR CASAS DECIMAIS
-                const avaliacao = {
-                    nome_avaliado: nomeAvaliado,
-                    matricula_avaliado: matriculaAvaliado,
-                    nome_gestor: nomeGestor,
-                    matricula_gestor: document.getElementById('matriculaGestor').value || '',
-                    filial: filial,
-                    pontuacao: parseFloat(this.dados.avaliacaoAtual.pontuacao.toFixed(1)), // CORREÇÃO: Sempre 1 casa decimal
-                    classificacao: this.dados.avaliacaoAtual.classificacao,
-                    comentarios: document.getElementById('comentarios').value || '',
-                    evolucao: evolucao, // NOVA COLUNA: evolução calculada
+    // CORREÇÃO: usar os nomes EXATOS das colunas da tabela avaliacoes + CORRIGIR CASAS DECIMAIS
+    const avaliacao = {
+        nome_avaliado: nomeAvaliado,
+        matricula_avaliado: matriculaAvaliado,
+        nome_gestor: nomeGestor,
+        matricula_gestor: document.getElementById('matriculaGestor').value || '',
+        filial: filial,
+        pontuacao: parseFloat(this.dados.avaliacaoAtual.pontuacao.toFixed(1)), // CORREÇÃO: Sempre 1 casa decimal
+        classificacao: this.dados.avaliacaoAtual.classificacao,
+        comentarios: document.getElementById('comentarios').value || '',
+        evolucao: evolucao, // NOVA COLUNA: evolução calculada
+        created_at: dataAvaliacao
+    };
+
+    try {
+        this.mostrarLoading(true);
+        
+        console.log('💾 Salvando avaliação com evolução:', avaliacao);
+        
+        // Salvar avaliação principal e pegar o ID retornado
+        const resultado = await this.inserirNoSupabase('avaliacoes', avaliacao);
+        
+        if (resultado && resultado.length > 0) {
+            const idAvaliacao = resultado[0].id; // ⭐ PEGAR O ID DA AVALIAÇÃO CRIADA
+            console.log(`📊 ID da avaliação criada: ${idAvaliacao}`);
+            
+            // NOVO: Salvar detalhes da avaliação (por fator) COM ID
+            await this.salvarDetalhesAvaliacao(matriculaAvaliado, nomeAvaliado, dataAvaliacao, idAvaliacao);
+            
+            // Adicionar o ID ao objeto antes de salvar no cache
+            avaliacao.id = idAvaliacao;
+            this.dados.avaliacoes.push(avaliacao);
+            this.cache.avaliacoes = this.dados.avaliacoes;
+            
+            try {
+                localStorage.setItem('gg_cache_supabase', JSON.stringify(this.cache));
+            } catch (storageError) {
+                console.warn('⚠️ Erro ao atualizar cache:', storageError);
+            }
+
+            let mensagemSucesso = `✅ Avaliação salva no Supabase! ID: ${idAvaliacao}`;
+            if (evolucao !== null) {
+                const tipoEvolucao = evolucao > 0 ? 'melhoria' : evolucao < 0 ? 'queda' : 'estabilidade';
+                mensagemSucesso += `\n📈 Evolução registrada: ${tipoEvolucao} de ${evolucao.toFixed(1)} pontos`;
+            }
+            
+            this.mostrarAlerta(mensagemSucesso, 'success');
+            
+            document.getElementById('btnSalvar').innerHTML = '<i class="fas fa-check"></i> Salvo!';
+            document.getElementById('btnSalvar').disabled = true;
+            
+            setTimeout(() => {
+                document.getElementById('btnSalvar').innerHTML = '<i class="fas fa-save"></i> Salvar no Supabase';
+            }, 3000);
+        } else {
+            throw new Error('Avaliação salva, mas ID não retornado');
+        }
+    } catch (error) {
+        console.error('❌ Erro ao salvar:', error);
+        this.mostrarAlerta('❌ Erro ao salvar: ' + error.message, 'danger');
+    } finally {
+        this.mostrarLoading(false);
+    }
+},
+
+           // FUNÇÃO ATUALIZADA: Salvar detalhes da avaliação por fator COM ID
+async salvarDetalhesAvaliacao(matricula, nome, dataAvaliacao, idAvaliacao) {
+    console.log(`💾 Salvando detalhes da avaliação ID: ${idAvaliacao}...`);
+    
+    const detalhes = [];
+    
+    // Coletar todas as respostas dos formulários
+    this.COMPETENCIAS.forEach((competencia, compIndex) => {
+        competencia.fatores.forEach((fator, fatorIndex) => {
+            const fatorGlobalIndex = this.calcularIndiceFatorGlobal(compIndex, fatorIndex);
+            const radio = document.querySelector(`input[name="fator_${fatorGlobalIndex}"]:checked`);
+            
+            if (radio) {
+                detalhes.push({
+                    matricula_avaliado: matricula,
+                    nome_avaliado: nome,
+                    data_avaliacao: dataAvaliacao,
+                    competencia: competencia.nome,
+                    fator_numero: fatorIndex + 1,
+                    fator_texto: fator,
+                    pontuacao: parseInt(radio.value),
+                    idavaliacao: idAvaliacao, // ⭐ NOVA COLUNA: ID da avaliação principal
                     created_at: dataAvaliacao
-                };
-
-                try {
-                    this.mostrarLoading(true);
-                    
-                    console.log('💾 Salvando avaliação com evolução:', avaliacao);
-                    
-                    // Salvar avaliação principal
-                    const resultado = await this.inserirNoSupabase('avaliacoes', avaliacao);
-                    
-                    if (resultado) {
-                        // NOVO: Salvar detalhes da avaliação (por fator)
-                        await this.salvarDetalhesAvaliacao(matriculaAvaliado, nomeAvaliado, dataAvaliacao);
-                        
-                        this.dados.avaliacoes.push(avaliacao);
-                        this.cache.avaliacoes = this.dados.avaliacoes;
-                        
-                        try {
-                            localStorage.setItem('gg_cache_supabase', JSON.stringify(this.cache));
-                        } catch (storageError) {
-                            console.warn('⚠️ Erro ao atualizar cache:', storageError);
-                        }
-
-                        let mensagemSucesso = `✅ Avaliação salva no Supabase!`;
-                        if (evolucao !== null) {
-                            const tipoEvolucao = evolucao > 0 ? 'melhoria' : evolucao < 0 ? 'queda' : 'estabilidade';
-                            mensagemSucesso += `\n📈 Evolução registrada: ${tipoEvolucao} de ${evolucao.toFixed(1)} pontos`;
-                        }
-                        
-                        this.mostrarAlerta(mensagemSucesso, 'success');
-                        
-                        document.getElementById('btnSalvar').innerHTML = '<i class="fas fa-check"></i> Salvo!';
-                        document.getElementById('btnSalvar').disabled = true;
-                        
-                        setTimeout(() => {
-                            document.getElementById('btnSalvar').innerHTML = '<i class="fas fa-save"></i> Salvar no Supabase';
-                        }, 3000);
-                    }
-                } catch (error) {
-                    console.error('❌ Erro ao salvar:', error);
-                    this.mostrarAlerta('❌ Erro ao salvar: ' + error.message, 'danger');
-                } finally {
-                    this.mostrarLoading(false);
-                }
-            },
-
-            // NOVA FUNÇÃO: Salvar detalhes da avaliação por fator
-            async salvarDetalhesAvaliacao(matricula, nome, dataAvaliacao) {
-                console.log('💾 Salvando detalhes da avaliação...');
-                
-                const detalhes = [];
-                
-                // Coletar todas as respostas dos formulários
-                this.COMPETENCIAS.forEach((competencia, compIndex) => {
-                    competencia.fatores.forEach((fator, fatorIndex) => {
-                        const fatorGlobalIndex = this.calcularIndiceFatorGlobal(compIndex, fatorIndex);
-                        const radio = document.querySelector(`input[name="fator_${fatorGlobalIndex}"]:checked`);
-                        
-                        if (radio) {
-                            detalhes.push({
-                                matricula_avaliado: matricula,
-                                nome_avaliado: nome,
-                                data_avaliacao: dataAvaliacao,
-                                competencia: competencia.nome,
-                                fator_numero: fatorIndex + 1,
-                                fator_texto: fator,
-                                pontuacao: parseInt(radio.value),
-                                created_at: dataAvaliacao
-                            });
-                        }
-                    });
                 });
+            }
+        });
+    });
 
-                // Salvar todos os detalhes no banco
-                if (detalhes.length > 0) {
-                    try {
-                        // Salvar em lotes para melhor performance
-                        for (const detalhe of detalhes) {
-                            await this.inserirNoSupabase('avaliacoes_detalhes', detalhe);
-                        }
-                        console.log(`✅ ${detalhes.length} detalhes salvos com sucesso!`);
-                    } catch (error) {
-                        console.error('❌ Erro ao salvar detalhes:', error);
-                        throw error;
-                    }
-                } else {
-                    console.warn('⚠️ Nenhum detalhe para salvar');
-                }
-            },
+    // Salvar todos os detalhes no banco
+    if (detalhes.length > 0) {
+        try {
+            // Salvar em lotes para melhor performance
+            for (const detalhe of detalhes) {
+                await this.inserirNoSupabase('avaliacoes_detalhes', detalhe);
+            }
+            console.log(`✅ ${detalhes.length} detalhes salvos com ID ${idAvaliacao}!`);
+        } catch (error) {
+            console.error('❌ Erro ao salvar detalhes:', error);
+            throw error;
+        }
+    } else {
+        console.warn('⚠️ Nenhum detalhe para salvar');
+    }
+},
 
             // FUNÇÃO AUXILIAR: Calcular índice global do fator
             calcularIndiceFatorGlobal(competenciaIndex, fatorIndex) {
@@ -3426,43 +3434,54 @@
                 }
             },
 
-            buscarAvaliacoesLaudo(matricula) {
-                const selectElement = document.getElementById('avaliacaoSelect');
-                
-                if (!matricula || matricula.trim() === '') {
-                    selectElement.innerHTML = '<option value="">Primeiro digite uma matrícula</option>';
-                    return;
-                }
+           buscarAvaliacoesLaudo(matricula) {
+    const selectElement = document.getElementById('avaliacaoSelect');
+    
+    if (!matricula || matricula.trim() === '') {
+        selectElement.innerHTML = '<option value="">Primeiro digite uma matrícula</option>';
+        return;
+    }
 
-                console.log(`🔍 Buscando avaliações para matrícula: ${matricula}`);
+    console.log(`🔍 Buscando avaliações para matrícula: ${matricula}`);
 
-                // Buscar avaliações desta matrícula
-                const avaliacoes = this.dados.avaliacoes.filter(av => 
-                    (av.matricula_avaliado || av.matriculaAvaliado) === matricula.trim()
-                ).sort((a, b) => new Date(b.created_at || b.criado_em) - new Date(a.created_at || a.criado_em));
+    // Buscar avaliações desta matrícula
+    const avaliacoes = this.dados.avaliacoes.filter(av => 
+        (av.matricula_avaliado || av.matriculaAvaliado) === matricula.trim()
+    ).sort((a, b) => new Date(b.created_at || b.criado_em) - new Date(a.created_at || a.criado_em));
 
-                selectElement.innerHTML = '';
+    selectElement.innerHTML = '';
 
-                if (avaliacoes.length === 0) {
-                    selectElement.innerHTML = '<option value="">Nenhuma avaliação encontrada</option>';
-                    this.mostrarAlerta(`❌ Nenhuma avaliação encontrada para a matrícula ${matricula}`, 'warning');
-                    return;
-                }
+    if (avaliacoes.length === 0) {
+        selectElement.innerHTML = '<option value="">Nenhuma avaliação encontrada</option>';
+        this.mostrarAlerta(`❌ Nenhuma avaliação encontrada para a matrícula ${matricula}`, 'warning');
+        return;
+    }
 
-                selectElement.innerHTML = '<option value="">Selecione uma avaliação</option>';
-                
-                avaliacoes.forEach((av, index) => {
-                    const data = new Date(av.created_at || av.criado_em).toLocaleDateString('pt-BR');
-                    const option = document.createElement('option');
-                    option.value = index;
-                    option.textContent = `${data} - ${av.classificacao} (${av.pontuacao})`;
-                    option.dataset.avaliacao = JSON.stringify(av);
-                    selectElement.appendChild(option);
-                });
+    selectElement.innerHTML = '<option value="">Selecione uma avaliação</option>';
+    
+    avaliacoes.forEach((av, index) => {
+        const data = new Date(av.created_at || av.criado_em).toLocaleDateString('pt-BR');
+        const option = document.createElement('option');
+        option.value = index;
+        
+        // Verificar se tem ID
+        const temID = av.id ? `ID: ${av.id}` : 'Sem ID';
+        option.textContent = `${data} - ${av.classificacao} (${av.pontuacao}) - ${temID}`;
+        option.dataset.avaliacao = JSON.stringify(av);
+        selectElement.appendChild(option);
+    });
 
-                this.mostrarAlerta(`✅ ${avaliacoes.length} avaliação(ões) encontrada(s)`, 'success');
-            },
-
+    // Verificar quantas avaliações têm ID
+    const comID = avaliacoes.filter(av => av.id).length;
+    const semID = avaliacoes.length - comID;
+    
+    let mensagem = `✅ ${avaliacoes.length} avaliação(ões) encontrada(s)`;
+    if (semID > 0) {
+        mensagem += `\n⚠️ ${semID} avaliação(ões) sem ID (não terão detalhes no laudo)`;
+    }
+    
+    this.mostrarAlerta(mensagem, comID > 0 ? 'success' : 'warning');
+},
             carregarAvaliacaoLaudo() {
                 const selectElement = document.getElementById('avaliacaoSelect');
                 const selectedOption = selectElement.options[selectElement.selectedIndex];
@@ -3502,136 +3521,103 @@
             },
 
             async gerarAnaliseCompetencias(avaliacao) {
-                const container = document.getElementById('competenciasLaudo');
-                
-                console.log('📋 Buscando análise real da avaliação...');
-                
-                try {
-                    // Buscar detalhes reais da avaliação no banco de dados
-                    const detalhes = await this.buscarDetalhesAvaliacao(
-                        avaliacao.matricula_avaliado || avaliacao.matriculaAvaliado,
-                        avaliacao.created_at || avaliacao.criado_em
-                    );
+    const container = document.getElementById('competenciasLaudo');
+    
+    console.log('📋 Buscando análise real da avaliação por ID...');
+    
+    try {
+        // Buscar detalhes reais da avaliação usando o ID específico
+        const detalhes = await this.buscarDetalhesAvaliacao(avaliacao.id);
 
-                    if (detalhes.length === 0) {
-                        console.warn('⚠️ Nenhum detalhe encontrado, usando dados simulados');
-                        this.gerarAnaliseSimulada(container);
-                        return;
-                    }
+        if (detalhes.length === 0) {
+            console.warn(`⚠️ Nenhum detalhe encontrado para ID ${avaliacao.id}, usando dados simulados`);
+            this.gerarAnaliseSimulada(container);
+            return;
+        }
 
-                    // Processar dados reais por competência
-                    const analiseCompetencias = this.processarDetalhesReais(detalhes);
-                    
-                    // Gerar HTML com dados reais
-                    this.renderizarAnaliseCompetencias(container, analiseCompetencias);
-                    
-                } catch (error) {
-                    console.error('❌ Erro ao buscar detalhes:', error);
-                    console.warn('⚠️ Usando dados simulados devido ao erro');
-                    this.gerarAnaliseSimulada(container);
-                }
-            },
+        // Processar dados reais por competência
+        const analiseCompetencias = this.processarDetalhesReais(detalhes);
+        
+        // Gerar HTML com dados reais
+        this.renderizarAnaliseCompetencias(container, analiseCompetencias);
+        
+        console.log(`✅ Análise gerada com ${detalhes.length} fatores da avaliação ID: ${avaliacao.id}`);
+        
+    } catch (error) {
+        console.error('❌ Erro ao buscar detalhes:', error);
+        console.warn('⚠️ Usando dados simulados devido ao erro');
+        this.gerarAnaliseSimulada(container);
+    }
+},
 
-            /// FUNÇÃO CORRIGIDA: Buscar detalhes reais da avaliação
-            async buscarDetalhesAvaliacao(matricula, dataAvaliacao) {
-                try {
-                    console.log(`🔍 LAUDO: Buscando detalhes para matrícula ${matricula} na data ${dataAvaliacao}`);
-                    
-                    // Garantir que temos dados carregados
-                    if (!this.dados.dadosCarregados) {
-                        console.log('📊 Carregando dados do banco para o laudo...');
-                        await this.carregarDadosSalvos();
-                    }
+            /// FUNÇÃO CORRIGIDA: Buscar detalhes por ID da avaliação
+async buscarDetalhesAvaliacao(idAvaliacao) {
+    try {
+        console.log(`🔍 LAUDO: Buscando detalhes para avaliação ID: ${idAvaliacao}`);
+        
+        if (!idAvaliacao) {
+            console.error('❌ ID da avaliação não fornecido');
+            return [];
+        }
+        
+        // Garantir que temos dados carregados
+        if (!this.dados.dadosCarregados) {
+            console.log('📊 Carregando dados do banco para o laudo...');
+            await this.carregarDadosSalvos();
+        }
 
-                    // Buscar nos dados já carregados em memória primeiro
-                    console.log(`📋 Total de detalhes em memória: ${this.dados.avaliacoesDetalhes.length}`);
-                    
-                    if (this.dados.avaliacoesDetalhes && this.dados.avaliacoesDetalhes.length > 0) {
-                        // Converter a data para busca mais flexível
-                        const dataAvaliacao_ISO = new Date(dataAvaliacao).toISOString();
-                        const dataAvaliacao_Formatada = dataAvaliacao_ISO.split('T')[0];
-                        
-                        console.log(`🔍 Procurando detalhes para: ${matricula} na data ${dataAvaliacao_Formatada}`);
-                        
-                        // Buscar detalhes por matrícula
-                        const detalhesPorMatricula = this.dados.avaliacoesDetalhes.filter(d => {
-                            return d.matricula_avaliado === matricula;
-                        });
-                        
-                        console.log(`📊 Detalhes encontrados para a matrícula ${matricula}: ${detalhesPorMatricula.length}`);
-                        
-                        if (detalhesPorMatricula.length > 0) {
-                            // Mostrar todas as datas disponíveis para debug
-                            const datasDisponiveis = detalhesPorMatricula.map(d => {
-                                const dataD = new Date(d.data_avaliacao || d.created_at);
-                                return dataD.toISOString().split('T')[0];
-                            });
-                            console.log(`📅 Datas disponíveis para ${matricula}:`, [...new Set(datasDisponiveis)]);
-                            
-                            // Buscar pela data exata
-                            let detalhesNaData = detalhesPorMatricula.filter(d => {
-                                const dataDetalhe = new Date(d.data_avaliacao || d.created_at).toISOString().split('T')[0];
-                                return dataDetalhe === dataAvaliacao_Formatada;
-                            });
-                            
-                            if (detalhesNaData.length === 0) {
-                                // Se não encontrou na data exata, pegar a mais recente
-                                console.log('⚠️ Não encontrou na data exata, pegando a avaliação mais recente...');
-                                detalhesPorMatricula.sort((a, b) => {
-                                    const dataA = new Date(a.data_avaliacao || a.created_at);
-                                    const dataB = new Date(b.data_avaliacao || b.created_at);
-                                    return dataB.getTime() - dataA.getTime();
-                                });
-                                
-                                // Pegar todos os detalhes da avaliação mais recente
-                                const dataUltimaAvaliacao = new Date(detalhesPorMatricula[0].data_avaliacao || detalhesPorMatricula[0].created_at);
-                                const dataUltimaAvaliacao_ISO = dataUltimaAvaliacao.toISOString().split('T')[0];
-                                
-                                detalhesNaData = detalhesPorMatricula.filter(d => {
-                                    const dataD = new Date(d.data_avaliacao || d.created_at).toISOString().split('T')[0];
-                                    return dataD === dataUltimaAvaliacao_ISO;
-                                });
-                                
-                                console.log(`📊 Usando avaliação mais recente: ${dataUltimaAvaliacao_ISO} (${detalhesNaData.length} fatores)`);
-                            }
-                            
-                            if (detalhesNaData.length > 0) {
-                                console.log(`✅ ${detalhesNaData.length} detalhes encontrados para o laudo!`);
-                                console.log('📋 Exemplo de detalhe:', detalhesNaData[0]);
-                                return detalhesNaData;
-                            }
-                        }
-                    }
+        // Buscar nos dados já carregados em memória primeiro
+        console.log(`📋 Total de detalhes em memória: ${this.dados.avaliacoesDetalhes.length}`);
+        
+        if (this.dados.avaliacoesDetalhes && this.dados.avaliacoesDetalhes.length > 0) {
+            // Buscar detalhes por ID da avaliação (MUITO MAIS PRECISO)
+            const detalhesDoID = this.dados.avaliacoesDetalhes.filter(d => {
+                return d.idavaliacao === idAvaliacao || d.idavaliacao === parseInt(idAvaliacao);
+            });
+            
+            console.log(`📊 Detalhes encontrados para ID ${idAvaliacao}: ${detalhesDoID.length}`);
+            
+            if (detalhesDoID.length > 0) {
+                console.log(`✅ ${detalhesDoID.length} detalhes encontrados para o laudo!`);
+                console.log('📋 Exemplo de detalhe:', detalhesDoID[0]);
+                return detalhesDoID;
+            }
+        }
 
-                    // Se chegou até aqui, não encontrou nada
-                    console.log('❌ LAUDO: Nenhum detalhe encontrado nos dados carregados');
-                    console.log(`📊 Debug - Total de detalhes em memória: ${this.dados.avaliacoesDetalhes.length}`);
-                    console.log('📊 Debug - Primeiros 3 detalhes:', this.dados.avaliacoesDetalhes.slice(0, 3));
-                    
-                    // Tentar buscar diretamente no Supabase como último recurso
-                    console.log('🔄 Tentando buscar diretamente no Supabase...');
-                    try {
-                        const todosDetalhes = await this.buscarTodosRegistros('avaliacoes_detalhes');
-                        console.log(`📊 Total de detalhes no Supabase: ${todosDetalhes.length}`);
-                        
-                        const detalhesMatricula = todosDetalhes.filter(d => d.matricula_avaliado === matricula);
-                        console.log(`📊 Detalhes para ${matricula} no Supabase: ${detalhesMatricula.length}`);
-                        
-                        if (detalhesMatricula.length > 0) {
-                            return detalhesMatricula;
-                        }
-                    } catch (supabaseError) {
-                        console.error('❌ Erro ao buscar no Supabase:', supabaseError);
-                    }
-                    
-                    return [];
-                    
-                } catch (error) {
-                    console.error('❌ Erro geral ao buscar detalhes da avaliação:', error);
-                    return [];
-                }
-            },
-
+        // Se não encontrou nos dados em memória, buscar diretamente no Supabase
+        console.log('🔄 Não encontrado em memória, tentando buscar diretamente no Supabase...');
+        try {
+            const detalhesSupabase = await this.buscarDoSupabase('avaliacoes_detalhes', { 
+                idavaliacao: idAvaliacao 
+            });
+            
+            console.log(`📊 Detalhes encontrados no Supabase para ID ${idAvaliacao}: ${detalhesSupabase.length}`);
+            
+            if (detalhesSupabase.length > 0) {
+                console.log(`✅ ${detalhesSupabase.length} detalhes encontrados no Supabase!`);
+                return detalhesSupabase;
+            }
+        } catch (supabaseError) {
+            console.error('❌ Erro ao buscar no Supabase:', supabaseError);
+        }
+        
+        // Se chegou até aqui, não encontrou nada
+        console.log(`❌ LAUDO: Nenhum detalhe encontrado para a avaliação ID: ${idAvaliacao}`);
+        console.log(`📊 Debug - Total de detalhes em memória: ${this.dados.avaliacoesDetalhes.length}`);
+        
+        if (this.dados.avaliacoesDetalhes.length > 0) {
+            // Mostrar alguns IDs disponíveis para debug
+            const idsDisponiveis = [...new Set(this.dados.avaliacoesDetalhes.map(d => d.idavaliacao))].filter(id => id).slice(0, 5);
+            console.log('📊 Debug - Alguns IDs disponíveis:', idsDisponiveis);
+        }
+        
+        return [];
+        
+    } catch (error) {
+        console.error('❌ Erro geral ao buscar detalhes da avaliação:', error);
+        return [];
+    }
+},
             // NOVA FUNÇÃO: Processar detalhes reais por competência
             processarDetalhesReais(detalhes) {
                 const competenciasMap = {};
